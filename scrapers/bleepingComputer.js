@@ -1,0 +1,181 @@
+const { chromium } = require("playwright");
+
+async function scrapeBleepingComputer() {
+    const MAX_PAGINAS = 2;
+    
+    const browser = await chromium.launch({
+    headless: false,
+    slowMo: 50 // opcional
+  });
+    const page = await browser.newPage();
+
+    // 1. Ir a la página
+    await page.goto("https://www.bleepingcomputer.com/news/security/", { waitUntil: "domcontentloaded" });
+
+    // Quitar las cookies
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1 segundos
+    const botonCookies = await page.locator('//*[@id="qc-cmp2-ui"]/div[2]/div/button[2]');
+    const botonCookiesExiste = await botonCookies.count();
+
+    if (botonCookiesExiste !== 0) {
+        await botonCookies.click();
+    }
+
+    const noticias = [];
+    for (let i = 1; i <= MAX_PAGINAS; i++) {
+        for (let j = 1; j <= 50; j++) { // o el máximo que quieras
+            const xpath = `//*[@id="bc-home-news-main-wrap"]/li[${j}]/div[2]/h4/a`;
+            const elementos = await page.locator(xpath).count();
+
+            if (elementos === 0) {
+                // Si no existe, salir del for
+                break;
+            }
+
+            // Saber si el elemento es un anuncio o no
+            const href = await page.locator(xpath).getAttribute('href');
+            if (!href?.startsWith('https://www.bleepingcomputer.com/')) {
+                continue;
+            }
+
+            const noticia = await scrapeNew(page, xpath);
+            noticias.push(noticia);
+
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1 segundos
+        }
+
+        if(i != MAX_PAGINAS) {
+            const botonSiguiente = page.locator('a[aria-label="Next Page"]');
+            if (await botonSiguiente.count() > 0) {
+                await botonSiguiente.first().click();
+            }
+            /*
+            const botonSiguiente = await page.locator('xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/ul/li[8]/a');
+            const botonExiste = await botonSiguiente.count();
+
+            console.log(botonExiste)
+            if (botonExiste === 0) {
+                // No hay más páginas, salir del bucle externo
+                break;
+            }
+
+            await botonSiguiente.click();
+            */
+            await page.waitForLoadState('domcontentloaded');
+        }
+    }
+
+    await browser.close();
+    return noticias;
+}
+
+async function scrapeNew(page, xpath) {
+    // 2. Localizar el enlace de la noticia directamente por XPath
+    const enlaceNoticia = page.locator(xpath);
+
+    // 3. Esperar a que esté visible
+    await enlaceNoticia.waitFor();
+
+    // 4. Hacer click
+    await enlaceNoticia.click();
+
+    // 5. Esperar a que cargue la noticia
+    await page.waitForLoadState('domcontentloaded');
+
+    //await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1 segundos
+
+    // Título
+    let titulo = "N/A";
+    let tituloLocator = page.locator('xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/article/div/h1');
+    let countTitulo = await tituloLocator.count();
+
+    if(countTitulo > 0)
+    {
+        titulo = await tituloLocator.innerText();
+    }
+    else
+    {
+        tituloLocator = page.locator('xpath=/html/body/div[1]/section[2]/div/div/div[1]/div/article/div/h1');
+        countTitulo = await tituloLocator.count();
+
+        // Comprobar si es noticia sponsor
+        if(countTitulo > 0)
+        {
+            titulo = await tituloLocator.innerText();
+        }
+    }
+
+    // Autor
+    let autor = "N/A";
+    let autorLocator = page.locator('xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/article/div/div[1]/div[1]/h6/a/span/span');
+    let countAutor = await autorLocator.count();
+
+    if(countAutor > 0)
+    {
+        autor = await autorLocator.innerText();
+    }
+    else
+    {
+        autorLocator = page.locator('xpath=/html/body/div[1]/section[2]/div/div/div[1]/div/article/div/div[1]/div[1]/h6/a/span/span');
+        countAutor = await autorLocator.count();
+
+        // Comprobar si es noticia sponsor
+        if(countAutor > 0)
+        {
+            autor = await autorLocator.innerText();
+        }
+    }
+
+    // Fecha
+    let fecha = "N/A";
+    let fechaLocator = page.locator('xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/article/div/div[1]/div[2]/ul/li[1]');
+    let countFecha = await fechaLocator.count();
+
+    if(countFecha > 0)
+    {
+        fecha = await fechaLocator.innerText();
+    }
+    else
+    {
+        fechaLocator = page.locator('xpath=/html/body/div[1]/section[2]/div/div/div[1]/div/article/div/div[1]/div[2]/ul/li[1]');
+        countFecha = await fechaLocator.count();
+
+        // Comprobar si es noticia sponsor
+        if(countFecha > 0)
+        {
+            fecha = await fechaLocator.innerText();
+        }
+    }
+
+    // Palabras clave
+    let palabrasClave = [];
+    let links = page.locator('xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/div[1]/ul/li/a');
+    let countLinks = await links.count();
+
+    if(countLinks > 0)
+    {
+        for (let i = 0; i < countLinks; i++) {
+            const palabraClave = await links.nth(i).innerText();
+            palabrasClave.push(palabraClave);
+        }
+    }
+    else
+    {
+        links = page.locator('xpath=/html/body/div[1]/section[2]/div/div/div[1]/div/div[1]/ul/li/a');
+        countLinks = await links.count();
+
+        for (let i = 0; i < countLinks; i++) {
+            const palabraClave = await links.nth(i).innerText();
+            palabrasClave.push(palabraClave);
+        }
+    }
+
+    //await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1 segundos
+
+    // volver a la página anterior
+    await page.goBack({ waitUntil: 'domcontentloaded' });
+
+    return { titulo, autor, fecha, palabrasClave };
+}
+
+module.exports = scrapeBleepingComputer;
