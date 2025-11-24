@@ -34,18 +34,35 @@ async function scrapeCSO() {
 
     for (let i = 1; i <= MAX_PAGINAS; i++) {
         for (let j = 1; j <= 50; j++) {
-            await resolverCookies(page);
+            //await resolverCookies(page);
 
-            const xpath = `//*[@id="remove_no_follow"]/section[3]/div/div/div[${j}]/a`;
-            const elementos = await page.locator(xpath).count();
+            // 1. Seleccionar el DIV[j]
+            const xpathDiv = `//*[@id="remove_no_follow"]/section[3]/div/div/div[${j}]`;
+            const divLocator = page.locator(xpathDiv);
 
-            if (elementos === 0) {
-                // Si no existe, salir del for
-                break;
+            // si el div no existe → fin de lista
+            if (await divLocator.count() === 0) break;
+
+            // 2. comprobar si es publicidad (advert__container)
+            const clase = await divLocator.getAttribute("class");
+            if (clase && clase.includes("advert__container")) {
+                // Cada vez que hay un div de publicidad, el siguiente div de noticia incrementa en 2 su contador
+                // De esta forma, saltamos los divs que no sean de noticias
+                j += 2;
+                continue;
             }
 
-            //console.log("Noticia " + i + " " + j);
-            const noticia = await scrapeNew(page, xpath);
+            // 3. comprobar si dentro del div hay un <a>
+            const xpathA = `${xpathDiv}/a`;
+            const aCount = await page.locator(xpathA).count();
+
+            if (aCount === 0) {
+                // No hay <a> ⇒ no es noticia, puede ser un banner, un contenedor vacío, etc.
+                continue;
+            }
+
+            // 4. Si llegamos aquí → sí hay un <a>, ahora llamar a tu scraper exactamente como lo necesitas
+            const noticia = await scrapeNew(page, xpathA);
             noticias.push(noticia);
         }
 
