@@ -1,6 +1,7 @@
 const express = require("express");
-const scrapeTheHackerNews = require("./scrapers/theHackerNews");
-const scrapeBleepingComputer = require("./scrapers/bleepingComputer");
+const scrapeTheHackerNews = require("./scrapers/the-hacker-news");
+const scrapeBleepingComputer = require("./scrapers/bleeping-computer");
+const scrapeCSO = require("./scrapers/cso-online");
 const app = express();
 
 const PORT = 3000;
@@ -41,6 +42,23 @@ app.get("/scrape/bc", async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error al scrapear Bleeping Computer" });
+    }
+});
+
+// Endpoint para scrapear CSO Online
+app.get("/scrape/cso", async (req, res) => {
+    try {
+        // Llamamos a la función que scrapea la noticia
+        const noticia = await scrapeCSO();
+
+        // Devolver un objeto combinado: source + campos de la noticia
+        res.json({
+            source: "CSO",
+            ...noticia // esto agrega titulo, autor, fecha directamente
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error al scrapear CSO" });
     }
 });
 

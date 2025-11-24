@@ -3,27 +3,34 @@ const { chromium } = require("playwright");
 async function scrapeBleepingComputer() {
     const MAX_PAGINAS = 2;
     
-    const browser = await chromium.launch({
-    headless: false,
-    slowMo: 50 // opcional
-  });
-    const page = await browser.newPage();
+    const browser = await chromium.launch();
+    const context = await browser.newContext({
+        userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",
+        viewport: { width: 1920, height: 1080 }
+    });
+    const page = await context.newPage();
 
     // 1. Ir a la página
     await page.goto("https://www.bleepingcomputer.com/news/security/", { waitUntil: "domcontentloaded" });
 
     // Quitar las cookies
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1 segundos
+    const botonCookies = page.locator('//*[@id="qc-cmp2-ui"]/div[2]/div/button[2]');
+    await botonCookies.waitFor({ timeout: 5000 }); // espera hasta 5 segundos a que aparezca
+    await botonCookies.click();
+
+    /*
+    await new Promise(resolve => setTimeout(resolve, 2000)); // Esperar 1 segundos
     const botonCookies = await page.locator('//*[@id="qc-cmp2-ui"]/div[2]/div/button[2]');
     const botonCookiesExiste = await botonCookies.count();
 
     if (botonCookiesExiste !== 0) {
         await botonCookies.click();
     }
+    */
 
     const noticias = [];
     for (let i = 1; i <= MAX_PAGINAS; i++) {
-        for (let j = 1; j <= 50; j++) { // o el máximo que quieras
+        for (let j = 1; j <= 50; j++) {
             const xpath = `//*[@id="bc-home-news-main-wrap"]/li[${j}]/div[2]/h4/a`;
             const elementos = await page.locator(xpath).count();
 
@@ -46,21 +53,11 @@ async function scrapeBleepingComputer() {
 
         if(i != MAX_PAGINAS) {
             const botonSiguiente = page.locator('a[aria-label="Next Page"]');
+
             if (await botonSiguiente.count() > 0) {
                 await botonSiguiente.first().click();
             }
-            /*
-            const botonSiguiente = await page.locator('xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/ul/li[8]/a');
-            const botonExiste = await botonSiguiente.count();
-
-            console.log(botonExiste)
-            if (botonExiste === 0) {
-                // No hay más páginas, salir del bucle externo
-                break;
-            }
-
-            await botonSiguiente.click();
-            */
+            
             await page.waitForLoadState('domcontentloaded');
         }
     }

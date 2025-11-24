@@ -12,7 +12,7 @@ async function scrapeTheHackerNews() {
 
     const noticias = [];
     for (let i = 1; i <= MAX_PAGINAS; i++) {
-        for (let j = 1; j <= 50; j++) { // o el máximo que quieras
+        for (let j = 1; j <= 50; j++) {
             const xpath = `//*[@id="Blog1"]/div[1]/div[${j}]/a`;
             const elementos = await page.locator(xpath).count();
 
@@ -21,7 +21,7 @@ async function scrapeTheHackerNews() {
                 break;
             }
 
-            console.log("Noticia " + i + " " + j);
+            //console.log("Noticia " + i + " " + j);
             const noticia = await scrapeNew(page, xpath);
             noticias.push(noticia);
         }
