@@ -5,6 +5,7 @@ const scrapeCSO = require("./scrapers/cso-online");
 const app = express();
 
 const PORT = 3000;
+const DEFAULT_NUM_NOTICIAS = 10;
 
 // Ruta simple para comprobar que funciona la API
 app.get("/health", (req, res) => {
@@ -14,13 +15,18 @@ app.get("/health", (req, res) => {
 // Endpoint para scrapear The Hacker News
 app.get("/scrape/hn", async (req, res) => {
     try {
-        // Llamamos a la función que scrapea la noticia
-        const noticia = await scrapeTheHackerNews();
+        let numNoticias = parseInt(req.query.n, 10);
 
-        // Devolver un objeto combinado: source + campos de la noticia
+        // Si max es NaN o null → usar valor por defecto
+        if (isNaN(numNoticias) || numNoticias === null) {
+            numNoticias = DEFAULT_NUM_NOTICIAS;
+        }
+
+        const noticia = await scrapeTheHackerNews(numNoticias);
+
         res.json({
             source: "The Hacker News",
-            ...noticia // esto agrega titulo, autor, fecha directamente
+            ...noticia
         });
     } catch (error) {
         console.error(error);
@@ -31,13 +37,18 @@ app.get("/scrape/hn", async (req, res) => {
 // Endpoint para scrapear Bleeping Computer
 app.get("/scrape/bc", async (req, res) => {
     try {
-        // Llamamos a la función que scrapea la noticia
-        const noticia = await scrapeBleepingComputer();
+        let numNoticias = parseInt(req.query.n, 10);
 
-        // Devolver un objeto combinado: source + campos de la noticia
+        // Si max es NaN o null → usar valor por defecto
+        if (isNaN(numNoticias) || numNoticias === null) {
+            numNoticias = DEFAULT_NUM_NOTICIAS;
+        }
+
+        const noticia = await scrapeBleepingComputer(numNoticias);
+
         res.json({
             source: "Bleeping Computer",
-            ...noticia // esto agrega titulo, autor, fecha directamente
+            ...noticia
         });
     } catch (error) {
         console.error(error);
@@ -48,17 +59,22 @@ app.get("/scrape/bc", async (req, res) => {
 // Endpoint para scrapear CSO Online
 app.get("/scrape/cso", async (req, res) => {
     try {
-        // Llamamos a la función que scrapea la noticia
-        const noticia = await scrapeCSO();
+        let numNoticias = parseInt(req.query.n, 10);
 
-        // Devolver un objeto combinado: source + campos de la noticia
+        // Si max es NaN o null → usar valor por defecto
+        if (isNaN(numNoticias) || numNoticias === null) {
+            numNoticias = DEFAULT_NUM_NOTICIAS;
+        }
+
+        const noticia = await scrapeCSO(numNoticias);
+
         res.json({
-            source: "CSO",
-            ...noticia // esto agrega titulo, autor, fecha directamente
+            source: "CSO Online",
+            ...noticia
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Error al scrapear CSO" });
+        res.status(500).json({ error: "Error al scrapear CSO Online" });
     }
 });
 

@@ -1,7 +1,7 @@
 const { chromium } = require("playwright");
 const { parse, format } = require('date-fns');
 
-async function scrapeTheHackerNews(maxNoticias = 10) {    
+async function scrapeTheHackerNews(maxNoticias) {    
     const browser = await chromium.launch();
     const page = await browser.newPage();
 

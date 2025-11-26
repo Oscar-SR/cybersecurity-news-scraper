@@ -1,7 +1,7 @@
 const { chromium } = require("playwright");
 const { parse, format } = require('date-fns');
 
-async function scrapeCSO(maxNoticias = 10) {
+async function scrapeCSO(maxNoticias) {
     const browser = await chromium.launch({ headless: true }); // headless seguro
     const context = await browser.newContext({ storageState: 'cookies/CSO.json' });
     const page = await context.newPage();
