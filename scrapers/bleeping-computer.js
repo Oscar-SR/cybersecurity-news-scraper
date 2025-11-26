@@ -1,12 +1,9 @@
 const { chromium } = require("playwright");
 
-async function scrapeBleepingComputer() {
-    const MAX_PAGINAS = 2;
-    
+async function scrapeBleepingComputer(maxNoticias = 10) {
     const browser = await chromium.launch();
     const context = await browser.newContext({
-        userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",
-        viewport: { width: 1920, height: 1080 }
+        userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
     });
     const page = await context.newPage();
 
@@ -18,19 +15,10 @@ async function scrapeBleepingComputer() {
     await botonCookies.waitFor({ timeout: 5000 }); // espera hasta 5 segundos a que aparezca
     await botonCookies.click();
 
-    /*
-    await new Promise(resolve => setTimeout(resolve, 2000)); // Esperar 1 segundos
-    const botonCookies = await page.locator('//*[@id="qc-cmp2-ui"]/div[2]/div/button[2]');
-    const botonCookiesExiste = await botonCookies.count();
-
-    if (botonCookiesExiste !== 0) {
-        await botonCookies.click();
-    }
-    */
-
     const noticias = [];
-    for (let i = 1; i <= MAX_PAGINAS; i++) {
-        for (let j = 1; j <= 50; j++) {
+    let cont = 0;
+    while(cont < maxNoticias) {
+        for (let j = 1; cont < maxNoticias; j++, cont++) {
             const xpath = `//*[@id="bc-home-news-main-wrap"]/li[${j}]/div[2]/h4/a`;
             const elementos = await page.locator(xpath).count();
 
@@ -42,6 +30,7 @@ async function scrapeBleepingComputer() {
             // Saber si el elemento es un anuncio o no
             const href = await page.locator(xpath).getAttribute('href');
             if (!href?.startsWith('https://www.bleepingcomputer.com/')) {
+                maxNoticias++; // Puesto que va a contar el anuncio como notica scrapeada
                 continue;
             }
 
@@ -51,7 +40,7 @@ async function scrapeBleepingComputer() {
             await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1 segundos
         }
 
-        if(i != MAX_PAGINAS) {
+        if(cont < maxNoticias) {
             const botonSiguiente = page.locator('a[aria-label="Next Page"]');
 
             if (await botonSiguiente.count() > 0) {
@@ -167,12 +156,15 @@ async function scrapeNew(page, xpath) {
         }
     }
 
+    // URL
+    const url = page.url();
+
     //await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1 segundos
 
     // volver a la página anterior
     await page.goBack({ waitUntil: 'domcontentloaded' });
 
-    return { titulo, autor, fecha, palabrasClave };
+    return { titulo, autor, fecha, palabrasClave, url };
 }
 
 module.exports = scrapeBleepingComputer;

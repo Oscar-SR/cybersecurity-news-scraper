@@ -1,39 +1,85 @@
 const { chromium } = require("playwright");
 const { parse, format } = require('date-fns');
 
-async function scrapeCSO() {
-    const MAX_PAGINAS = 1;
-    
-    const browser = await chromium.launch({headless: false});
-    const page = await browser.newPage();
+async function scrapeCSO(maxNoticias = 10) {
+    const browser = await chromium.launch({ headless: true }); // headless seguro
+    const context = await browser.newContext({ storageState: 'cookies/CSO.json' });
+    const page = await context.newPage();
 
     // 1. Ir a la página
     await page.goto("https://www.csoonline.com/news/", { waitUntil: "domcontentloaded" });
 
     const noticias = [];
+    let cont = 0;
     
     // Noticias destacadas
-    await resolverCookies(page);
+    //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[1]/div[1]'));
-    await resolverCookies(page);
+    if(++cont >= maxNoticias)
+    {
+        await browser.close();
+        return noticias;
+    }
+    //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[1]/div[2]/div[1]'));
-    await resolverCookies(page);
+    if(++cont >= maxNoticias)
+    {
+        await browser.close();
+        return noticias;
+    }
+    //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[1]/div[2]/div[2]'));
-    await resolverCookies(page);
+    if(++cont >= maxNoticias)
+    {
+        await browser.close();
+        return noticias;
+    }
+    //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[2]/div[1]'));
-    await resolverCookies(page);
+    if(++cont >= maxNoticias)
+    {
+        await browser.close();
+        return noticias;
+    }
+    //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[2]/div[2]'));
-    await resolverCookies(page);
+    if(++cont >= maxNoticias)
+    {
+        await browser.close();
+        return noticias;
+    }
+    //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[2]/div[3]'));
-    await resolverCookies(page);
+    if(++cont >= maxNoticias)
+    {
+        await browser.close();
+        return noticias;
+    }
+    //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[2]/div[4]'));
-    await resolverCookies(page);
+    if(++cont >= maxNoticias)
+    {
+        await browser.close();
+        return noticias;
+    }
+    //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[2]/div[5]'));
-    await resolverCookies(page);
+    if(++cont >= maxNoticias)
+    {
+        await browser.close();
+        return noticias;
+    }
+    //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[2]/div[6]'));
+    if(++cont >= maxNoticias)
+    {
+        await browser.close();
+        return noticias;
+    }
 
-    for (let i = 1; i <= MAX_PAGINAS; i++) {
-        for (let j = 1; j <= 50; j++) {
+    while(cont < maxNoticias) {
+        for (let j = 1; cont < maxNoticias; j++, cont++) {
+            //console.log(cont);
             //await resolverCookies(page);
 
             // 1. Seleccionar el DIV[j]
@@ -43,14 +89,17 @@ async function scrapeCSO() {
             // si el div no existe → fin de lista
             if (await divLocator.count() === 0) break;
 
+            /*
             // 2. comprobar si es publicidad (advert__container)
             const clase = await divLocator.getAttribute("class");
             if (clase && clase.includes("advert__container")) {
                 // Cada vez que hay un div de publicidad, el siguiente div de noticia incrementa en 2 su contador
                 // De esta forma, saltamos los divs que no sean de noticias
-                j += 2;
+                j++;
+                cont--;
                 continue;
             }
+            */
 
             // 3. comprobar si dentro del div hay un <a>
             const xpathA = `${xpathDiv}/a`;
@@ -58,6 +107,7 @@ async function scrapeCSO() {
 
             if (aCount === 0) {
                 // No hay <a> ⇒ no es noticia, puede ser un banner, un contenedor vacío, etc.
+                cont--;
                 continue;
             }
 
@@ -66,8 +116,8 @@ async function scrapeCSO() {
             noticias.push(noticia);
         }
 
-        if(i != MAX_PAGINAS) {
-            const botonSiguiente = await page.locator('//*[@id="Blog1_blog-pager-older-link"]');
+        if(cont < maxNoticias) {
+            const botonSiguiente = await page.locator('a.next.pagination__link');
             const botonExiste = await botonSiguiente.count();
 
             if (botonExiste === 0) {
@@ -166,10 +216,13 @@ async function scrapeNew(page, xpath) {
         palabrasClave = palabrasClaveString.split('\n');
     }
 
+    // URL
+    const url = page.url();
+
     // volver a la página anterior
     await page.goBack({ waitUntil: 'domcontentloaded' });
 
-    return { titulo, autor, fecha, palabrasClave };
+    return { titulo, autor, fecha, palabrasClave, url };
 }
 
 module.exports = scrapeCSO;

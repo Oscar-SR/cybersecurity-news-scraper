@@ -1,9 +1,7 @@
 const { chromium } = require("playwright");
 const { parse, format } = require('date-fns');
 
-async function scrapeTheHackerNews() {
-    const MAX_PAGINAS = 2;
-    
+async function scrapeTheHackerNews(maxNoticias = 10) {    
     const browser = await chromium.launch();
     const page = await browser.newPage();
 
@@ -11,8 +9,9 @@ async function scrapeTheHackerNews() {
     await page.goto("https://thehackernews.com/", { waitUntil: "domcontentloaded" });
 
     const noticias = [];
-    for (let i = 1; i <= MAX_PAGINAS; i++) {
-        for (let j = 1; j <= 50; j++) {
+    let cont = 0;
+    while(cont < maxNoticias) {
+        for (let j = 1; cont < maxNoticias; j++, cont++) {
             const xpath = `//*[@id="Blog1"]/div[1]/div[${j}]/a`;
             const elementos = await page.locator(xpath).count();
 
@@ -26,7 +25,7 @@ async function scrapeTheHackerNews() {
             noticias.push(noticia);
         }
 
-        if(i != MAX_PAGINAS) {
+        if(cont < maxNoticias) {
             const botonSiguiente = await page.locator('//*[@id="Blog1_blog-pager-older-link"]');
             const botonExiste = await botonSiguiente.count();
 
@@ -100,10 +99,13 @@ async function scrapeNew(page, xpath) {
         palabrasClave = palabrasClaveString.split(' / ')
     }
 
+    // URL
+    const url = page.url();
+
     // volver a la página anterior
     await page.goBack({ waitUntil: 'domcontentloaded' });
 
-    return { titulo, autor, fecha, palabrasClave };
+    return { titulo, autor, fecha, palabrasClave, url };
 }
 
 module.exports = scrapeTheHackerNews;
