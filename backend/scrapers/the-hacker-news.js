@@ -102,10 +102,13 @@ async function scrapeNew(page, xpath) {
     // URL
     const url = page.url();
 
+    // Fuente
+    const source = "The Hacker News";
+
     // volver a la página anterior
     await page.goBack({ waitUntil: 'domcontentloaded' });
 
-    return { titulo, autor, fecha, palabrasClave, url };
+    return { titulo, autor, fecha, palabrasClave, url, source };
 }
 
 module.exports = scrapeTheHackerNews;
