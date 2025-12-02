@@ -3,7 +3,7 @@ const { parse, format } = require('date-fns');
 
 async function scrapeCSO(maxNoticias) {
     const browser = await chromium.launch({ headless: true }); // headless seguro
-    const context = await browser.newContext({ storageState: 'cookies/CSO.json' });
+    const context = await browser.newContext({ storageState: 'src/cookies/CSO.cookies.json' });
     const page = await context.newPage();
 
     // 1. Ir a la página

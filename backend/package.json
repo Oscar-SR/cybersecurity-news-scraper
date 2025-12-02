@@ -2,9 +2,11 @@
   "name": "cybersecurity-news-scraper",
   "version": "1.0.0",
   "description": "A Node.js scraper that automatically collects and aggregates the latest cybersecurity news from multiple open sources",
-  "main": "index.js",
+  "main": "scr/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js",
+    "test": "vitest --run",
+    "test:watch": "vitest --watch"
   },
   "repository": {
     "type": "git",
@@ -17,7 +19,7 @@
     "node.js"
   ],
   "author": "Óscar Sánchez Rubio",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Oscar-SR/cybersecurity-news-scraper/issues"
   },
@@ -26,5 +28,9 @@
     "date-fns": "^4.1.0",
     "express": "^5.1.0",
     "playwright": "^1.56.1"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.4",
+    "vitest": "^4.0.14"
   }
 }
