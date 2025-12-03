@@ -1,7 +1,7 @@
-const express = require("express");
-const scrapeTheHackerNews = require("./scrapers/the-hacker-news");
-const scrapeBleepingComputer = require("./scrapers/bleeping-computer");
-const scrapeCSO = require("./scrapers/cso-online");
+import express from "express";
+import scrapeTheHackerNews from "./scrapers/the-hacker-news.js";
+import scrapeBleepingComputer from "./scrapers/bleeping-computer.js";
+import scrapeCSO from "./scrapers/cso-online.js";
 
 const app = express();
 

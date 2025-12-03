@@ -1,6 +1,7 @@
 {
   "name": "cybersecurity-news-scraper",
   "version": "1.0.0",
+  "type": "module",
   "description": "A Node.js scraper that automatically collects and aggregates the latest cybersecurity news from multiple open sources",
   "main": "scr/index.js",
   "scripts": {

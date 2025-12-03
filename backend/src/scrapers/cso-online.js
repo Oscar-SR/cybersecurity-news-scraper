@@ -1,5 +1,5 @@
-const { chromium } = require("playwright");
-const { parse, format } = require('date-fns');
+import { chromium } from "playwright";
+import { parse, format } from "date-fns";
 
 async function scrapeCSO(maxNoticias) {
     const browser = await chromium.launch({ headless: true }); // headless seguro

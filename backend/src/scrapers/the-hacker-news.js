@@ -1,5 +1,5 @@
-const { chromium } = require("playwright");
-const { parse, format } = require('date-fns');
+import { chromium } from "playwright";
+import { parse, format } from "date-fns";
 
 async function scrapeTheHackerNews(maxNoticias) {    
     const browser = await chromium.launch();

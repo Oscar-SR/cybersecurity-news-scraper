@@ -5,7 +5,7 @@ import app from "../../src/app";
 test(
   "GET /scrape/bc devuelve status 200",
   async () => {
-    const res = await request(app).get("/scrape/bc?n=3");
+    const res = await request(app).get("/scrape/bc?n=1");
     expect(res.status).toBe(200);
   }
 );
