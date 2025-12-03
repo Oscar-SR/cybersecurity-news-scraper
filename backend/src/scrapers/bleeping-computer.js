@@ -142,7 +142,7 @@ async function scrapeNew(page, xpath) {
     {
         for (let i = 0; i < countLinks; i++) {
             const palabraClave = await links.nth(i).innerText();
-            keywords.push(palabraClave);
+            keywords.push(capitalizeWords(palabraClave));
         }
     }
     else
@@ -152,7 +152,7 @@ async function scrapeNew(page, xpath) {
 
         for (let i = 0; i < countLinks; i++) {
             const palabraClave = await links.nth(i).innerText();
-            keywords.push(palabraClave);
+            keywords.push(capitalizeWords(palabraClave));
         }
     }
 
@@ -168,6 +168,15 @@ async function scrapeNew(page, xpath) {
     await page.goBack({ waitUntil: 'domcontentloaded' });
 
     return { title, author, date, keywords, url, source };
+}
+
+// Función para estandarizar la nomenclatura de las palabras clave
+function capitalizeWords(text) {
+    return text
+        .toLowerCase()
+        .split(" ")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
 }
 
 export default scrapeBleepingComputer;

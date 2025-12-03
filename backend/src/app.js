@@ -55,16 +55,20 @@ app.get("/scrape/cso", async (req, res) => {
     }
 });
 
-/*
 app.get("/scrape/all", async (req, res) => {
-    try {
-        const data = await scrapeNYT();
-        res.json({ source: "New York Times", results: data });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al scrapear NYT" });
-    }
+  try {
+    const [hn, bc, cso] = await Promise.all([
+      scrapeTheHackerNews(10),
+      scrapeBleepingComputer(10),
+      scrapeCSO(10)
+    ]);
+
+    res.json([...hn, ...bc, ...cso]);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error scraping sources" });
+  }
 });
-*/
 
 export default app;
