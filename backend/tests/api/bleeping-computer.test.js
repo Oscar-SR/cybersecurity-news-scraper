@@ -1,47 +1,30 @@
+// tests/api/bleeping-computer.test.js
+import { vi, test, expect } from "vitest";
 import request from "supertest";
-import { test, expect } from "vitest";
+
+// Definimos la respuesta mock como constante
+const mockBleepingComputerResponse = [
+  {
+    titulo: "Noticia de ejemplo",
+    autor: "Autor Ejemplo",
+    fecha: "2025-12-03",
+    palabrasClave: ["seguridad", "ciber", "noticia"],
+    url: "https://example.com/bleeping-computer",
+    source: "Bleeping Computer",
+  },
+];
+
+// MOCK antes de importar app
+vi.mock("../../src/scrapers/bleeping-computer.js", () => ({
+  scrapeBleepingComputer: async (n) => mockBleepingComputerResponse,
+  default: async (n) => mockBleepingComputerResponse,
+}));
+
+// Ahora sí importamos app
 import app from "../../src/app";
 
-test(
-  "GET /scrape/bc devuelve status 200",
-  async () => {
-    const res = await request(app).get("/scrape/bc?n=1");
-    expect(res.status).toBe(200);
-  }
-);
-
-/*
-import scrapeBC from "../../src/scrapers/bleeping-computer";
-
-beforeEach(() => {
-  vi.clearAllMocks();
-});
-
-test("GET /scrape/bc returns mocked BC news", async () => {
-  const res = await request(app).get("/scrape/bc?n=3");
+test("GET /scrape/bc devuelve status 200", async () => {
+  const res = await request(app).get("/scrape/bc?n=1");
   expect(res.status).toBe(200);
-  expect(res.body).toEqual([
-    {
-      titulo: "Nuevo malware detectado",
-      autor: "Ana López",
-      fecha: "2025-12-02",
-      palabrasClave: ["malware", "seguridad"],
-      url: "https://bleepingcomputer.com/noticia1",
-      source: "Bleeping Computer"
-    }
-  ]);
-  expect(scrapeBC).toHaveBeenCalledWith(3);
+  expect(res.body).toEqual(mockBleepingComputerResponse);
 });
-
-test("GET /scrape/bc uses default number when n is invalid", async () => {
-  await request(app).get("/scrape/bc?n=abc");
-  expect(scrapeBC).toHaveBeenCalledWith(10);
-});
-
-test("GET /scrape/bc handles scraper error", async () => {
-  scrapeBC.mockRejectedValueOnce(new Error("Scraper error"));
-  const res = await request(app).get("/scrape/bc");
-  expect(res.status).toBe(500);
-  expect(res.body).toEqual({ error: "Error al scrapear Bleeping Computer" });
-});
-*/

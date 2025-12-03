@@ -4,8 +4,6 @@ export default defineConfig({
   test: {
     globals: true,               // Permite usar test(), expect() sin importarlos
     environment: "node",         // Usa Node.js como entorno (no navegador)
-    include: ["tests/**/*.test.js"], // Busca los tests en la carpeta tests/
-    testTimeout: 15000,   // 15 segundos
-    hookTimeout: 15000    // por si usas beforeAll/afterAll
+    include: ["tests/**/*.test.js"] // Busca los tests en la carpeta tests/
   }
 });
