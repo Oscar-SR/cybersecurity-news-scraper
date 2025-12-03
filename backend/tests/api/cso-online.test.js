@@ -7,6 +7,5 @@ test(
   async () => {
     const res = await request(app).get("/scrape/cso?n=3");
     expect(res.status).toBe(200);
-  },
-  15000
+  }
 );
