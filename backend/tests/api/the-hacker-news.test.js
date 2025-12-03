@@ -5,10 +5,10 @@ import request from "supertest";
 // Definimos la respuesta mock como constante
 const mockHNResponse = [
   {
-    titulo: "Noticia HN de ejemplo",
-    autor: "Autor HN",
-    fecha: "2025-12-03",
-    palabrasClave: ["seguridad", "ciber", "HN"],
+    title: "Noticia HN de ejemplo",
+    author: "Autor HN",
+    date: "2025-12-03",
+    keywords: ["seguridad", "ciber", "HN"],
     url: "https://example.com/the-hacker-news",
     source: "The Hacker News",
   },

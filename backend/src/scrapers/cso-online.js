@@ -177,43 +177,43 @@ async function scrapeNew(page, xpath) {
     const tituloLocator = page.locator('xpath=//*[@id="primary"]/div[1]/div/div[2]/div/h1');
     const countTitulo = await tituloLocator.count();
 
-    let titulo = "N/A";
+    let title = "N/A";
     if(countTitulo > 0)
     {
-        titulo = await tituloLocator.innerText();
+        title = await tituloLocator.innerText();
     }
 
     // Autor
     const autorLocator = page.locator('//*[@id="primary"]/div[1]/div/div[1]/div[1]/div/div/div/a');
     const countAutor = await autorLocator.count();
 
-    let autor = "N/A";
+    let author = "N/A";
     if(countAutor > 0)
     {
-        autor = await autorLocator.innerText();
+        author = await autorLocator.innerText();
     }
 
     // Fecha
     const fechaLocator = page.locator('//*[@id="primary"]/div[1]/div/div[2]/div/div[1]/div[2]/span[1]');
     const countFecha = await fechaLocator.count();
 
-    let fecha = "N/A";
+    let date = "N/A";
     if(countFecha > 0)
     {
         const fechaString = await fechaLocator.innerText();
         const fechaParseada = parse(fechaString, 'MMM dd, yyyy', new Date());
-        fecha = format(fechaParseada, 'MMMM dd, yyyy');
+        date = format(fechaParseada, 'MMMM dd, yyyy');
     }
 
     // Palabras clave
-    let palabrasClave = [];
+    let keywords = [];
     const palabraClaveLocator = page.locator('xpath=/html/body/div[2]/main/article/section/div/div[1]/div/div/div[3]/div/div');
     const countPalabrasClave = await palabraClaveLocator.count();
 
     if(countPalabrasClave > 0)
     {
         const palabrasClaveString = await palabraClaveLocator.innerText();
-        palabrasClave = palabrasClaveString.split('\n');
+        keywords = palabrasClaveString.split('\n');
     }
 
     // URL
@@ -225,7 +225,7 @@ async function scrapeNew(page, xpath) {
     // volver a la página anterior
     await page.goBack({ waitUntil: 'domcontentloaded' });
 
-    return { titulo, autor, fecha, palabrasClave, url, source };
+    return { title, author, date, keywords, url, source };
 }
 
-module.exports = scrapeCSO;
+export default scrapeCSO;

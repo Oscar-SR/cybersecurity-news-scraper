@@ -5,10 +5,10 @@ import request from "supertest";
 // Definimos la respuesta mock como constante
 const mockBleepingComputerResponse = [
   {
-    titulo: "Noticia de ejemplo",
-    autor: "Autor Ejemplo",
-    fecha: "2025-12-03",
-    palabrasClave: ["seguridad", "ciber", "noticia"],
+    title: "Noticia de ejemplo",
+    author: "Autor Ejemplo",
+    date: "2025-12-03",
+    keywords: ["seguridad", "ciber", "noticia"],
     url: "https://example.com/bleeping-computer",
     source: "Bleeping Computer",
   },

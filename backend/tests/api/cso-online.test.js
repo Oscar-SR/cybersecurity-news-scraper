@@ -5,10 +5,10 @@ import request from "supertest";
 // Definimos la respuesta mock como constante
 const mockCSOResponse = [
   {
-    titulo: "Noticia CSO de ejemplo",
-    autor: "Autor CSO",
-    fecha: "2025-12-03",
-    palabrasClave: ["seguridad", "ciber", "CSO"],
+    title: "Noticia CSO de ejemplo",
+    author: "Autor CSO",
+    date: "2025-12-03",
+    keywords: ["seguridad", "ciber", "CSO"],
     url: "https://example.com/cso-online",
     source: "CSO Online",
   },

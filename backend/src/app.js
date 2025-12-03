@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import scrapeTheHackerNews from "./scrapers/the-hacker-news.js";
 import scrapeBleepingComputer from "./scrapers/bleeping-computer.js";
 import scrapeCSO from "./scrapers/cso-online.js";
@@ -6,6 +7,10 @@ import scrapeCSO from "./scrapers/cso-online.js";
 const app = express();
 
 const DEFAULT_NUM_NOTICIAS = 10;
+
+app.use(cors({
+    origin: "http://localhost:5173" // Dirección del frontend
+}));
 
 app.get("/health", (req, res) => {
     res.json({ message: "Cybersecurity News Scraper API working" });
@@ -62,4 +67,4 @@ app.get("/scrape/all", async (req, res) => {
 });
 */
 
-module.exports = app;
+export default app;

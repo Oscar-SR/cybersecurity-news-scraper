@@ -71,13 +71,13 @@ async function scrapeNew(page, xpath) {
     //await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1 segundos
 
     // Título
-    let titulo = "N/A";
+    let title = "N/A";
     let tituloLocator = page.locator('xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/article/div/h1');
     let countTitulo = await tituloLocator.count();
 
     if(countTitulo > 0)
     {
-        titulo = await tituloLocator.innerText();
+        title = await tituloLocator.innerText();
     }
     else
     {
@@ -87,18 +87,18 @@ async function scrapeNew(page, xpath) {
         // Comprobar si es noticia sponsor
         if(countTitulo > 0)
         {
-            titulo = await tituloLocator.innerText();
+            title = await tituloLocator.innerText();
         }
     }
 
     // Autor
-    let autor = "N/A";
+    let author = "N/A";
     let autorLocator = page.locator('xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/article/div/div[1]/div[1]/h6/a/span/span');
     let countAutor = await autorLocator.count();
 
     if(countAutor > 0)
     {
-        autor = await autorLocator.innerText();
+        author = await autorLocator.innerText();
     }
     else
     {
@@ -108,18 +108,18 @@ async function scrapeNew(page, xpath) {
         // Comprobar si es noticia sponsor
         if(countAutor > 0)
         {
-            autor = await autorLocator.innerText();
+            author = await autorLocator.innerText();
         }
     }
 
     // Fecha
-    let fecha = "N/A";
+    let date = "N/A";
     let fechaLocator = page.locator('xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/article/div/div[1]/div[2]/ul/li[1]');
     let countFecha = await fechaLocator.count();
 
     if(countFecha > 0)
     {
-        fecha = await fechaLocator.innerText();
+        date = await fechaLocator.innerText();
     }
     else
     {
@@ -129,12 +129,12 @@ async function scrapeNew(page, xpath) {
         // Comprobar si es noticia sponsor
         if(countFecha > 0)
         {
-            fecha = await fechaLocator.innerText();
+            date = await fechaLocator.innerText();
         }
     }
 
     // Palabras clave
-    let palabrasClave = [];
+    let keywords = [];
     let links = page.locator('xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/div[1]/ul/li/a');
     let countLinks = await links.count();
 
@@ -142,7 +142,7 @@ async function scrapeNew(page, xpath) {
     {
         for (let i = 0; i < countLinks; i++) {
             const palabraClave = await links.nth(i).innerText();
-            palabrasClave.push(palabraClave);
+            keywords.push(palabraClave);
         }
     }
     else
@@ -152,7 +152,7 @@ async function scrapeNew(page, xpath) {
 
         for (let i = 0; i < countLinks; i++) {
             const palabraClave = await links.nth(i).innerText();
-            palabrasClave.push(palabraClave);
+            keywords.push(palabraClave);
         }
     }
 
@@ -167,7 +167,7 @@ async function scrapeNew(page, xpath) {
     // volver a la página anterior
     await page.goBack({ waitUntil: 'domcontentloaded' });
 
-    return { titulo, autor, fecha, palabrasClave, url, source };
+    return { title, author, date, keywords, url, source };
 }
 
-module.exports = scrapeBleepingComputer;
+export default scrapeBleepingComputer;

@@ -60,43 +60,43 @@ async function scrapeNew(page, xpath) {
     const tituloLocator = page.locator('xpath=//*[@id="app"]/div/h1/a');
     const countTitulo = await tituloLocator.count();
 
-    let titulo = "N/A";
+    let title = "N/A";
     if(countTitulo > 0)
     {
-        titulo = await tituloLocator.innerText();
+        title = await tituloLocator.innerText();
     }
 
     // Autor
     const autorLocator = page.locator('//*[@id="Blog1"]/div/div/div/div[4]/div/span[1]/span[2]');
     const countAutor = await autorLocator.count();
 
-    let autor = "N/A";
+    let author = "N/A";
     if(countAutor > 0)
     {
-        autor = await autorLocator.innerText();
+        author = await autorLocator.innerText();
     }
 
     // Fecha
     const fechaLocator = page.locator('//*[@id="Blog1"]/div/div/div/div[4]/div/span[1]/span[1]');
     const countFecha = await fechaLocator.count();
 
-    let fecha = "N/A";
+    let date = "N/A";
     if(countFecha > 0)
     {
         const fechaString = await fechaLocator.innerText();
         const fechaParseada = parse(fechaString, 'MMM dd, yyyy', new Date());
-        fecha = format(fechaParseada, 'MMMM dd, yyyy');
+        date = format(fechaParseada, 'MMMM dd, yyyy');
     }
 
     // Palabras clave
     const palabrasClaveLocator = page.locator('//*[@id="Blog1"]/div/div/div/div[4]/div/span[2]');
     const countPalabrasClave = await palabrasClaveLocator.count();
 
-    let palabrasClave = [];
+    let keywords = [];
     if(countPalabrasClave > 0)
     {
         const palabrasClaveString = await palabrasClaveLocator.innerText();
-        palabrasClave = palabrasClaveString.split(' / ')
+        keywords = palabrasClaveString.split(' / ')
     }
 
     // URL
@@ -108,7 +108,7 @@ async function scrapeNew(page, xpath) {
     // volver a la página anterior
     await page.goBack({ waitUntil: 'domcontentloaded' });
 
-    return { titulo, autor, fecha, palabrasClave, url, source };
+    return { title, author, date, keywords, url, source };
 }
 
-module.exports = scrapeTheHackerNews;
+export default scrapeTheHackerNews;
