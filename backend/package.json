@@ -11,7 +11,8 @@
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
     "prettier": "prettier --write .",
-    "prettier:check": "prettier --check ."
+    "prettier:check": "prettier --check .",
+    "i18n:scan": "i18next-scanner --config i18next-scanner.config.cjs"
   },
   "repository": {
     "type": "git",
@@ -33,12 +34,15 @@
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
     "express": "^5.1.0",
+    "i18next": "^25.7.1",
+    "i18next-fs-backend": "^2.6.1",
     "playwright": "^1.56.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
+    "i18next-scanner": "^4.6.0",
     "prettier": "^3.7.4",
     "supertest": "^7.1.4",
     "vitest": "^4.0.14"
