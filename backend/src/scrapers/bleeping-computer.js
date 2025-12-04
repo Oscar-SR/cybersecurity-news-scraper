@@ -3,7 +3,7 @@ import { chromium } from "playwright";
 async function scrapeBleepingComputer(maxNoticias) {
     const browser = await chromium.launch();
     const context = await browser.newContext({
-        userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
+        userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",
     });
     const page = await context.newPage();
 
@@ -17,7 +17,7 @@ async function scrapeBleepingComputer(maxNoticias) {
 
     const noticias = [];
     let cont = 0;
-    while(cont < maxNoticias) {
+    while (cont < maxNoticias) {
         for (let j = 1; cont < maxNoticias; j++, cont++) {
             const xpath = `//*[@id="bc-home-news-main-wrap"]/li[${j}]/div[2]/h4/a`;
             const elementos = await page.locator(xpath).count();
@@ -28,8 +28,8 @@ async function scrapeBleepingComputer(maxNoticias) {
             }
 
             // Saber si el elemento es un anuncio o no
-            const href = await page.locator(xpath).getAttribute('href');
-            if (!href?.startsWith('https://www.bleepingcomputer.com/')) {
+            const href = await page.locator(xpath).getAttribute("href");
+            if (!href?.startsWith("https://www.bleepingcomputer.com/")) {
                 maxNoticias++; // Puesto que va a contar el anuncio como notica scrapeada
                 continue;
             }
@@ -37,17 +37,17 @@ async function scrapeBleepingComputer(maxNoticias) {
             const noticia = await scrapeNew(page, xpath);
             noticias.push(noticia);
 
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1 segundos
+            await new Promise((resolve) => setTimeout(resolve, 1000)); // Esperar 1 segundos
         }
 
-        if(cont < maxNoticias) {
+        if (cont < maxNoticias) {
             const botonSiguiente = page.locator('a[aria-label="Next Page"]');
 
-            if (await botonSiguiente.count() > 0) {
+            if ((await botonSiguiente.count()) > 0) {
                 await botonSiguiente.first().click();
             }
-            
-            await page.waitForLoadState('domcontentloaded');
+
+            await page.waitForLoadState("domcontentloaded");
         }
     }
 
@@ -66,88 +66,73 @@ async function scrapeNew(page, xpath) {
     await enlaceNoticia.click();
 
     // 5. Esperar a que cargue la noticia
-    await page.waitForLoadState('domcontentloaded');
+    await page.waitForLoadState("domcontentloaded");
 
     //await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1 segundos
 
     // Título
     let title = "N/A";
-    let tituloLocator = page.locator('xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/article/div/h1');
+    let tituloLocator = page.locator("xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/article/div/h1");
     let countTitulo = await tituloLocator.count();
 
-    if(countTitulo > 0)
-    {
+    if (countTitulo > 0) {
         title = await tituloLocator.innerText();
-    }
-    else
-    {
-        tituloLocator = page.locator('xpath=/html/body/div[1]/section[2]/div/div/div[1]/div/article/div/h1');
+    } else {
+        tituloLocator = page.locator("xpath=/html/body/div[1]/section[2]/div/div/div[1]/div/article/div/h1");
         countTitulo = await tituloLocator.count();
 
         // Comprobar si es noticia sponsor
-        if(countTitulo > 0)
-        {
+        if (countTitulo > 0) {
             title = await tituloLocator.innerText();
         }
     }
 
     // Autor
     let author = "N/A";
-    let autorLocator = page.locator('xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/article/div/div[1]/div[1]/h6/a/span/span');
+    let autorLocator = page.locator("xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/article/div/div[1]/div[1]/h6/a/span/span");
     let countAutor = await autorLocator.count();
 
-    if(countAutor > 0)
-    {
+    if (countAutor > 0) {
         author = await autorLocator.innerText();
-    }
-    else
-    {
-        autorLocator = page.locator('xpath=/html/body/div[1]/section[2]/div/div/div[1]/div/article/div/div[1]/div[1]/h6/a/span/span');
+    } else {
+        autorLocator = page.locator("xpath=/html/body/div[1]/section[2]/div/div/div[1]/div/article/div/div[1]/div[1]/h6/a/span/span");
         countAutor = await autorLocator.count();
 
         // Comprobar si es noticia sponsor
-        if(countAutor > 0)
-        {
+        if (countAutor > 0) {
             author = await autorLocator.innerText();
         }
     }
 
     // Fecha
     let date = "N/A";
-    let fechaLocator = page.locator('xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/article/div/div[1]/div[2]/ul/li[1]');
+    let fechaLocator = page.locator("xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/article/div/div[1]/div[2]/ul/li[1]");
     let countFecha = await fechaLocator.count();
 
-    if(countFecha > 0)
-    {
+    if (countFecha > 0) {
         date = await fechaLocator.innerText();
-    }
-    else
-    {
-        fechaLocator = page.locator('xpath=/html/body/div[1]/section[2]/div/div/div[1]/div/article/div/div[1]/div[2]/ul/li[1]');
+    } else {
+        fechaLocator = page.locator("xpath=/html/body/div[1]/section[2]/div/div/div[1]/div/article/div/div[1]/div[2]/ul/li[1]");
         countFecha = await fechaLocator.count();
 
         // Comprobar si es noticia sponsor
-        if(countFecha > 0)
-        {
+        if (countFecha > 0) {
             date = await fechaLocator.innerText();
         }
     }
 
     // Palabras clave
     let keywords = [];
-    let links = page.locator('xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/div[1]/ul/li/a');
+    let links = page.locator("xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/div[1]/ul/li/a");
     let countLinks = await links.count();
 
-    if(countLinks > 0)
-    {
+    if (countLinks > 0) {
         for (let i = 0; i < countLinks; i++) {
             const palabraClave = await links.nth(i).innerText();
             keywords.push(capitalizeWords(palabraClave));
         }
-    }
-    else
-    {
-        links = page.locator('xpath=/html/body/div[1]/section[2]/div/div/div[1]/div/div[1]/ul/li/a');
+    } else {
+        links = page.locator("xpath=/html/body/div[1]/section[2]/div/div/div[1]/div/div[1]/ul/li/a");
         countLinks = await links.count();
 
         for (let i = 0; i < countLinks; i++) {
@@ -165,7 +150,7 @@ async function scrapeNew(page, xpath) {
     //await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1 segundos
 
     // volver a la página anterior
-    await page.goBack({ waitUntil: 'domcontentloaded' });
+    await page.goBack({ waitUntil: "domcontentloaded" });
 
     return { title, author, date, keywords, url, source };
 }
@@ -175,7 +160,7 @@ function capitalizeWords(text) {
     return text
         .toLowerCase()
         .split(" ")
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
 }
 

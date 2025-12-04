@@ -1,7 +1,7 @@
 import { chromium } from "playwright";
 import { parse, format } from "date-fns";
 
-async function scrapeTheHackerNews(maxNoticias) {    
+async function scrapeTheHackerNews(maxNoticias) {
     const browser = await chromium.launch();
     const page = await browser.newPage();
 
@@ -10,7 +10,7 @@ async function scrapeTheHackerNews(maxNoticias) {
 
     const noticias = [];
     let cont = 0;
-    while(cont < maxNoticias) {
+    while (cont < maxNoticias) {
         for (let j = 1; cont < maxNoticias; j++, cont++) {
             const xpath = `//*[@id="Blog1"]/div[1]/div[${j}]/a`;
             const elementos = await page.locator(xpath).count();
@@ -25,7 +25,7 @@ async function scrapeTheHackerNews(maxNoticias) {
             noticias.push(noticia);
         }
 
-        if(cont < maxNoticias) {
+        if (cont < maxNoticias) {
             const botonSiguiente = await page.locator('//*[@id="Blog1_blog-pager-older-link"]');
             const botonExiste = await botonSiguiente.count();
 
@@ -35,7 +35,7 @@ async function scrapeTheHackerNews(maxNoticias) {
             }
 
             await botonSiguiente.click();
-            await page.waitForLoadState('domcontentloaded');
+            await page.waitForLoadState("domcontentloaded");
         }
     }
 
@@ -54,15 +54,14 @@ async function scrapeNew(page, xpath) {
     await enlaceNoticia.click();
 
     // 5. Esperar a que cargue la noticia
-    await page.waitForLoadState('domcontentloaded');
+    await page.waitForLoadState("domcontentloaded");
 
     // Título
     const tituloLocator = page.locator('xpath=//*[@id="app"]/div/h1/a');
     const countTitulo = await tituloLocator.count();
 
     let title = "N/A";
-    if(countTitulo > 0)
-    {
+    if (countTitulo > 0) {
         title = await tituloLocator.innerText();
     }
 
@@ -71,8 +70,7 @@ async function scrapeNew(page, xpath) {
     const countAutor = await autorLocator.count();
 
     let author = "N/A";
-    if(countAutor > 0)
-    {
+    if (countAutor > 0) {
         author = await autorLocator.innerText();
     }
 
@@ -81,11 +79,10 @@ async function scrapeNew(page, xpath) {
     const countFecha = await fechaLocator.count();
 
     let date = "N/A";
-    if(countFecha > 0)
-    {
+    if (countFecha > 0) {
         const fechaString = await fechaLocator.innerText();
-        const fechaParseada = parse(fechaString, 'MMM dd, yyyy', new Date());
-        date = format(fechaParseada, 'MMMM dd, yyyy');
+        const fechaParseada = parse(fechaString, "MMM dd, yyyy", new Date());
+        date = format(fechaParseada, "MMMM dd, yyyy");
     }
 
     // Palabras clave
@@ -93,10 +90,9 @@ async function scrapeNew(page, xpath) {
     const countPalabrasClave = await palabrasClaveLocator.count();
 
     let keywords = [];
-    if(countPalabrasClave > 0)
-    {
+    if (countPalabrasClave > 0) {
         const palabrasClaveString = await palabrasClaveLocator.innerText();
-        keywords = palabrasClaveString.split(' / ')
+        keywords = palabrasClaveString.split(" / ");
     }
 
     // URL
@@ -106,7 +102,7 @@ async function scrapeNew(page, xpath) {
     const source = "The Hacker News";
 
     // volver a la página anterior
-    await page.goBack({ waitUntil: 'domcontentloaded' });
+    await page.goBack({ waitUntil: "domcontentloaded" });
 
     return { title, author, date, keywords, url, source };
 }

@@ -4,27 +4,27 @@ import request from "supertest";
 
 // Definimos la respuesta mock como constante
 const mockHNResponse = [
-  {
-    title: "Noticia HN de ejemplo",
-    author: "Autor HN",
-    date: "2025-12-03",
-    keywords: ["seguridad", "ciber", "HN"],
-    url: "https://example.com/the-hacker-news",
-    source: "The Hacker News",
-  },
+    {
+        title: "Noticia HN de ejemplo",
+        author: "Autor HN",
+        date: "2025-12-03",
+        keywords: ["seguridad", "ciber", "HN"],
+        url: "https://example.com/the-hacker-news",
+        source: "The Hacker News",
+    },
 ];
 
 // MOCK antes de importar app
 vi.mock("../../src/scrapers/the-hacker-news.js", () => ({
-  scrapeTheHackerNews: async (n) => mockHNResponse,
-  default: async (n) => mockHNResponse,
+    scrapeTheHackerNews: async () => mockHNResponse,
+    default: async () => mockHNResponse,
 }));
 
 // Ahora sí importamos app
 import app from "../../src/app";
 
 test("GET /scrape/hn devuelve status 200", async () => {
-  const res = await request(app).get("/scrape/hn?n=1");
-  expect(res.status).toBe(200);
-  expect(res.body).toEqual(mockHNResponse);
+    const res = await request(app).get("/scrape/hn?n=1");
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(mockHNResponse);
 });

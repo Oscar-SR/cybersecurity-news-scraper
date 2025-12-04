@@ -7,7 +7,11 @@
   "scripts": {
     "start": "node src/index.js",
     "test": "vitest --run",
-    "test:watch": "vitest --watch"
+    "test:watch": "vitest --watch",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
+    "prettier": "prettier --write .",
+    "prettier:check": "prettier --check ."
   },
   "repository": {
     "type": "git",
@@ -32,6 +36,10 @@
     "playwright": "^1.56.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "prettier": "^3.7.4",
     "supertest": "^7.1.4",
     "vitest": "^4.0.14"
   }

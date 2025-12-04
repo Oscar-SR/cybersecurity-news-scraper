@@ -8,9 +8,11 @@ const app = express();
 
 const DEFAULT_NUM_NOTICIAS = 10;
 
-app.use(cors({
-    origin: "http://localhost:5173" // Dirección del frontend
-}));
+app.use(
+    cors({
+        origin: "http://localhost:5173", // Dirección del frontend
+    }),
+);
 
 app.get("/health", (req, res) => {
     res.json({ message: "Cybersecurity News Scraper API working" });
@@ -56,19 +58,14 @@ app.get("/scrape/cso", async (req, res) => {
 });
 
 app.get("/scrape/all", async (req, res) => {
-  try {
-    const [hn, bc, cso] = await Promise.all([
-      scrapeTheHackerNews(10),
-      scrapeBleepingComputer(10),
-      scrapeCSO(10)
-    ]);
+    try {
+        const [hn, bc, cso] = await Promise.all([scrapeTheHackerNews(10), scrapeBleepingComputer(10), scrapeCSO(10)]);
 
-    res.json([...hn, ...bc, ...cso]);
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error scraping sources" });
-  }
+        res.json([...hn, ...bc, ...cso]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error scraping sources" });
+    }
 });
 
 export default app;

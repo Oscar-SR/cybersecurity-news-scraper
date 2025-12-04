@@ -4,27 +4,27 @@ import request from "supertest";
 
 // Definimos la respuesta mock como constante
 const mockCSOResponse = [
-  {
-    title: "Noticia CSO de ejemplo",
-    author: "Autor CSO",
-    date: "2025-12-03",
-    keywords: ["seguridad", "ciber", "CSO"],
-    url: "https://example.com/cso-online",
-    source: "CSO Online",
-  },
+    {
+        title: "Noticia CSO de ejemplo",
+        author: "Autor CSO",
+        date: "2025-12-03",
+        keywords: ["seguridad", "ciber", "CSO"],
+        url: "https://example.com/cso-online",
+        source: "CSO Online",
+    },
 ];
 
 // MOCK antes de importar app
 vi.mock("../../src/scrapers/cso-online.js", () => ({
-  scrapeCSO: async (n) => mockCSOResponse,
-  default: async (n) => mockCSOResponse,
+    scrapeCSO: async () => mockCSOResponse,
+    default: async () => mockCSOResponse,
 }));
 
 // Ahora sí importamos app
 import app from "../../src/app";
 
 test("GET /scrape/cso devuelve status 200", async () => {
-  const res = await request(app).get("/scrape/cso?n=1");
-  expect(res.status).toBe(200);
-  expect(res.body).toEqual(mockCSOResponse);
+    const res = await request(app).get("/scrape/cso?n=1");
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(mockCSOResponse);
 });

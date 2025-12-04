@@ -14,12 +14,12 @@ import { chromium } from "playwright";
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    await page.goto(url, { waitUntil: 'domcontentloaded' });
+    await page.goto(url, { waitUntil: "domcontentloaded" });
 
     console.log("Acepta o rechaza cookies manualmente...");
     await page.waitForTimeout(10000);
 
-    await context.storageState({ path: 'cookies.json' });
+    await context.storageState({ path: "cookies.json" });
     console.log("Estado guardado en cookies.json");
 
     await browser.close();

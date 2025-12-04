@@ -3,7 +3,7 @@ import { parse, format } from "date-fns";
 
 async function scrapeCSO(maxNoticias) {
     const browser = await chromium.launch({ headless: true }); // headless seguro
-    const context = await browser.newContext({ storageState: 'src/cookies/CSO.cookies.json' });
+    const context = await browser.newContext({ storageState: "src/cookies/CSO.cookies.json" });
     const page = await context.newPage();
 
     // 1. Ir a la página
@@ -11,73 +11,64 @@ async function scrapeCSO(maxNoticias) {
 
     const noticias = [];
     let cont = 0;
-    
+
     // Noticias destacadas
     //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[1]/div[1]'));
-    if(++cont >= maxNoticias)
-    {
+    if (++cont >= maxNoticias) {
         await browser.close();
         return noticias;
     }
     //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[1]/div[2]/div[1]'));
-    if(++cont >= maxNoticias)
-    {
+    if (++cont >= maxNoticias) {
         await browser.close();
         return noticias;
     }
     //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[1]/div[2]/div[2]'));
-    if(++cont >= maxNoticias)
-    {
+    if (++cont >= maxNoticias) {
         await browser.close();
         return noticias;
     }
     //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[2]/div[1]'));
-    if(++cont >= maxNoticias)
-    {
+    if (++cont >= maxNoticias) {
         await browser.close();
         return noticias;
     }
     //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[2]/div[2]'));
-    if(++cont >= maxNoticias)
-    {
+    if (++cont >= maxNoticias) {
         await browser.close();
         return noticias;
     }
     //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[2]/div[3]'));
-    if(++cont >= maxNoticias)
-    {
+    if (++cont >= maxNoticias) {
         await browser.close();
         return noticias;
     }
     //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[2]/div[4]'));
-    if(++cont >= maxNoticias)
-    {
+    if (++cont >= maxNoticias) {
         await browser.close();
         return noticias;
     }
     //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[2]/div[5]'));
-    if(++cont >= maxNoticias)
-    {
+    if (++cont >= maxNoticias) {
         await browser.close();
         return noticias;
     }
     //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[2]/div[6]'));
-    if(++cont >= maxNoticias)
-    {
+    if (++cont >= maxNoticias) {
         await browser.close();
         return noticias;
     }
 
-    while(cont < maxNoticias) {
+    while (cont < maxNoticias) {
         for (let j = 1; cont < maxNoticias; j++, cont++) {
             //console.log(cont);
             //await resolverCookies(page);
@@ -87,7 +78,7 @@ async function scrapeCSO(maxNoticias) {
             const divLocator = page.locator(xpathDiv);
 
             // si el div no existe → fin de lista
-            if (await divLocator.count() === 0) break;
+            if ((await divLocator.count()) === 0) break;
 
             /*
             // 2. comprobar si es publicidad (advert__container)
@@ -116,8 +107,8 @@ async function scrapeCSO(maxNoticias) {
             noticias.push(noticia);
         }
 
-        if(cont < maxNoticias) {
-            const botonSiguiente = await page.locator('a.next.pagination__link');
+        if (cont < maxNoticias) {
+            const botonSiguiente = await page.locator("a.next.pagination__link");
             const botonExiste = await botonSiguiente.count();
 
             if (botonExiste === 0) {
@@ -126,7 +117,7 @@ async function scrapeCSO(maxNoticias) {
             }
 
             await botonSiguiente.click();
-            await page.waitForLoadState('domcontentloaded');
+            await page.waitForLoadState("domcontentloaded");
         }
     }
 
@@ -134,6 +125,7 @@ async function scrapeCSO(maxNoticias) {
     return noticias;
 }
 
+/*
 async function resolverCookies(page) {
     await page.waitForTimeout(500); // pequeño delay por si el iframe aparece tarde
 
@@ -159,6 +151,7 @@ async function resolverCookies(page) {
 
     console.log("No había cookies que gestionar");
 }
+*/
 
 async function scrapeNew(page, xpath) {
     // 2. Localizar el enlace de la noticia directamente por XPath
@@ -171,15 +164,14 @@ async function scrapeNew(page, xpath) {
     await enlaceNoticia.click();
 
     // 5. Esperar a que cargue la noticia
-    await page.waitForLoadState('domcontentloaded');
+    await page.waitForLoadState("domcontentloaded");
 
     // Título
     const tituloLocator = page.locator('xpath=//*[@id="primary"]/div[1]/div/div[2]/div/h1');
     const countTitulo = await tituloLocator.count();
 
     let title = "N/A";
-    if(countTitulo > 0)
-    {
+    if (countTitulo > 0) {
         title = await tituloLocator.innerText();
     }
 
@@ -188,8 +180,7 @@ async function scrapeNew(page, xpath) {
     const countAutor = await autorLocator.count();
 
     let author = "N/A";
-    if(countAutor > 0)
-    {
+    if (countAutor > 0) {
         author = await autorLocator.innerText();
     }
 
@@ -198,22 +189,20 @@ async function scrapeNew(page, xpath) {
     const countFecha = await fechaLocator.count();
 
     let date = "N/A";
-    if(countFecha > 0)
-    {
+    if (countFecha > 0) {
         const fechaString = await fechaLocator.innerText();
-        const fechaParseada = parse(fechaString, 'MMM dd, yyyy', new Date());
-        date = format(fechaParseada, 'MMMM dd, yyyy');
+        const fechaParseada = parse(fechaString, "MMM dd, yyyy", new Date());
+        date = format(fechaParseada, "MMMM dd, yyyy");
     }
 
     // Palabras clave
     let keywords = [];
-    const palabraClaveLocator = page.locator('xpath=/html/body/div[2]/main/article/section/div/div[1]/div/div/div[3]/div/div');
+    const palabraClaveLocator = page.locator("xpath=/html/body/div[2]/main/article/section/div/div[1]/div/div/div[3]/div/div");
     const countPalabrasClave = await palabraClaveLocator.count();
 
-    if(countPalabrasClave > 0)
-    {
+    if (countPalabrasClave > 0) {
         const palabrasClaveString = await palabraClaveLocator.innerText();
-        keywords = palabrasClaveString.split('\n');
+        keywords = palabrasClaveString.split("\n");
     }
 
     // URL
@@ -223,7 +212,7 @@ async function scrapeNew(page, xpath) {
     const source = "CSO Online";
 
     // volver a la página anterior
-    await page.goBack({ waitUntil: 'domcontentloaded' });
+    await page.goBack({ waitUntil: "domcontentloaded" });
 
     return { title, author, date, keywords, url, source };
 }
