@@ -1,6 +1,6 @@
 module.exports = {
   input: [
-    "src/**/*.{js,ts,jsx,tsx}",
+    "src/**/*.{js,jsx,ts,tsx}", 
     "!src/i18n.js"
   ],
   output: "./",
@@ -10,18 +10,18 @@ module.exports = {
     removeUnusedKeys: true,
     func: {
       list: ["i18next.t", "t"],
-      extensions: [".js", ".ts", ".jsx", ".tsx"]
+      extensions: [".js", ".jsx", ".ts", ".tsx"]
     },
     lngs: ["en", "es"],
     defaultLng: "en",
-    ns: ["common"],
-    defaultNs: "common",
+    ns: ["home"],
+    defaultNs: "home",
     resource: {
-      loadPath: "locales/{{lng}}/{{ns}}.json",
-      savePath: "locales/{{lng}}/{{ns}}.json",
-      jsonIndent: 2
+      loadPath: "./public/locales/{{lng}}/{{ns}}.json",
+      savePath: "./public/locales/{{lng}}/{{ns}}.json",
+      jsonIndent: 2,
     },
     keySeparator: ".",
-    nsSeparator: ":"
-  }
+    nsSeparator: ":",
+  },
 };

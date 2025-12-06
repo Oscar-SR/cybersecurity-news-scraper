@@ -3,6 +3,7 @@ import cors from "cors";
 import scrapeTheHackerNews from "./scrapers/the-hacker-news.js";
 import scrapeBleepingComputer from "./scrapers/bleeping-computer.js";
 import scrapeCSO from "./scrapers/cso-online.js";
+import i18next from "./i18n.js";
 
 const app = express();
 
@@ -15,7 +16,7 @@ app.use(
 );
 
 app.get("/health", (req, res) => {
-    res.json({ message: "Cybersecurity News Scraper API working" });
+    res.json({ message: i18next.t("common:backend_working") });
 });
 
 app.get("/scrape/hn", async (req, res) => {

@@ -1,3 +1,4 @@
 {
-  "server_listening": "API listening at http://localhost:{{port}}"
+  "backend_working": "Cybersecurity News Scraper backend working",
+  "server_listening": "Server listening at http://localhost:{{port}}"
 }

@@ -5,5 +5,5 @@ const PORT = 3000;
 
 app.listen(PORT, () => {
     // Usamos i18next para traducir el mensaje
-    console.log(i18next.t('server_listening', { port: PORT }));
+    console.log(i18next.t("common:server_listening", { port: PORT }));
 });

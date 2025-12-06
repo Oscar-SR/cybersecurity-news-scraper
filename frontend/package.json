@@ -10,7 +10,8 @@
     "lint:fix": "eslint . --ext .js,.jsx --fix",
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "i18n:scan": "i18next-scanner --config i18next-scanner.config.cjs"
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
@@ -30,6 +31,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "i18next-scanner": "^4.6.0",
     "prettier": "^3.7.4",
     "vite": "^7.2.4"
   }

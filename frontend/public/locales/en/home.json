@@ -1,4 +1,7 @@
 {
+  "placeholder": {
+    "search_news": "Search news..."
+  },
   "title": {
     "news_cybersecurity": "Cybersecurity News"
   }
