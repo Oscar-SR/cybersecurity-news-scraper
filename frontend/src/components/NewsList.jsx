@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchNews } from "../api/newsApi";
+import { fetchNews } from "../api/api-news";
 
 function NewsList({ filter }) {
   const [news, setNews] = useState([]);
@@ -43,7 +43,7 @@ function NewsList({ filter }) {
                 </p>
               )}
 
-              <a href={item.url} target="_blank" className="btn btn-primary">
+              <a href={item.url} target="_blank" className="btn btn-primary" rel="noreferrer">
                 Leer más →
               </a>
             </div>
