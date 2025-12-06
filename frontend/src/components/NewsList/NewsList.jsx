@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchNews } from "../api/api-news";
+import { fetchNews } from "../../api/api-news";
+import styles from "./NewsList.module.css";
 
 function NewsList({ filter }) {
   const [news, setNews] = useState([]);
@@ -27,26 +28,24 @@ function NewsList({ filter }) {
     <div className="row">
       {filteredNews.map((item, idx) => (
         <div key={idx} className="col-md-6 mb-4">
-          <div className="card h-100 bg-dark text-white">
-            <div className="card-body">
-              <h5 className="card-title">{item.title}</h5>
+          <div className={styles.card}>
+            <h5 className={styles.cardTitle}>{item.title}</h5>
 
-              <p className="card-text">
-                <strong>Autor:</strong> {item.author || "N/A"} <br />
-                <strong>Fecha:</strong> {item.date || "N/A"} <br />
-                <strong>Fuente:</strong> {item.source}
+            <p className={styles.meta}>
+              <strong>Autor:</strong> {item.author || "N/A"} <br />
+              <strong>Fecha:</strong> {item.date || "N/A"} <br />
+              <strong>Fuente:</strong> {item.source}
+            </p>
+
+            {item.keywords?.length > 0 && (
+              <p className={styles.keywords}>
+                <strong>Keywords:</strong> {item.keywords.join(", ")}
               </p>
+            )}
 
-              {item.keywords?.length > 0 && (
-                <p className="card-text">
-                  <strong>Keywords:</strong> {item.keywords.join(", ")}
-                </p>
-              )}
-
-              <a href={item.url} target="_blank" className="btn btn-primary" rel="noreferrer">
-                Leer más →
-              </a>
-            </div>
+            <a href={item.url} target="_blank" rel="noreferrer" className={styles.link}>
+              Leer más →
+            </a>
           </div>
         </div>
       ))}
