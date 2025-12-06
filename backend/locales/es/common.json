@@ -1,4 +1,3 @@
 {
-  "backend_working": "Bakcend del Scraper de Noticias de Ciberseguridad funcionando",
   "server_listening": "Servidor escuchando en http://localhost:{{port}}"
 }

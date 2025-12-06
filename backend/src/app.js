@@ -16,7 +16,7 @@ app.use(
 );
 
 app.get("/health", (req, res) => {
-    res.json({ message: i18next.t("common:backend_working") });
+    res.json({ message: "Cybersecurity News Scraper backend working" });
 });
 
 app.get("/scrape/hn", async (req, res) => {
