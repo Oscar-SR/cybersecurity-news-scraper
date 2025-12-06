@@ -12,9 +12,6 @@ async function scrapeCSO(maxNoticias) {
     const noticias = [];
     let cont = 0;
 
-    //FALLA CON ESTA NOTICIA
-    //https://www.csoonline.com/article/4101486/coupang-leaks-personal-information-of-33-7-million-accounts-suspected-of-poor-authentication-key-management.html
-
     // Noticias destacadas
     //await resolverCookies(page);
     noticias.push(await scrapeNew(page, '//*[@id="latest"]/div/div/div[1]/div[1]'));
@@ -185,6 +182,10 @@ async function scrapeNew(page, xpath) {
     let author = "N/A";
     if (countAutor > 0) {
         author = await autorLocator.first().innerText();
+        /*
+        Se añade ".first()" puesto que hay veces que falla si hay más de un autor
+        Noticia en concreto -> https://www.csoonline.com/article/4101486/coupang-leaks-personal-information-of-33-7-million-accounts-suspected-of-poor-authentication-key-management.html
+        */
     }
 
     // Fecha
