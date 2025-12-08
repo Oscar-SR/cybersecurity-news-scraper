@@ -15,6 +15,21 @@ app.use(
     }),
 );
 
+/*
+// DETECTOR DE IDIOMA EN FUNCIÓN DE LOS HEADERS HTTP
+app.use((req, res, next) => {
+    const headerLang = req.headers["accept-language"];
+
+    if (headerLang) {
+        // Ejemplo: "es-ES,es;q=0.9" -> "es"
+        const lang = headerLang.split(",")[0].split("-")[0];
+        i18next.changeLanguage(lang);
+    }
+
+    next();
+});
+*/
+
 app.get("/health", (req, res) => {
     res.json({ message: "Cybersecurity News Scraper backend working" });
 });

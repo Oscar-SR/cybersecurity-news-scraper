@@ -1,54 +1,64 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { fetchNews } from "../../api/api-news";
+import { useTranslation } from "react-i18next";
 import styles from "./NewsList.module.css";
 
 function NewsList({ filter }) {
   const [news, setNews] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // inicialmente false
+  const { t } = useTranslation();
 
-  useEffect(() => {
-    const load = () =>
-      fetchNews()
-        .then(data => setNews(data))  // ya NO transformamos nada
-        .finally(() => setLoading(false));
+  // Función para scrapear noticias
+  const handleFetchNews = () => {
+    setLoading(true);
+    fetchNews()
+      .then(data => setNews(data))
+      .finally(() => setLoading(false));
+  };
 
-    load();
-    const interval = setInterval(load, 60000);
-    return () => clearInterval(interval);
-  }, []);
-
-  if (loading) return <p className="text-muted">Cargando noticias...</p>;
-
-  // Evita error si title es undefined
+  // Filtrado
   const filteredNews = news.filter(item =>
     (item.title || "").toLowerCase().includes(filter.toLowerCase())
   );
 
   return (
-    <div className="row">
-      {filteredNews.map((item, idx) => (
-        <div key={idx} className="col-md-6 mb-4">
-          <div className={styles.card}>
-            <h5 className={styles.cardTitle}>{item.title}</h5>
+    <div>
+      {/* Botón para scrapear */}
+      <button className="btn btn-primary mb-3" onClick={handleFetchNews} disabled={loading}>
+        {loading ? t("home:button.scraping_news") : t("home:button.scrape_news")}
+      </button>
 
-            <p className={styles.meta}>
-              <strong>Autor:</strong> {item.author || "N/A"} <br />
-              <strong>Fecha:</strong> {item.date || "N/A"} <br />
-              <strong>Fuente:</strong> {item.source}
-            </p>
+      {/* Mostrar mensaje si no hay noticias */}
+      {filteredNews.length === 0 && !loading && (
+        <p className="text-muted">{t("home:message.there_are_no_news")}</p>
+      )}
 
-            {item.keywords?.length > 0 && (
-              <p className={styles.keywords}>
-                <strong>Keywords:</strong> {item.keywords.join(", ")}
+      {/* Noticias */}
+      <div className="row">
+        {filteredNews.map((item, idx) => (
+          <div key={idx} className="col-md-6 mb-4">
+            <div className={styles.card}>
+              <h5 className={styles.cardTitle}>{item.title}</h5>
+
+              <p className={styles.meta}>
+                <strong>Autor:</strong> {item.author || "N/A"} <br />
+                <strong>Fecha:</strong> {item.date || "N/A"} <br />
+                <strong>Fuente:</strong> {item.source}
               </p>
-            )}
 
-            <a href={item.url} target="_blank" rel="noreferrer" className={styles.link}>
-              Leer más →
-            </a>
+              {item.keywords?.length > 0 && (
+                <p className={styles.keywords}>
+                  <strong>Keywords:</strong> {item.keywords.join(", ")}
+                </p>
+              )}
+
+              <a href={item.url} target="_blank" rel="noreferrer" className={styles.link}>
+                Leer más →
+              </a>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

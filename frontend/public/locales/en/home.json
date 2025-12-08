@@ -1,8 +1,12 @@
 {
+  "button": {
+    "scrape_news": "Scrape news",
+    "scraping_news": "Scraping news..."
+  },
+  "message": {
+    "there_are_no_news": "There are no news :("
+  },
   "placeholder": {
     "search_news": "Search news..."
-  },
-  "title": {
-    "news_cybersecurity": "Cybersecurity News"
   }
 }

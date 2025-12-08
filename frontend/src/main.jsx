@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
+import './styles/globals.css'
 import "./i18n";
 import Home from "./pages/Home/Home";
 
