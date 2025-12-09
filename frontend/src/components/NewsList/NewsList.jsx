@@ -2,13 +2,14 @@ import { useState } from "react";
 import { fetchNews } from "../../api/api-news";
 import { useTranslation } from "react-i18next";
 import styles from "./NewsList.module.css";
+import NewsFilter from "../NewsFilter/NewsFilter"; // <-- IMPORTANTE
 
-function NewsList({ filter }) {
+function NewsList() {
   const [news, setNews] = useState([]);
-  const [loading, setLoading] = useState(false); // inicialmente false
+  const [filter, setFilter] = useState("");   // <-- MOVIDO AQUÍ
+  const [loading, setLoading] = useState(false); 
   const { t } = useTranslation();
 
-  // Función para scrapear noticias
   const handleFetchNews = () => {
     setLoading(true);
     fetchNews()
@@ -16,24 +17,30 @@ function NewsList({ filter }) {
       .finally(() => setLoading(false));
   };
 
-  // Filtrado
   const filteredNews = news.filter(item =>
     (item.title || "").toLowerCase().includes(filter.toLowerCase())
   );
 
   return (
     <div>
-      {/* Botón para scrapear */}
-      <button className="btn btn-primary mb-3" onClick={handleFetchNews} disabled={loading}>
+      {/* Botón de Scrapear */}
+      <button 
+        className="btn btn-primary mb-3"
+        onClick={handleFetchNews}
+        disabled={loading}
+      >
         {loading ? t("home:button.scraping_news") : t("home:button.scrape_news")}
       </button>
 
-      {/* Mostrar mensaje si no hay noticias */}
+      {/* 🔍 Buscador aquí */}
+      <NewsFilter onFilter={setFilter} />
+
+      {/* Si no hay noticias */}
       {filteredNews.length === 0 && !loading && (
         <p className="text-muted">{t("home:message.there_are_no_news")}</p>
       )}
 
-      {/* Noticias */}
+      {/* Lista de noticias */}
       <div className="row">
         {filteredNews.map((item, idx) => (
           <div key={idx} className="col-md-6 mb-4">
