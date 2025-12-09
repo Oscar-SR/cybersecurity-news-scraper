@@ -1,5 +1,11 @@
+.filter-container {
+  display: flex;
+  justify-content: center;
+}
+
 .input {
   width: 100%;
+  max-width: 435px;
   padding: 12px 15px;
   border-radius: var(--radius);
   background-color: var(--color-bg-secondary);

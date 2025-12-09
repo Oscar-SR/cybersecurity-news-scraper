@@ -7,7 +7,7 @@ function Home() {
   const [filter, setFilter] = useState("");
 
   return (
-    <div className="container py-5">
+    <div className="container">
       <h1 className="page-title">Cybersecurity News Scraper</h1>
 
       <NewsFilter onFilter={setFilter} />

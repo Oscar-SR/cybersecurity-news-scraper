@@ -5,13 +5,14 @@ export default function NewsFilter({ onFilter }) {
   const { t } = useTranslation();
 
   return (
-    <div className="mb-4">
+    <div className={styles["filter-container"]}>
       <input
-      type="text"
-      className={styles.input}
-      placeholder={t("home:placeholder.search_news")}
-      onChange={e => onFilter(e.target.value)}
-    />
+        type="text"
+        id="searcher"
+        className={styles.input}
+        placeholder={t("home:placeholder.search_news")}
+        onChange={e => onFilter(e.target.value)}
+      />
     </div>
   );
 }
