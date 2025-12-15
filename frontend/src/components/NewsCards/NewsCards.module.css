@@ -1,15 +1,21 @@
 .card {
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-bg-alt-light);
   border-radius: var(--radius);
   padding: 18px;
   transition: var(--transition);
   height: 100%;
-  border: 1px solid #2a2f36;
+  border: var(--border-standard);
 }
 
 .card:hover {
   transform: translateY(-4px);
   border-color: var(--color-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  .card {
+    background-color: var(--color-bg-alt-dark);
+  }
 }
 
 .cardTitle {
@@ -32,15 +38,11 @@
 .link {
   display: inline-block;
   margin-top: 12px;
-  background: var(--color-primary);
+  background: var(--color-accent);
   padding: 8px 14px;
   border-radius: var(--radius);
   color: white;
   text-decoration: none;
   transition: var(--transition);
   font-weight: bold;
-}
-
-.link:hover {
-  background: #1e40af;
 }

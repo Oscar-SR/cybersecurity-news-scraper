@@ -5,7 +5,7 @@ export default function NewsFilter({ onFilter }) {
   const { t } = useTranslation();
 
   return (
-    <div className={styles["filter-container"]}>
+    <div className={styles.filterContainer}>
       <input
         type="text"
         className={styles.input}

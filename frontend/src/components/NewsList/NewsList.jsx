@@ -46,22 +46,27 @@ function NewsList() {
     <div>
       {/* Botón para scrapear */}
       <button
-        className="btn btn-primary mb-3"
+        className="btn btn-primary"
         onClick={handleFetchNews}
         disabled={loading}
       >
         {loading ? t("home:button.scraping_news") : t("home:button.scrape_news")}
       </button>
 
-      {/* Filtro de búsqueda */}
-      <NewsFilter onFilter={setFilter} />
+      {/* Filtro + Ordenación en una fila */}
+      <div class="row g-3 mb-3">
+        <div class="col-8">
+          <NewsFilter onFilter={setFilter} />
+        </div>
 
-      {/* Selector de ordenación */}
-      <SortSelector onSort={setSortOptions} />
+        <div class="col-4">
+          <SortSelector onSort={setSortOptions} />
+        </div>
+      </div>
 
       {/* Mensaje si no hay resultados */}
       {sortedNews.length === 0 && !loading && (
-        <p className="text-muted">{t("home:message.there_are_no_news")}</p>
+        <p>{t("home:message.there_are_no_news")}</p>
       )}
 
       {/* Render de tarjetas */}
