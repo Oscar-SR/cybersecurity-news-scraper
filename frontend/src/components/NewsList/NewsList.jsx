@@ -54,12 +54,12 @@ function NewsList() {
       </button>
 
       {/* Filtro + Ordenación en una fila */}
-      <div class="row g-3 mb-3">
-        <div class="col-8">
+      <div className="row g-3 mb-3">
+        <div className="col-8">
           <NewsFilter onFilter={setFilter} />
         </div>
 
-        <div class="col-4">
+        <div className="col-4">
           <SortSelector onSort={setSortOptions} />
         </div>
       </div>
