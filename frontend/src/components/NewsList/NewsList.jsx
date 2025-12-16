@@ -1,34 +1,20 @@
-import { useState, useMemo } from "react";
-import { fetchNews } from "../../api/api-news";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import NewsFilter from "../NewsFilter/NewsFilter";
 import SortSelector from "../SortSelector/SortSelector";
 import NewsCards from "../NewsCards/NewsCards";
-import WordCloud from "../WordCloud/WordCloud";
-import { buildWordCloudFromKeywords } from "../../utils/wordCloud";
 
-function NewsList() {
-  const [news, setNews] = useState([]);
+function NewsList({ news }) {
   const [filter, setFilter] = useState("");
   const [sortOptions, setSortOptions] = useState({ sortBy: "date", ascending: false });
-  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
-  const wordCloudData = useMemo(() => buildWordCloudFromKeywords(news), [news]);
-
-  const handleFetchNews = () => {
-    setLoading(true);
-    fetchNews()
-      .then(data => setNews(data))
-      .finally(() => setLoading(false));
-  };
-
-  // --- FILTRADO ---
+  // Filtrado
   const filteredNews = news.filter(item =>
     (item.title || "").toLowerCase().includes(filter.toLowerCase())
   );
 
-  // --- ORDENACIÓN ---
+  // Ordenación
   const sortedNews = [...filteredNews].sort((a, b) => {
     const { sortBy, ascending } = sortOptions;
 
@@ -46,39 +32,19 @@ function NewsList() {
     return 0;
   });
 
+  if (news.length === 0) return <p>{t("home:message.there_are_no_news")}</p>;
+
   return (
     <div>
-      {/* Botón para scrapear */}
-      <button
-        className="btn btn-primary"
-        onClick={handleFetchNews}
-        disabled={loading}
-      >
-        {loading ? t("home:button.scraping_news") : t("home:button.scrape_news")}
-      </button>
-
-      {/* Filtro + Ordenación en una fila */}
       <div className="row g-3 mb-3">
         <div className="col-8">
           <NewsFilter onFilter={setFilter} />
         </div>
-
         <div className="col-4">
           <SortSelector onSort={setSortOptions} />
         </div>
       </div>
-
-      {!loading && (
-        sortedNews.length === 0 ? (
-          <p>{t("home:message.there_are_no_news")}</p>
-        ) : (
-          <>
-            <NewsCards news={sortedNews} />
-            <h4 className="mt-4">Keyword Cloud</h4>
-            <WordCloud words={wordCloudData} />
-          </>
-        )
-      )}
+      <NewsCards news={sortedNews} />
     </div>
   );
 }
