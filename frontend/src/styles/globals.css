@@ -27,7 +27,6 @@
 }
 
 body {
-  min-height: 100vh;
   /* Modo claro como apariencia principal */
   background-color: var(--color-bg-light);
   color: var(--text-light)

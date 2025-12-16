@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { fetchNews } from "../../api/api-news";
 import { useTranslation } from "react-i18next";
 import NewsFilter from "../NewsFilter/NewsFilter";
 import SortSelector from "../SortSelector/SortSelector";
 import NewsCards from "../NewsCards/NewsCards";
+import WordCloud from "../WordCloud/WordCloud";
+import { buildWordCloudFromKeywords } from "../../utils/wordCloud";
 
 function NewsList() {
   const [news, setNews] = useState([]);
@@ -11,6 +13,8 @@ function NewsList() {
   const [sortOptions, setSortOptions] = useState({ sortBy: "date", ascending: false });
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
+
+  const wordCloudData = useMemo(() => buildWordCloudFromKeywords(news), [news]);
 
   const handleFetchNews = () => {
     setLoading(true);
@@ -64,13 +68,17 @@ function NewsList() {
         </div>
       </div>
 
-      {/* Mensaje si no hay resultados */}
-      {sortedNews.length === 0 && !loading && (
-        <p>{t("home:message.there_are_no_news")}</p>
+      {!loading && (
+        sortedNews.length === 0 ? (
+          <p>{t("home:message.there_are_no_news")}</p>
+        ) : (
+          <>
+            <NewsCards news={sortedNews} />
+            <h4 className="mt-4">Keyword Cloud</h4>
+            <WordCloud words={wordCloudData} />
+          </>
+        )
       )}
-
-      {/* Render de tarjetas */}
-      <NewsCards news={sortedNews} />
     </div>
   );
 }
