@@ -41,6 +41,8 @@ app.get("/scrape/hn", async (req, res) => {
 
         const noticia = await scrapeTheHackerNews(numNoticias);
         res.json(noticia);
+
+        console.log(numNoticias + " news scraped from The Hacker News");
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error al scrapear The Hacker News" });
@@ -54,6 +56,8 @@ app.get("/scrape/bc", async (req, res) => {
 
         const noticia = await scrapeBleepingComputer(numNoticias);
         res.json(noticia);
+
+        console.log(numNoticias + " news scraped from Bleeping Computer");
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error al scrapear Bleeping Computer" });
@@ -67,6 +71,8 @@ app.get("/scrape/cso", async (req, res) => {
 
         const noticia = await scrapeCSO(numNoticias);
         res.json(noticia);
+
+        console.log(numNoticias + " news scraped from CSO Online");
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error al scrapear CSO Online" });
@@ -78,6 +84,8 @@ app.get("/scrape/all", async (req, res) => {
         const [hn, bc, cso] = await Promise.all([scrapeTheHackerNews(10), scrapeBleepingComputer(10), scrapeCSO(10)]);
 
         res.json([...hn, ...bc, ...cso]);
+
+        console.log("10 news scraped from all sources");
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error scraping sources" });
