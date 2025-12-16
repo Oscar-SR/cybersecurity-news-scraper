@@ -47,13 +47,8 @@ function Home() {
           </div>
 
           {/* Contenido */}
-          <div style={{ display: activeTab === "news" ? "block" : "none" }}>
-            <NewsList news={news} />
-          </div>
-
-          <div style={{ display: activeTab === "cloud" ? "block" : "none" }}>
-            <KeywordsCloud news={news} />
-          </div>
+          {activeTab === "news" && <NewsList news={news} />}
+          {activeTab === "cloud" && <KeywordsCloud news={news} />}
         </>
       )}
     </div>

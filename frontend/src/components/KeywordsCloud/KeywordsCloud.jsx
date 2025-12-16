@@ -3,6 +3,7 @@ import WordCloud from "../WordCloud/WordCloud";
 import { buildWordCloudFromKeywords } from "../../utils/wordCloud";
 
 function KeywordsCloud({ news }) {
+  console.log("KeywordsCloud renderizado");
   const wordCloudData = useMemo(() => buildWordCloudFromKeywords(news), [news]);
 
   if (news.length === 0) return null;
