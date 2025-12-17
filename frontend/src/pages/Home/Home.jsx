@@ -8,12 +8,23 @@ function Home() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("news");
+  // 1. NUEVO ESTADO PARA ERRORES
+  const [error, setError] = useState(null);
 
   const handleFetchNews = () => {
     setLoading(true);
-    // Nota: setNews reemplazará las noticias viejas con las nuevas
+    setError(null); // Limpiamos errores previos antes de la nueva petición
+
     fetchNews()
-      .then(data => setNews(data))
+      .then(data => {
+        setNews(data);
+        setError(null); // Aseguramos que no haya error si tuvo éxito
+      })
+      .catch(err => {
+        console.error("Error scraping news:", err);
+        // Puedes poner un mensaje fijo o usar err.message
+        setError("Hubo un problema al obtener las noticias. Por favor intenta de nuevo.");
+      })
       .finally(() => setLoading(false));
   };
 
@@ -21,18 +32,22 @@ function Home() {
     <div className="container">
       <h1 className="page-title">Cybersecurity News Scraper</h1>
 
-      {/* --- CAMBIO AQUÍ --- */}
-      {/* Eliminamos "news.length === 0". Ahora solo verificamos !loading */}
       {!loading && (
         <div className="mb-3">
           <button className="btn btn-primary" onClick={handleFetchNews}>
-            Scrap News
+             Scrap News
           </button>
         </div>
       )}
-      {/* ------------------- */}
 
-      {/* Sección de Loading con Spinner */}
+      {/* MOSTRAR EL ERROR EN LA UI */}
+      {error && (
+        <div className="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Error:</strong> {error}
+          <button type="button" className="btn-close" onClick={() => setError(null)} aria-label="Close"></button>
+        </div>
+      )}
+
       {loading && (
         <div className="text-center my-5">
           <div className="spinner-border text-primary" role="status">
@@ -42,8 +57,7 @@ function Home() {
         </div>
       )}
 
-      {/* Tabs y Contenido (Solo visible si hay noticias y no carga) */}
-      {!loading && news.length > 0 && (
+      {!loading && news.length > 0 && !error && (
         <>
           <div className="mb-3">
             <button
@@ -60,7 +74,6 @@ function Home() {
             </button>
           </div>
 
-          {/* Contenido con display toggle para persistencia */}
           <div style={{ display: activeTab === "news" ? "block" : "none" }}>
             <NewsList news={news} />
           </div>
