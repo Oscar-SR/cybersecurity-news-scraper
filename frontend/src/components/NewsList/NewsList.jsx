@@ -32,10 +32,12 @@ function NewsList({ news }) {
     return 0;
   });
 
+  // Si no hay noticias ORIGINALES (traídas de la API), mostramos el mensaje y cortamos.
   if (news.length === 0) return <p>{t("home:message.there_are_no_news")}</p>;
 
   return (
     <div>
+      {/* Controles de Filtro y Orden */}
       <div className="row g-3 mb-3">
         <div className="col-8">
           <NewsFilter onFilter={setFilter} />
@@ -44,7 +46,17 @@ function NewsList({ news }) {
           <SortSelector onSort={setSortOptions} />
         </div>
       </div>
-      <NewsCards news={sortedNews} />
+
+      {/* LÓGICA DE VISUALIZACIÓN */}
+      {sortedNews.length > 0 ? (
+        // Si hay noticias filtradas, mostramos las cartas
+        <NewsCards news={sortedNews} />
+      ) : (
+        // Si el filtro no encontró nada, mostramos el mensaje
+        <div className="text-center mt-4">
+          <p>{t("home:message.there_are_no_news")}</p>
+        </div>
+      )}
     </div>
   );
 }
