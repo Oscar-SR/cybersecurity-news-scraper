@@ -20,7 +20,7 @@ function Home() {
     <div className="container">
       <h1 className="page-title">Cybersecurity News Scraper</h1>
 
-      {/* Botón para scrapear */}
+      {/* Botón y Loading igual que antes ... */}
       {news.length === 0 && !loading && (
         <button className="btn btn-primary mb-3" onClick={handleFetchNews}>
           Scrap News
@@ -28,27 +28,36 @@ function Home() {
       )}
       {loading && <p>Scraping news...</p>}
 
-      {/* Mostrar tabs solo si ya hay noticias */}
       {!loading && news.length > 0 && (
         <>
           <div className="mb-3">
-            <button
-              className={`btn me-2 ${activeTab === "news" ? "btn-primary" : "btn-outline-primary"}`}
-              onClick={() => setActiveTab("news")}
-            >
-              News
-            </button>
-            <button
-              className={`btn ${activeTab === "cloud" ? "btn-primary" : "btn-outline-primary"}`}
-              onClick={() => setActiveTab("cloud")}
-            >
-              Keyword Cloud
-            </button>
+             {/* ... Botones de Tabs igual que antes ... */}
+             <button
+               className={`btn me-2 ${activeTab === "news" ? "btn-primary" : "btn-outline-primary"}`}
+               onClick={() => setActiveTab("news")}
+             >
+               News
+             </button>
+             <button
+               className={`btn ${activeTab === "cloud" ? "btn-primary" : "btn-outline-primary"}`}
+               onClick={() => setActiveTab("cloud")}
+             >
+               Keyword Cloud
+             </button>
           </div>
 
-          {/* Contenido */}
-          {activeTab === "news" && <NewsList news={news} />}
-          {activeTab === "cloud" && <KeywordsCloud news={news} />}
+          {/* --- CAMBIO AQUÍ --- */}
+          {/* Usamos un contenedor con style display en lugar de renderizado condicional */}
+          
+          <div style={{ display: activeTab === "news" ? "block" : "none" }}>
+            <NewsList news={news} />
+          </div>
+
+          <div style={{ display: activeTab === "cloud" ? "block" : "none" }}>
+            <KeywordsCloud news={news} />
+          </div>
+          {/* ------------------- */}
+          
         </>
       )}
     </div>
