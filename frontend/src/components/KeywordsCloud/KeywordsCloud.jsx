@@ -30,7 +30,7 @@ function KeywordsCloud({ news }) {
           fontSize={fontSize}
           padding={2}
           rotate={randomRotate} // Pasamos la referencia estable
-          height={200}
+          height={300}
         />
       </div>
     </div>

@@ -11,6 +11,7 @@ function Home() {
 
   const handleFetchNews = () => {
     setLoading(true);
+    // Nota: setNews reemplazará las noticias viejas con las nuevas
     fetchNews()
       .then(data => setNews(data))
       .finally(() => setLoading(false));
@@ -20,35 +21,46 @@ function Home() {
     <div className="container">
       <h1 className="page-title">Cybersecurity News Scraper</h1>
 
-      {/* Botón y Loading igual que antes ... */}
-      {news.length === 0 && !loading && (
-        <button className="btn btn-primary mb-3" onClick={handleFetchNews}>
-          Scrap News
-        </button>
+      {/* --- CAMBIO AQUÍ --- */}
+      {/* Eliminamos "news.length === 0". Ahora solo verificamos !loading */}
+      {!loading && (
+        <div className="mb-3">
+          <button className="btn btn-primary" onClick={handleFetchNews}>
+            Scrap News
+          </button>
+        </div>
       )}
-      {loading && <p>Scraping news...</p>}
+      {/* ------------------- */}
 
+      {/* Sección de Loading con Spinner */}
+      {loading && (
+        <div className="text-center my-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="mt-2">Scraping news...</p>
+        </div>
+      )}
+
+      {/* Tabs y Contenido (Solo visible si hay noticias y no carga) */}
       {!loading && news.length > 0 && (
         <>
           <div className="mb-3">
-             {/* ... Botones de Tabs igual que antes ... */}
-             <button
-               className={`btn me-2 ${activeTab === "news" ? "btn-primary" : "btn-outline-primary"}`}
-               onClick={() => setActiveTab("news")}
-             >
-               News
-             </button>
-             <button
-               className={`btn ${activeTab === "cloud" ? "btn-primary" : "btn-outline-primary"}`}
-               onClick={() => setActiveTab("cloud")}
-             >
-               Keyword Cloud
-             </button>
+            <button
+              className={`btn me-2 ${activeTab === "news" ? "btn-primary" : "btn-outline-primary"}`}
+              onClick={() => setActiveTab("news")}
+            >
+              News
+            </button>
+            <button
+              className={`btn ${activeTab === "cloud" ? "btn-primary" : "btn-outline-primary"}`}
+              onClick={() => setActiveTab("cloud")}
+            >
+              Keyword Cloud
+            </button>
           </div>
 
-          {/* --- CAMBIO AQUÍ --- */}
-          {/* Usamos un contenedor con style display en lugar de renderizado condicional */}
-          
+          {/* Contenido con display toggle para persistencia */}
           <div style={{ display: activeTab === "news" ? "block" : "none" }}>
             <NewsList news={news} />
           </div>
@@ -56,8 +68,6 @@ function Home() {
           <div style={{ display: activeTab === "cloud" ? "block" : "none" }}>
             <KeywordsCloud news={news} />
           </div>
-          {/* ------------------- */}
-          
         </>
       )}
     </div>

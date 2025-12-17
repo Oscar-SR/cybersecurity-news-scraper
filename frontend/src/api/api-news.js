@@ -1,5 +1,5 @@
 export async function fetchNews() {
-  const res = await fetch("http://localhost:3000/scrape/hn");
+  const res = await fetch("http://localhost:3000/scrape/all");
   if (!res.ok) throw new Error("Error fetching news");
   return res.json();
 }
