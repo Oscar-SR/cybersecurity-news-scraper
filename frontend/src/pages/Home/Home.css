@@ -5,3 +5,7 @@
   text-align: center;
   color: var(--color-text);
 }
+
+.spinner-border {
+  color: var(--color-primary);
+}

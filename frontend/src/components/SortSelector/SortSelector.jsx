@@ -22,7 +22,7 @@ export default function SortSelector({ onSort }) {
       </select>
 
       <button
-        className="btn btn-primary"
+        className="btn btn-secondary"
         onClick={() => setAscending(prev => !prev)}
         title="Ascendente / Descendente"
       >

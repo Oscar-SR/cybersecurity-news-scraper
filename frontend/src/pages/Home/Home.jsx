@@ -44,13 +44,13 @@ function Home() {
       {error && (
         <div className="alert alert-danger alert-dismissible fade show" role="alert">
           <strong>Error:</strong> {error}
-          <button type="button" className="btn-close" onClick={() => setError(null)} aria-label="Close"></button>
+          {/*<button type="button" className="btn-close" onClick={() => setError(null)} aria-label="Close"></button>*/}
         </div>
       )}
 
       {loading && (
         <div className="text-center my-5">
-          <div className="spinner-border text-primary" role="status">
+          <div className="spinner-border" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
           <p className="mt-2">Scraping news...</p>
@@ -61,13 +61,13 @@ function Home() {
         <>
           <div className="mb-3">
             <button
-              className={`btn me-2 ${activeTab === "news" ? "btn-primary" : "btn-outline-primary"}`}
+              className={`btn me-2 ${activeTab === "news" ? "btn-secondary" : "btn-outline-secondary"}`}
               onClick={() => setActiveTab("news")}
             >
               News
             </button>
             <button
-              className={`btn ${activeTab === "cloud" ? "btn-primary" : "btn-outline-primary"}`}
+              className={`btn ${activeTab === "cloud" ? "btn-secondary" : "btn-outline-secondary"}`}
               onClick={() => setActiveTab("cloud")}
             >
               Keyword Cloud
