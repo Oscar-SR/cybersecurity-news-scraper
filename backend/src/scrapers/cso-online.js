@@ -201,16 +201,31 @@ async function scrapeNew(page, xpath) {
 
     // Palabras clave
     let keywords = [];
-    const palabraClaveLocator = page.locator("xpath=/html/body/div[2]/main/article/section/div/div[1]/div/div/div[3]/div/div");
-    const countPalabrasClave = await palabraClaveLocator.count();
 
-    if (countPalabrasClave > 0) {
-        const palabrasClaveString = await palabraClaveLocator.innerText();
-        keywords = palabrasClaveString.split("\n");
+    const url = page.url();
+    const match = url.match(/article\/(\d+)\//);
+    const id = match ? match[1] : null;
+
+    if (id) {
+        let i = 1;
+
+        while (true) {
+            const xpath = `//*[@id="post-${id}"]/section/div/div[1]/div/div/div[3]/div/div/span[${i}]/a`;
+            const locator = page.locator(xpath);
+
+            // Si no hay más spans → salir del bucle
+            if (await locator.count() === 0) break;
+
+            // Obtener texto del <a> y guardarlo
+            const palabra = await locator.innerText();
+            keywords.push(palabra);
+
+            i++; // siguiente
+        }
     }
 
     // URL
-    const url = page.url();
+    //const url = page.url();
 
     // Fuente
     const source = "CSO Online";
