@@ -4,7 +4,7 @@ import NewsList from "../../components/NewsList/NewsList";
 import KeywordsCloud from "../../components/KeywordsCloud/KeywordsCloud";
 import "./Home.css";
 import { useTheme } from "../../hooks/useTheme";
-import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
+import Header from "../../components/Header/Header";
 
 function Home() {
   const { theme, setTheme } = useTheme();
@@ -32,13 +32,10 @@ function Home() {
   };
 
   return (
-    <div className="container">
-      <div className="header-container">
-        <h1 className="page-title">Cybersecurity News Scraper</h1>
-        <ThemeToggle theme={theme} setTheme={setTheme} />
-      </div>
+    <>
+      <Header theme={theme} setTheme={setTheme} />
 
-      <div className="content-container">
+      <div className="container mt-4">
         {!loading && (
           <div className="mb-3">
             <button className="btn btn-primary" onClick={handleFetchNews}>
@@ -91,7 +88,7 @@ function Home() {
           </>
         )}
       </div>
-    </div>
+    </>
   );
 }
 

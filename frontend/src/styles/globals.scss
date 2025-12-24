@@ -14,17 +14,20 @@ $danger:        #ef4444;
 $light:         #f8fafc;
 $dark:          #0f172a;
 
+$light-alt: #ffffff;
+$dark-alt: #1e293b;
+
 // --- B. Colores Base: MODO CLARO (Por defecto) ---
 $body-bg:       #f1f5f9; // Gris muy claro
 $body-color:    #334155; // Gris oscuro azulado
-$card-bg: #ffffff;
+$card-bg: $light-alt;
 $body-secondary-color: #758193;
 
 // --- C. Colores Base: MODO OSCURO (Nuevas variables) ---
 // Definimos estos colores aquí para usarlos luego en la media query
 $dark-body-bg:    #0f172a; // Azul noche profundo (Slate 900)
 $dark-body-color: #e2e8f0; // Blanco grisáceo (Slate 200)
-$dark-card-bg: #1e293b;
+$dark-card-bg: $dark-alt;
 
 // ----------------------------------------------------------------
 // 2. OPCIONES DE BOOTSTRAP
@@ -50,6 +53,11 @@ $border-radius:  0.5rem;
 // ----------------------------------------------------------------
 // 4. LÓGICA DE CAMBIO AUTOMÁTICO (CSS Variables)
 // ----------------------------------------------------------------
+
+:root {
+  --light-alt: #{$light-alt};
+  --dark-alt: #{$dark-alt};
+}
 
 // Detecta si el sistema del usuario prefiere modo oscuro
 :root[data-theme="dark"] {
