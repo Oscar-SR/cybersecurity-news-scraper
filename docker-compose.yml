@@ -1,0 +1,22 @@
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    # CAMBIO: Mapeamos el puerto 3000
+    ports:
+      - "3000:3000" 
+    environment:
+      - NODE_ENV=production
+      - PORT=3000 # Asegúrate de que tu index.js usa process.env.PORT
+    restart: always
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    # CAMBIO IMPORTANTE: 
+    # La izquierda (5173) es tu navegador. La derecha (80) es el Nginx interno.
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: always
