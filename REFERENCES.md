@@ -8,3 +8,6 @@
 
 - Customize with Sass — Bootstrap Documentation.
   https://getbootstrap.com/docs/5.3/customize/sass/
+
+- How to implement a dark mode with React - LogRocket.
+  https://blog.logrocket.com/dark-mode-react-in-depth-guide/

@@ -52,20 +52,18 @@ $border-radius:  0.5rem;
 // ----------------------------------------------------------------
 
 // Detecta si el sistema del usuario prefiere modo oscuro
-@media (prefers-color-scheme: dark) {
-  :root {
-    // Sobrescribimos la variable CSS del fondo
-    --bs-body-bg: #{$dark-body-bg};
-    // Bootstrap necesita la versión RGB para transparencias:
-    --bs-body-bg-rgb: #{to-rgb($dark-body-bg)};
+:root[data-theme="dark"] {
+  // Sobrescribimos la variable CSS del fondo
+  --bs-body-bg: #{$dark-body-bg};
+  // Bootstrap necesita la versión RGB para transparencias:
+  --bs-body-bg-rgb: #{to-rgb($dark-body-bg)};
 
-    // Sobrescribimos la variable CSS del texto
-    --bs-body-color: #{$dark-body-color};
-    // Versión RGB del texto:
-    --bs-body-color-rgb: #{to-rgb($dark-body-color)};
-  }
+  // Sobrescribimos la variable CSS del texto
+  --bs-body-color: #{$dark-body-color};
+  // Versión RGB del texto:
+  --bs-body-color-rgb: #{to-rgb($dark-body-color)};
+}
 
-  .card {
-    --bs-card-bg: #{$dark-card-bg};
-  }
+:root[data-theme="dark"] .card {
+  --bs-card-bg: #{$dark-card-bg};
 }
