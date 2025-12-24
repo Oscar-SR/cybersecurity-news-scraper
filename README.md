@@ -2,7 +2,7 @@
 
 ### Build
 
-To prepare the project for run in development phase, you must use the following commands in the backend:
+To prepare the project for running in development phase, you must use the following commands in the backend:
 ```bash
 npm install
 npx playwright install
