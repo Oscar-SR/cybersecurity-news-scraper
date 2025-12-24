@@ -7,8 +7,8 @@ export default function NewsFilter({ onFilter }) {
   return (
     <div className={styles.filterContainer}>
       <input
-        type="text"
-        className={styles.input}
+        type="search"
+        className="form-control"
         placeholder={t("home:placeholder.search_news")}
         onChange={e => onFilter(e.target.value)}
       />

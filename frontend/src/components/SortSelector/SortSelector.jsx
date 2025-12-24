@@ -13,7 +13,7 @@ export default function SortSelector({ onSort }) {
   return (
     <div className={styles.sortContainer}>
       <select
-        className={styles.select}
+        className="form-select"
         value={sortBy}
         onChange={e => setSortBy(e.target.value)}
       >
@@ -22,7 +22,7 @@ export default function SortSelector({ onSort }) {
       </select>
 
       <button
-        className="btn btn-secondary"
+        className="btn btn-secondary text-nowrap"
         onClick={() => setAscending(prev => !prev)}
         title="Ascendente / Descendente"
       >

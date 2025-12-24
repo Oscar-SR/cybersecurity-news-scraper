@@ -1,8 +1,71 @@
 // Custom.scss
-// Option A: Include all of Bootstrap
 
-// Include any default variable overrides here (though functions won't be available)
+// ----------------------------------------------------------------
+// 1. DEFINICIÓN DE PALETA Y VARIABLES (SCSS)
+// ----------------------------------------------------------------
 
+// --- A. Colores Principales ---
+$primary:       #4f46e5;
+$secondary:     #64748b;
+$success:       #10b981;
+$info:          #0ea5e9;
+$warning:       #f59e0b;
+$danger:        #ef4444;
+$light:         #f8fafc;
+$dark:          #0f172a;
+
+// --- B. Colores Base: MODO CLARO (Por defecto) ---
+$body-bg:       #f1f5f9; // Gris muy claro
+$body-color:    #334155; // Gris oscuro azulado
+$card-bg: #ffffff;
+$body-secondary-color: #758193;
+
+// --- C. Colores Base: MODO OSCURO (Nuevas variables) ---
+// Definimos estos colores aquí para usarlos luego en la media query
+$dark-body-bg:    #0f172a; // Azul noche profundo (Slate 900)
+$dark-body-color: #e2e8f0; // Blanco grisáceo (Slate 200)
+$dark-card-bg: #1e293b;
+
+// ----------------------------------------------------------------
+// 2. OPCIONES DE BOOTSTRAP
+// ----------------------------------------------------------------
+$enable-shadows: true;
+$enable-gradients: false;
+$border-radius:  0.5rem;
+
+// ----------------------------------------------------------------
+// 3. IMPORTACIONES (Orden estricto)
+// ----------------------------------------------------------------
+
+// 1. Funciones (Necesarias para manipular colores)
+@import "../../node_modules/bootstrap/scss/functions";
+
+// 2. Variables (Aquí Bootstrap lee tus $body-bg claros definidos arriba)
+@import "../../node_modules/bootstrap/scss/variables";
+
+// 3. El resto de Bootstrap
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
-// Then add additional custom code here
+
+// ----------------------------------------------------------------
+// 4. LÓGICA DE CAMBIO AUTOMÁTICO (CSS Variables)
+// ----------------------------------------------------------------
+
+// Detecta si el sistema del usuario prefiere modo oscuro
+@media (prefers-color-scheme: dark) {
+  :root {
+    // Sobrescribimos la variable CSS del fondo
+    --bs-body-bg: #{$dark-body-bg};
+    // Bootstrap necesita la versión RGB para transparencias:
+    --bs-body-bg-rgb: #{to-rgb($dark-body-bg)};
+
+    // Sobrescribimos la variable CSS del texto
+    --bs-body-color: #{$dark-body-color};
+    // Versión RGB del texto:
+    --bs-body-color-rgb: #{to-rgb($dark-body-color)};
+  }
+
+  .card {
+    --bs-card-bg: #{$dark-card-bg};
+  }
+}

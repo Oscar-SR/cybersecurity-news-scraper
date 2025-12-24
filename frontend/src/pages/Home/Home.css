@@ -3,9 +3,8 @@
   font-weight: bold;
   margin: 1.8rem 0;
   text-align: center;
-  color: var(--color-text);
 }
 
 .spinner-border {
-  color: var(--color-primary);
+  color: var(--bs-primary);
 }
