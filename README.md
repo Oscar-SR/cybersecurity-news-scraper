@@ -26,3 +26,11 @@ npm run dev
 ```
 
 The *port 5173* is configured as the default port for the frontend, which fetchs the data from the *port 3000* of the backend.
+
+## Galley
+
+List of scraped news:
+![News list](images/news_list.png)
+
+Keywords cloud of the scraped news:
+![Keywords cloud](images/keywords_cloud.png)
