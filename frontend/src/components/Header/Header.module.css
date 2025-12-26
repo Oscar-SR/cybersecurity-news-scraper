@@ -1,13 +1,13 @@
 .appHeader {
-  position: sticky;      /* queda pegado arriba */
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1rem;
   z-index: 1000;
+  
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+
   background-color: var(--light-alt);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
