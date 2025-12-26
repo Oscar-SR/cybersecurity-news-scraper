@@ -87,7 +87,7 @@ app.get("/scrape/all", async (req, res) => {
         const [hn, bc, cso] = await Promise.all([scrapeTheHackerNews(numNoticias), scrapeBleepingComputer(numNoticias), scrapeCSO(numNoticias)]);
         res.json([...hn, ...bc, ...cso]);
 
-        console.log("10 news scraped from all sources");
+        console.log(numNoticias + " news scraped from all sources");
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error scraping sources" });
