@@ -27,6 +27,13 @@ npm run dev
 
 The *port 5173* is configured as the default port for the frontend, which fetchs the data from the *port 3000* of the backend.
 
+## Production
+
+For production, you can simply run the application with Docker, using the following command:
+```bash
+docker-compose up --build
+```
+
 ## Galley
 
 List of scraped news:
