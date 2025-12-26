@@ -1,0 +1,28 @@
+# Dependencias
+node_modules
+
+# Build de producción local (Vite genera 'dist' por defecto)
+dist
+build
+
+# Logs
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+*.log
+
+# Configuración de entorno local
+# Vite permite .env en el build, pero .env.local suele ser solo para tu máquina
+.env.local
+
+# Git
+.git
+.gitignore
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
+
+# Documentación y Docker
+Dockerfile
+README.md

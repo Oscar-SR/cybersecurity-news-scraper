@@ -1,0 +1,32 @@
+# Dependencias (Se deben instalar dentro del contenedor)
+node_modules
+
+# Archivos de logs y depuración
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+logs
+*.log
+
+# Entornos y Secretos (¡Muy Importante!)
+# Evita meter tus claves en la imagen por error.
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Git y configuración del repositorio
+.git
+.gitignore
+
+# Archivos de Build locales (si usas TypeScript o Babel)
+dist
+build
+
+# Archivos temporales
+.DS_Store
+
+# Documentación y archivos de Docker locales
+Dockerfile
+README.md
