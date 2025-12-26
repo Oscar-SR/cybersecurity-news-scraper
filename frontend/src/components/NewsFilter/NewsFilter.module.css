@@ -4,27 +4,3 @@
   display: flex;
   justify-content: center;
 }
-
-.input {
-  width: 100%;
-  padding: 10px 15px;
-  border-radius: var(--radius);
-  background-color: var(--color-bg-alt-light);
-  border: var(--border-standard);
-  transition: var(--transition);
-}
-
-.input::placeholder {
-  color: var(--color-muted);
-}
-
-.input:focus {
-  border-color: var(--color-primary);
-  outline: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  .input {
-    background-color: var(--color-bg-alt-dark);
-  }
-}

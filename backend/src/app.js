@@ -3,7 +3,7 @@ import cors from "cors";
 import scrapeTheHackerNews from "./scrapers/the-hacker-news.js";
 import scrapeBleepingComputer from "./scrapers/bleeping-computer.js";
 import scrapeCSO from "./scrapers/cso-online.js";
-import i18next from "./i18n.js";
+//import i18next from "./i18n.js";
 
 const app = express();
 
@@ -36,8 +36,8 @@ app.get("/health", (req, res) => {
 
 app.get("/scrape/hn", async (req, res) => {
     try {
-        let numNoticias = parseInt(req.query.n, 10);
-        if (isNaN(numNoticias)) numNoticias = DEFAULT_NUM_NOTICIAS;
+        const n = parseInt(req.query.n, 10);
+        const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
         const noticia = await scrapeTheHackerNews(numNoticias);
         res.json(noticia);
@@ -51,8 +51,8 @@ app.get("/scrape/hn", async (req, res) => {
 
 app.get("/scrape/bc", async (req, res) => {
     try {
-        let numNoticias = parseInt(req.query.n, 10);
-        if (isNaN(numNoticias)) numNoticias = DEFAULT_NUM_NOTICIAS;
+        const n = parseInt(req.query.n, 10);
+        const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
         const noticia = await scrapeBleepingComputer(numNoticias);
         res.json(noticia);
@@ -66,8 +66,8 @@ app.get("/scrape/bc", async (req, res) => {
 
 app.get("/scrape/cso", async (req, res) => {
     try {
-        let numNoticias = parseInt(req.query.n, 10);
-        if (isNaN(numNoticias)) numNoticias = DEFAULT_NUM_NOTICIAS;
+        const n = parseInt(req.query.n, 10);
+        const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
         const noticia = await scrapeCSO(numNoticias);
         res.json(noticia);
@@ -81,8 +81,10 @@ app.get("/scrape/cso", async (req, res) => {
 
 app.get("/scrape/all", async (req, res) => {
     try {
-        const [hn, bc, cso] = await Promise.all([scrapeTheHackerNews(10), scrapeBleepingComputer(10), scrapeCSO(10)]);
+        const n = parseInt(req.query.n, 10);
+        const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
+        const [hn, bc, cso] = await Promise.all([scrapeTheHackerNews(numNoticias), scrapeBleepingComputer(numNoticias), scrapeCSO(numNoticias)]);
         res.json([...hn, ...bc, ...cso]);
 
         console.log("10 news scraped from all sources");

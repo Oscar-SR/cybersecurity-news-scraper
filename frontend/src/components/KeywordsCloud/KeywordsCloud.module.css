@@ -1,12 +1,41 @@
 .wordcloudContainer {
+  /* Tus estilos originales */
   width: 100%;
-  height: 100%;
-  background-color: var(--color-bg-alt-light);
+  height: 100%; /* Ojo: asegúrate de que el padre tenga altura definida si usas % */
   margin-bottom: 40px;
+
+  /* --- NUEVOS ESTILOS NECESARIOS --- */
+  position: relative; /* Necesario para que el fondo se posicione respecto a este container */
+  z-index: 0; /* Crea un nuevo contexto de apilamiento */
+  /* overflow: hidden; */ /* DESCOMENTA ESTO si el difuminado se sale demasiado del contenedor y molesta */
 }
 
-@media (prefers-color-scheme: dark) {
-  .wordcloudContainer {
-    background-color: var(--color-bg-alt-dark);
-  }
+/* El pseudo-elemento que crea el fondo */
+.wordcloudContainer::before {
+  content: ''; /* Obligatorio para que el pseudo-elemento exista */
+  position: absolute;
+  z-index: -1; /* Lo coloca DETRÁS del contenido del container */
+
+  /* Centrado y tamaño de la elipse */
+  top: 50%;
+  left: 50%;
+  /* Ajusta el width/height para hacer la elipse más grande o pequeña dentro del contenedor */
+  width: 80%;
+  height: 80%;
+  transform: translate(-50%, -50%); /* Truco para centrar perfectamente */
+
+  /* La forma base */
+  border-radius: 50%; /* Convierte el cuadrado en un círculo/elipse */
+
+  /* EL COLOR: Puedes usar un color plano con transparencia o un gradiente */
+  /* Opción A (Color plano simple, usando tu color primario con poca opacidad) */
+  background-color: rgba(126, 125, 141, 0.25);
+
+  /* Opción B (Gradiente radial, más suave en los bordes antes del blur) */
+  /* background: radial-gradient(ellipse at center, rgba(79, 70, 229, 0.4) 0%, rgba(79, 70, 229, 0) 70%); */
+
+  /* LA MAGIA: El difuminado */
+  /* Juega con este valor: entre 40px y 100px suele quedar bien */
+  filter: blur(70px);
+  /* opacity: 0.8; */ /* Opcional: para suavizarlo aún más si el color es muy fuerte */
 }

@@ -3,8 +3,11 @@ import { fetchNews } from "../../api/api-news";
 import NewsList from "../../components/NewsList/NewsList";
 import KeywordsCloud from "../../components/KeywordsCloud/KeywordsCloud";
 import "./Home.css";
+import { useTheme } from "../../hooks/useTheme";
+import Header from "../../components/Header/Header";
 
 function Home() {
+  const { theme, setTheme } = useTheme();
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("news");
@@ -29,61 +32,63 @@ function Home() {
   };
 
   return (
-    <div className="container">
-      <h1 className="page-title">Cybersecurity News Scraper</h1>
+    <>
+      <Header theme={theme} setTheme={setTheme} />
 
-      {!loading && (
-        <div className="mb-3">
-          <button className="btn btn-primary" onClick={handleFetchNews}>
-             Scrap News
-          </button>
-        </div>
-      )}
-
-      {/* MOSTRAR EL ERROR EN LA UI */}
-      {error && (
-        <div className="alert alert-danger alert-dismissible fade show" role="alert">
-          <strong>Error:</strong> {error}
-          {/*<button type="button" className="btn-close" onClick={() => setError(null)} aria-label="Close"></button>*/}
-        </div>
-      )}
-
-      {loading && (
-        <div className="text-center my-5">
-          <div className="spinner-border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-          <p className="mt-2">Scraping news...</p>
-        </div>
-      )}
-
-      {!loading && news.length > 0 && !error && (
-        <>
+      <div className="container mt-4">
+        {!loading && (
           <div className="mb-3">
-            <button
-              className={`btn me-2 ${activeTab === "news" ? "btn-secondary" : "btn-outline-secondary"}`}
-              onClick={() => setActiveTab("news")}
-            >
-              News
-            </button>
-            <button
-              className={`btn ${activeTab === "cloud" ? "btn-secondary" : "btn-outline-secondary"}`}
-              onClick={() => setActiveTab("cloud")}
-            >
-              Keyword Cloud
+            <button className="btn btn-primary" onClick={handleFetchNews}>
+              Scrap News
             </button>
           </div>
+        )}
 
-          <div style={{ display: activeTab === "news" ? "block" : "none" }}>
-            <NewsList news={news} />
+        {/* MOSTRAR EL ERROR EN LA UI */}
+        {error && (
+          <div className="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error:</strong> {error}
+            {/*<button type="button" className="btn-close" onClick={() => setError(null)} aria-label="Close"></button>*/}
           </div>
+        )}
 
-          <div style={{ display: activeTab === "cloud" ? "block" : "none" }}>
-            <KeywordsCloud news={news} />
+        {loading && (
+          <div className="text-center my-5">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <p className="mt-2">Scraping news...</p>
           </div>
-        </>
-      )}
-    </div>
+        )}
+
+        {!loading && news.length > 0 && !error && (
+          <>
+            <div className="mb-3">
+              <button
+                className={`btn me-2 ${activeTab === "news" ? "btn-secondary" : "btn-outline-secondary"}`}
+                onClick={() => setActiveTab("news")}
+              >
+                News
+              </button>
+              <button
+                className={`btn ${activeTab === "cloud" ? "btn-secondary" : "btn-outline-secondary"}`}
+                onClick={() => setActiveTab("cloud")}
+              >
+                Keyword Cloud
+              </button>
+            </div>
+
+            <div style={{ display: activeTab === "news" ? "block" : "none" }}>
+              <NewsList news={news} />
+            </div>
+
+            <div style={{ display: activeTab === "cloud" ? "block" : "none" }}>
+              <KeywordsCloud news={news} />
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 }
 
