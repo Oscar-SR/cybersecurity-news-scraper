@@ -1,22 +1,40 @@
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        - PORT=${BACKEND_PORT:-3000}
     container_name: backend
-    # CAMBIO: Mapeamos el puerto 3000
     ports:
-      - "3000:3000" 
+      - "${BACKEND_PORT:-3000}:${BACKEND_PORT:-3000}"
     environment:
-      - NODE_ENV=production
-      - PORT=3000 # Asegúrate de que tu index.js usa process.env.PORT
-    restart: always
+      - BACKEND_PORT=${BACKEND_PORT:-3000}
+      - FRONTEND_URL=http://localhost:${FRONTEND_PORT:-3001}
+      - NODE_ENV=${NODE_ENV:-production}
+    networks:
+      - app-network
+    restart: unless-stopped
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - PORT=${FRONTEND_PORT:-3001}
+        - VITE_API_URL=http://localhost:${BACKEND_PORT:-3000}
     container_name: frontend
-    # CAMBIO IMPORTANTE: 
-    # La izquierda (5173) es tu navegador. La derecha (80) es el Nginx interno.
+    # Nginx listens to the port 80 by default
     ports:
-      - "5173:80"
+      - "${FRONTEND_PORT:-3001}:80"
+    environment:
+      - FRONTEND_PORT=${FRONTEND_PORT:-3001}
     depends_on:
       - backend
-    restart: always
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge

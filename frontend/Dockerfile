@@ -1,7 +1,7 @@
 # frontend/Dockerfile
 
-# --- ETAPA 1: Construcción (Build) ---
-FROM node:20-alpine as build-stage
+# --- STAGE 1 ---
+FROM node:20-alpine AS build-stage
 
 WORKDIR /app
 
@@ -10,16 +10,20 @@ RUN npm install
 
 COPY . .
 
-# Esto crea la carpeta 'dist' con tu React compilado
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+#RUN echo "Construyendo con API URL: $VITE_API_URL"
+
+# Create the folder with compiled files
 RUN npm run build 
 
-# --- ETAPA 2: Producción (Nginx) ---
-FROM nginx:alpine as production-stage
+# --- STAGE 2 ---
+FROM nginx:alpine AS production-stage
 
-# Copiamos los archivos compilados de la etapa anterior a la carpeta de Nginx
+# Copy the compiled file to the Nginx folder
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
-# Copiamos nuestra configuración personalizada de Nginx (ver siguiente paso)
+# Nginx configuration
 #COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80

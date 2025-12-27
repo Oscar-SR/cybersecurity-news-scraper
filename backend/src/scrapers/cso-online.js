@@ -1,5 +1,5 @@
 import { chromium } from "playwright";
-import { parse, format } from "date-fns";
+import { parse, format, isValid } from "date-fns";
 
 async function scrapeCSO(maxNoticias) {
     const browser = await chromium.launch({ headless: true }); // headless seguro
@@ -196,7 +196,9 @@ async function scrapeNew(page, xpath) {
     if (countFecha > 0) {
         const fechaString = await fechaLocator.innerText();
         const fechaParseada = parse(fechaString, "MMM dd, yyyy", new Date());
-        date = format(fechaParseada, "MMMM dd, yyyy");
+        if (isValid(fechaParseada)) {
+            date = format(fechaParseada, "MMMM dd, yyyy");
+        }
     }
 
     // Palabras clave

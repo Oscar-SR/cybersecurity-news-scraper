@@ -1,27 +1,26 @@
 # backend/Dockerfile
 
-# Usamos una versión ligera de Node (Alpine)
-FROM node:20-alpine
-
-# Usamos Playwright
+#FROM node:20-bookworm
 FROM mcr.microsoft.com/playwright:v1.57.0-noble
 
-# Directorio de trabajo dentro del contenedor
+# Work directory inside the container
 WORKDIR /app
 
-# Copiamos primero los package.json para aprovechar la caché de Docker
+# First, we copy al the package.json
 COPY package*.json ./
 
-# Instalamos dependencias
-RUN npm install --production
+# Install dependencies
+RUN npm install
 
+#RUN npx -y playwright@1.57.0 install --with-deps
 RUN npx playwright install chromium
 
-# Copiamos el resto del código
+# Copy the rest of the code
 COPY . .
 
-# Exponemos el puerto (asegúrate de que tu index.js escuche en este puerto)
-EXPOSE 3000
+# Expose the port
+ARG PORT
+EXPOSE ${PORT}
 
-# Comando para iniciar
+# Start command
 CMD ["npm", "start"]

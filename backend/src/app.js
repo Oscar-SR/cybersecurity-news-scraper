@@ -7,11 +7,13 @@ import scrapeCSO from "./scrapers/cso-online.js";
 
 const app = express();
 
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3001';
+
 const DEFAULT_NUM_NOTICIAS = 10;
 
 app.use(
     cors({
-        origin: "http://localhost:5173", // Dirección del frontend
+        origin: FRONTEND_URL, // Dirección del frontend
     }),
 );
 
