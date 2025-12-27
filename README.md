@@ -57,7 +57,7 @@ npm run dev
 
 The *port 3001* is configured as the default port for the frontend, which fetchs the data from the *port 3000* of the backend.
 
-## Galley
+## Gallery
 
 List of scraped news:
 ![News list](images/news_list.png)
