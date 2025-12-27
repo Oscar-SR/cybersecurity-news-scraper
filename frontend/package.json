@@ -13,6 +13,23 @@
     "preview": "vite preview",
     "i18n:scan": "i18next-scanner --config i18next-scanner.config.cjs"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Oscar-SR/cybersecurity-news-scraper.git",
+    "directory": "frontend"
+  },
+  "keywords": [
+    "scraping",
+    "osint",
+    "bootstrap",
+    "react"
+  ],
+  "author": "Óscar Sánchez Rubio",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Oscar-SR/cybersecurity-news-scraper/issues"
+  },
+  "homepage": "https://github.com/Oscar-SR/cybersecurity-news-scraper#readme",
   "dependencies": {
     "bootstrap": "^5.3.8",
     "i18next": "^25.7.1",
