@@ -1,6 +1,6 @@
-import { chromium } from "playwright";
+import { chromium, Page } from "playwright";
 
-async function scrapeBleepingComputer(maxNoticias) {
+async function scrapeBleepingComputer(maxNoticias: number) {
     const browser = await chromium.launch();
     const context = await browser.newContext({
         userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",
@@ -55,7 +55,7 @@ async function scrapeBleepingComputer(maxNoticias) {
     return noticias;
 }
 
-async function scrapeNew(page, xpath) {
+async function scrapeNew(page: Page, xpath: string) {
     // 2. Localizar el enlace de la noticia directamente por XPath
     const enlaceNoticia = page.locator(xpath);
 
@@ -122,7 +122,7 @@ async function scrapeNew(page, xpath) {
     }
 
     // Palabras clave
-    let keywords = [];
+    const keywords = [];
     let links = page.locator("xpath=/html/body/div[1]/section[3]/div/div/div[1]/div/div[1]/ul/li/a");
     let countLinks = await links.count();
 
@@ -156,7 +156,7 @@ async function scrapeNew(page, xpath) {
 }
 
 // Función para estandarizar la nomenclatura de las palabras clave
-function capitalizeWords(text) {
+function capitalizeWords(text: string) {
     return text
         .toLowerCase()
         .split(" ")
