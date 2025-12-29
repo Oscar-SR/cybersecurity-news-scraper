@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
-import scrapeTheHackerNews from "./scrapers/the-hacker-news.js";
-import scrapeBleepingComputer from "./scrapers/bleeping-computer.js";
-import scrapeCSO from "./scrapers/cso-online.js";
+import scrapeTheHackerNews from "./scrapers/the-hacker-news";
+import scrapeBleepingComputer from "./scrapers/bleeping-computer";
+import scrapeCSO from "./scrapers/cso-online";
 
 const app = express();
 
