@@ -17,3 +17,6 @@
 
 - Migrating from JavaScript
   https://www.typescriptlang.org/docs/handbook/migrating-from-javascript.html
+
+- Complete Guide to Setting Up React with TypeScript and Vite (2026)
+  https://medium.com/@robinviktorsson/complete-guide-to-setting-up-react-with-typescript-and-vite-2025-468f6556aaf2
