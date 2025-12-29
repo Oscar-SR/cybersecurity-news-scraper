@@ -1,7 +1,11 @@
 import { useTranslation } from "react-i18next";
 import styles from "./NewsFilter.module.css";
 
-export default function NewsFilter({ onFilter }) {
+interface NewsFilterProps {
+  onFilter: (text: string) => void;
+}
+
+export default function NewsFilter({ onFilter }: NewsFilterProps) {
   const { t } = useTranslation();
 
   return (

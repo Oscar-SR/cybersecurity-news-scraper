@@ -5,7 +5,7 @@ import Home from "./pages/Home/Home";
 import "./styles/globals.scss";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Home />
   </StrictMode>,

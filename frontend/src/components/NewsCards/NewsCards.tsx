@@ -1,10 +1,28 @@
 import { SOURCE_COLOR_MAP } from "../../styles/sourceColors";
 
-function getColorForSource(source) {
-  if (SOURCE_COLOR_MAP[source]) return SOURCE_COLOR_MAP[source];
+export interface NewsItem {
+  title: string;
+  author: string;
+  date: string;
+  source: string;
+  url: string;
+  keywords: string[];
+}
+
+interface NewsCardsProps {
+  news: NewsItem[];
+}
+
+function getColorForSource(source: string) {
+  // TRUCO DE TYPESCRIPT:
+  // "Casteamos" el mapa como Record<string, string>.
+  // Esto le dice a TS: "Trata este objeto como un diccionario donde cualquier clave string devuelve un string".
+  const map = SOURCE_COLOR_MAP as Record<string, string>;
+
+  if (map[source]) return map[source];
 
   // fallback hashing
-  const colors = Object.values(SOURCE_COLOR_MAP);
+  const colors = Object.values(map);
   let hash = 0;
   for (let i = 0; i < source.length; i++) {
     hash = source.charCodeAt(i) + ((hash << 5) - hash);
@@ -12,7 +30,7 @@ function getColorForSource(source) {
   return colors[Math.abs(hash) % colors.length];
 }
 
-export default function NewsCards({ news }) {
+export default function NewsCards({ news }: NewsCardsProps) {
   return (
     <div className="row g-4"> {/* g-4 añade espacio (gutter) entre columnas */}
       {news.map((item, idx) => (

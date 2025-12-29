@@ -1,6 +1,11 @@
-import React from "react";
+import { Theme } from "../../hooks/useTheme";
 
-function ThemeToggle({ theme, setTheme }) {
+interface ThemeToggleProps {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+}
+
+function ThemeToggle({ theme, setTheme }: ThemeToggleProps) {
   const isDark = theme === "dark";
 
   const handleToggle = () => {

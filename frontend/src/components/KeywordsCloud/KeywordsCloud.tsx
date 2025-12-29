@@ -1,20 +1,26 @@
 import { useMemo, useCallback } from "react";
 import Cloud from "react-d3-cloud";
 import { buildWordCloudFromKeywords } from "../../utils/wordCloud";
-import styles from "./KeywordsCloud.module.css"; 
+import styles from "./KeywordsCloud.module.css";
+import { NewsListProps } from "../NewsList/NewsList";
+
+interface WordData {
+  text: string;
+  value: number;
+}
 
 // 1. Definimos la función de rotación FUERA del componente.
 // Esto garantiza que la referencia sea estable y la nube no se re-anime
 // innecesariamente si el componente padre se renderiza.
 const randomRotate = () => Math.random() * 60 - 30;
 
-function KeywordsCloud({ news }) {
+function KeywordsCloud({ news }: NewsListProps) {
   // 2. Memorizamos los datos transformados.
   // Solo se recalcula si el array de noticias cambia.
   const wordCloudData = useMemo(() => buildWordCloudFromKeywords(news), [news]);
 
   // 3. Memorizamos la función de tamaño de fuente.
-  const fontSize = useCallback((word) => word.value * 10, []);
+  const fontSize = useCallback((word: WordData) => word.value * 10, []);
 
   // Validación de seguridad
   if (!news || news.length === 0 || wordCloudData.length === 0) return null;

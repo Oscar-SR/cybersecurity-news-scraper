@@ -5,6 +5,7 @@ import KeywordsCloud from "../../components/KeywordsCloud/KeywordsCloud";
 import "./Home.css";
 import { useTheme } from "../../hooks/useTheme";
 import Header from "../../components/Header/Header";
+import { Theme } from "../../hooks/useTheme";
 
 function Home() {
   const { theme, setTheme } = useTheme();
@@ -12,7 +13,7 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("news");
   // 1. NUEVO ESTADO PARA ERRORES
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleFetchNews = () => {
     setLoading(true);
@@ -33,7 +34,10 @@ function Home() {
 
   return (
     <>
-      <Header theme={theme} setTheme={setTheme} />
+      <Header 
+        theme={theme as Theme} 
+        setTheme={setTheme as (t: Theme) => void} 
+      />
 
       <div className="container mt-4">
         {!loading && (
