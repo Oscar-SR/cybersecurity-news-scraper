@@ -1,3 +1,7 @@
+# Cybersecurity News Scraper
+
+This project consists of an application that scrapes cybersecurity news from different open sources. It is composed of a frontend and a backend that communicate via REST API. The code structure of this project is modular, allowing new sources to be added and new functionalities to be integrated with minimal effort.
+
 ## Usage
 
 ### Docker
