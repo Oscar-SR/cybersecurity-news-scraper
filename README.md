@@ -1,3 +1,7 @@
+# Cybersecurity News Scraper
+
+This project consists of an application that scrapes cybersecurity news from different open sources. It is composed of a frontend and a backend that communicate via REST API. The code structure of this project is modular, allowing new sources to be added and new functionalities to be integrated with minimal effort.
+
 ## Usage
 
 ### Docker
@@ -30,9 +34,9 @@ docker compose down
 
 ### Manual setup
 
-#### Build
+#### Instalation
 
-To prepare the project for running in development phase, you must use the following commands in the backend:
+To prepare the project for running, you must use the following commands in the backend:
 ```bash
 npm install
 npx playwright install
@@ -43,16 +47,28 @@ And for the frontend:
 npm install
 ```
 
-#### Run
+#### Development
 
-For running it, use the following command in the backend:
+For running in development phase, use the following command in the backend:
 ```bash
-npm start
+npm run dev
 ```
 
 And for the frontend:
 ```bash
-npm run dev
+npm run build
+```
+
+#### Production
+
+For production, you must first build the backend and the frontend with this command:
+```bash
+npm run build
+```
+
+After that, you can run both the frontend and the backend, with the following command:
+```bash
+npm start
 ```
 
 The *port 3001* is configured as the default port for the frontend, which fetchs the data from the *port 3000* of the backend.

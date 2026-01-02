@@ -18,6 +18,9 @@ RUN npx playwright install chromium
 # Copy the rest of the code
 COPY . .
 
+# Compile the typescript code
+RUN npm run build
+
 # Expose the port
 ARG PORT
 EXPOSE ${PORT}

@@ -1,7 +1,7 @@
-import { chromium } from "playwright";
+import { chromium, Page } from "playwright";
 import { parse, format } from "date-fns";
 
-async function scrapeTheHackerNews(maxNoticias) {
+async function scrapeTheHackerNews(maxNoticias: number) {
     const browser = await chromium.launch();
     const page = await browser.newPage();
 
@@ -43,7 +43,7 @@ async function scrapeTheHackerNews(maxNoticias) {
     return noticias;
 }
 
-async function scrapeNew(page, xpath) {
+async function scrapeNew(page: Page, xpath: string) {
     // 2. Localizar el enlace de la noticia directamente por XPath
     const enlaceNoticia = page.locator(xpath);
 
@@ -89,7 +89,7 @@ async function scrapeNew(page, xpath) {
     const palabrasClaveLocator = page.locator('//*[@id="Blog1"]/div/div/div/div[4]/div/span[2]');
     const countPalabrasClave = await palabrasClaveLocator.count();
 
-    let keywords = [];
+    let keywords: string[] = [];
     if (countPalabrasClave > 0) {
         const palabrasClaveString = await palabrasClaveLocator.innerText();
         keywords = palabrasClaveString.split(" / ");

@@ -1,18 +1,19 @@
 {
   "name": "cybersecurity-news-scraper-backend",
   "version": "1.0.0",
-  "type": "module",
+  "type": "commonjs",
   "description": "A Node.js scraper that automatically collects and aggregates the latest cybersecurity news from multiple open sources",
   "main": "scr/index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "dev": "nodemon src/index.ts",
+    "build": "tsc --pretty",
+    "start": "node dist/index.js",
     "test": "vitest --run",
     "test:watch": "vitest --watch",
-    "lint": "eslint . --ext .js",
-    "lint:fix": "eslint . --ext .js --fix",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
     "prettier": "prettier --write .",
-    "prettier:check": "prettier --check .",
-    "i18n:scan": "i18next-scanner --config i18next-scanner.config.cjs"
+    "prettier:check": "prettier --check ."
   },
   "repository": {
     "type": "git",
@@ -35,17 +36,23 @@
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
     "express": "^5.1.0",
-    "i18next": "^25.7.1",
-    "i18next-fs-backend": "^2.6.1",
     "playwright": "^1.56.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.0.3",
+    "@types/supertest": "^6.0.3",
     "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
     "globals": "^16.5.0",
-    "i18next-scanner": "^4.6.0",
+    "nodemon": "^3.1.11",
     "prettier": "^3.7.4",
     "supertest": "^7.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.50.1",
     "vitest": "^4.0.14"
   }
 }

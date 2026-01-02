@@ -1,7 +1,7 @@
-import { chromium } from "playwright";
+import { chromium, Page } from "playwright";
 import { parse, format, isValid } from "date-fns";
 
-async function scrapeCSO(maxNoticias) {
+async function scrapeCSO(maxNoticias: number) {
     const browser = await chromium.launch({ headless: true }); // headless seguro
     const context = await browser.newContext({ storageState: "src/cookies/CSO.cookies.json" });
     const page = await context.newPage();
@@ -153,7 +153,7 @@ async function resolverCookies(page) {
 }
 */
 
-async function scrapeNew(page, xpath) {
+async function scrapeNew(page: Page, xpath: string) {
     // 2. Localizar el enlace de la noticia directamente por XPath
     const enlaceNoticia = page.locator(xpath);
 
@@ -202,7 +202,7 @@ async function scrapeNew(page, xpath) {
     }
 
     // Palabras clave
-    let keywords = [];
+    const keywords = [];
 
     const url = page.url();
     const match = url.match(/article\/(\d+)\//);

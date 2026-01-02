@@ -1,9 +1,8 @@
 import express from "express";
 import cors from "cors";
-import scrapeTheHackerNews from "./scrapers/the-hacker-news.js";
-import scrapeBleepingComputer from "./scrapers/bleeping-computer.js";
-import scrapeCSO from "./scrapers/cso-online.js";
-//import i18next from "./i18n.js";
+import scrapeTheHackerNews from "./scrapers/the-hacker-news";
+import scrapeBleepingComputer from "./scrapers/bleeping-computer";
+import scrapeCSO from "./scrapers/cso-online";
 
 const app = express();
 
@@ -17,28 +16,16 @@ app.use(
     }),
 );
 
-/*
-// DETECTOR DE IDIOMA EN FUNCIÓN DE LOS HEADERS HTTP
-app.use((req, res, next) => {
-    const headerLang = req.headers["accept-language"];
-
-    if (headerLang) {
-        // Ejemplo: "es-ES,es;q=0.9" -> "es"
-        const lang = headerLang.split(",")[0].split("-")[0];
-        i18next.changeLanguage(lang);
-    }
-
-    next();
-});
-*/
-
 app.get("/health", (req, res) => {
     res.json({ message: "Cybersecurity News Scraper backend working" });
 });
 
 app.get("/scrape/hn", async (req, res) => {
     try {
-        const n = parseInt(req.query.n, 10);
+        const queryN = req.query.n;
+
+        // Si es un string, lo parseamos. Si no, usamos 1 por defecto.
+        const n = typeof queryN === 'string' ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
         const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
         const noticia = await scrapeTheHackerNews(numNoticias);
@@ -53,7 +40,10 @@ app.get("/scrape/hn", async (req, res) => {
 
 app.get("/scrape/bc", async (req, res) => {
     try {
-        const n = parseInt(req.query.n, 10);
+        const queryN = req.query.n;
+
+        // Si es un string, lo parseamos. Si no, usamos 1 por defecto.
+        const n = typeof queryN === 'string' ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
         const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
         const noticia = await scrapeBleepingComputer(numNoticias);
@@ -68,7 +58,10 @@ app.get("/scrape/bc", async (req, res) => {
 
 app.get("/scrape/cso", async (req, res) => {
     try {
-        const n = parseInt(req.query.n, 10);
+        const queryN = req.query.n;
+
+        // Si es un string, lo parseamos. Si no, usamos 1 por defecto.
+        const n = typeof queryN === 'string' ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
         const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
         const noticia = await scrapeCSO(numNoticias);
@@ -83,7 +76,10 @@ app.get("/scrape/cso", async (req, res) => {
 
 app.get("/scrape/all", async (req, res) => {
     try {
-        const n = parseInt(req.query.n, 10);
+        const queryN = req.query.n;
+
+        // Si es un string, lo parseamos. Si no, usamos 1 por defecto.
+        const n = typeof queryN === 'string' ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
         const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
         const [hn, bc, cso] = await Promise.all([scrapeTheHackerNews(numNoticias), scrapeBleepingComputer(numNoticias), scrapeCSO(numNoticias)]);
