@@ -49,14 +49,9 @@ npm install
 
 #### Development
 
-For running in development phase, use the following command in the backend:
+For running in development phase, use the following command in the backend and in the frontend:
 ```bash
 npm run dev
-```
-
-And for the frontend:
-```bash
-npm run build
 ```
 
 #### Production
