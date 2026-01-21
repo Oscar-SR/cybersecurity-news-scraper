@@ -23,3 +23,6 @@
 
 - Setting Up ESLint and Prettier for a TypeScript Project - Medium
   https://medium.com/@robinviktorsson/setting-up-eslint-and-prettier-for-a-typescript-project-aa2434417b8f
+
+- Best practices for REST API design - Stack Overflow
+  https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/
