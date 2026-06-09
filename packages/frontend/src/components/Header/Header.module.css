@@ -1,15 +1,15 @@
 .appHeader {
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
 
-  background-color: var(--light-alt);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+
+    background-color: var(--light-alt);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 :root[data-theme="dark"] .appHeader {
@@ -19,7 +19,7 @@
 
 /* Título */
 .pageTitle {
-  margin: 0;
-  font-size: 1.75rem;
-  font-weight: 600;
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 600;
 }

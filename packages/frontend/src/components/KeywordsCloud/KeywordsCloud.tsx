@@ -5,8 +5,8 @@ import styles from "./KeywordsCloud.module.css";
 import { NewsListProps } from "../NewsList/NewsList";
 
 interface WordData {
-  text: string;
-  value: number;
+    text: string;
+    value: number;
 }
 
 // 1. Definimos la función de rotación FUERA del componente.
@@ -15,32 +15,32 @@ interface WordData {
 const randomRotate = () => Math.random() * 60 - 30;
 
 function KeywordsCloud({ news }: NewsListProps) {
-  // 2. Memorizamos los datos transformados.
-  // Solo se recalcula si el array de noticias cambia.
-  const wordCloudData = useMemo(() => buildWordCloudFromKeywords(news), [news]);
+    // 2. Memorizamos los datos transformados.
+    // Solo se recalcula si el array de noticias cambia.
+    const wordCloudData = useMemo(() => buildWordCloudFromKeywords(news), [news]);
 
-  // 3. Memorizamos la función de tamaño de fuente.
-  const fontSize = useCallback((word: WordData) => word.value * 10, []);
+    // 3. Memorizamos la función de tamaño de fuente.
+    const fontSize = useCallback((word: WordData) => word.value * 10, []);
 
-  // Validación de seguridad
-  if (!news || news.length === 0 || wordCloudData.length === 0) return null;
+    // Validación de seguridad
+    if (!news || news.length === 0 || wordCloudData.length === 0) return null;
 
-  return (
-    <div>
-      <h4>Keyword Cloud</h4>
-      
-      {/* Contenedor con estilos para limitar el tamaño si es necesario */}
-      <div className={styles.wordcloudContainer}>
-        <Cloud
-          data={wordCloudData}
-          fontSize={fontSize}
-          padding={2}
-          rotate={randomRotate} // Pasamos la referencia estable
-          height={300}
-        />
-      </div>
-    </div>
-  );
+    return (
+        <div>
+            <h4>Keyword Cloud</h4>
+
+            {/* Contenedor con estilos para limitar el tamaño si es necesario */}
+            <div className={styles.wordcloudContainer}>
+                <Cloud
+                    data={wordCloudData}
+                    fontSize={fontSize}
+                    padding={2}
+                    rotate={randomRotate} // Pasamos la referencia estable
+                    height={300}
+                />
+            </div>
+        </div>
+    );
 }
 
 export default KeywordsCloud;

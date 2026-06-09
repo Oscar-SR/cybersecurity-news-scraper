@@ -216,7 +216,7 @@ async function scrapeNew(page: Page, xpath: string) {
             const locator = page.locator(xpath);
 
             // Si no hay más spans → salir del bucle
-            if (await locator.count() === 0) break;
+            if ((await locator.count()) === 0) break;
 
             // Obtener texto del <a> y guardarlo
             const palabra = await locator.innerText();

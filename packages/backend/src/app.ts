@@ -6,7 +6,7 @@ import scrapeCSO from "./scrapers/cso-online";
 
 const app = express();
 
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3001';
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3001";
 
 const DEFAULT_NUM_NOTICIAS = 10;
 
@@ -25,7 +25,7 @@ app.get("/scrape/hn", async (req, res) => {
         const queryN = req.query.n;
 
         // Si es un string, lo parseamos. Si no, usamos 1 por defecto.
-        const n = typeof queryN === 'string' ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
+        const n = typeof queryN === "string" ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
         const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
         const noticia = await scrapeTheHackerNews(numNoticias);
@@ -43,7 +43,7 @@ app.get("/scrape/bc", async (req, res) => {
         const queryN = req.query.n;
 
         // Si es un string, lo parseamos. Si no, usamos 1 por defecto.
-        const n = typeof queryN === 'string' ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
+        const n = typeof queryN === "string" ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
         const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
         const noticia = await scrapeBleepingComputer(numNoticias);
@@ -61,7 +61,7 @@ app.get("/scrape/cso", async (req, res) => {
         const queryN = req.query.n;
 
         // Si es un string, lo parseamos. Si no, usamos 1 por defecto.
-        const n = typeof queryN === 'string' ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
+        const n = typeof queryN === "string" ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
         const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
         const noticia = await scrapeCSO(numNoticias);
@@ -79,10 +79,14 @@ app.get("/scrape/all", async (req, res) => {
         const queryN = req.query.n;
 
         // Si es un string, lo parseamos. Si no, usamos 1 por defecto.
-        const n = typeof queryN === 'string' ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
+        const n = typeof queryN === "string" ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
         const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
-        const [hn, bc, cso] = await Promise.all([scrapeTheHackerNews(numNoticias), scrapeBleepingComputer(numNoticias), scrapeCSO(numNoticias)]);
+        const [hn, bc, cso] = await Promise.all([
+            scrapeTheHackerNews(numNoticias),
+            scrapeBleepingComputer(numNoticias),
+            scrapeCSO(numNoticias),
+        ]);
         res.json([...hn, ...bc, ...cso]);
 
         console.log(numNoticias + " news scraped from all sources");

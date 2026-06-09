@@ -1,21 +1,21 @@
 .content-container {
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
 .header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
 }
 
 /* Título */
 .header-container .page-title {
-  margin: 0;       /* elimina márgenes predeterminados */
-  font-size: 1.75rem;
-  font-weight: 600;
+    margin: 0; /* elimina márgenes predeterminados */
+    font-size: 1.75rem;
+    font-weight: 600;
 }
 
 .spinner-border {
-  color: var(--bs-primary);
+    color: var(--bs-primary);
 }

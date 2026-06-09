@@ -13,21 +13,25 @@ cp .env.example .env
 ```
 
 Optionally, customize ports in `.env` file:
+
 ```
 BACKEND_PORT=3000
 FRONTEND_PORT=3001
 ```
 
 Build and start containers:
+
 ```bash
 docker compose up --build
 ```
 
 The application will be available at:
+
 - Backend: `http://localhost:3000` (or your configured `BACKEND_PORT`)
 - Frontend: `http://localhost:3001` (or your configured `FRONTEND_PORT`)
 
 To stop the containers:
+
 ```bash
 docker compose down
 ```
@@ -37,6 +41,7 @@ docker compose down
 #### 1. Installation
 
 To prepare the project for running, you must use the following commands in the root directory of the project:
+
 ```bash
 npm install
 npx playwright install
@@ -45,21 +50,24 @@ npx playwright install
 #### 2. Execution
 
 For running in **development** phase, use the following command:
+
 ```bash
 npm run dev
 ```
 
 For **production**, you must first build the packages with this command:
+
 ```bash
 npm run build
 ```
 
 After that, you can run the application with the following command:
+
 ```bash
 npm start
 ```
 
-The *port 3001* is configured as the default port for the frontend, which fetchs the data from the *port 3000* of the backend.
+The _port 3001_ is configured as the default port for the frontend, which fetchs the data from the _port 3000_ of the backend.
 
 ## Gallery
 

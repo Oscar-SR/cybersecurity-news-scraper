@@ -1,8 +1,8 @@
 .sortContainer {
-  width: 100%;
-  margin: 12px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
+    width: 100%;
+    margin: 12px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }

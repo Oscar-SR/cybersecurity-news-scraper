@@ -2,20 +2,20 @@ import { useTranslation } from "react-i18next";
 import styles from "./NewsFilter.module.css";
 
 interface NewsFilterProps {
-  onFilter: (text: string) => void;
+    onFilter: (text: string) => void;
 }
 
 export default function NewsFilter({ onFilter }: NewsFilterProps) {
-  const { t } = useTranslation();
+    const { t } = useTranslation();
 
-  return (
-    <div className={styles.filterContainer}>
-      <input
-        type="search"
-        className="form-control"
-        placeholder={t("home:placeholder.search_news", "Search news...")}
-        onChange={e => onFilter(e.target.value)}
-      />
-    </div>
-  );
+    return (
+        <div className={styles.filterContainer}>
+            <input
+                type="search"
+                className="form-control"
+                placeholder={t("home:placeholder.search_news", "Search news...")}
+                onChange={(e) => onFilter(e.target.value)}
+            />
+        </div>
+    );
 }
