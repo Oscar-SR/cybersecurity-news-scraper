@@ -1,5 +1,5 @@
 {
-  "name": "cybersecurity-news-scraper-backend",
+  "name": "backend",
   "version": "1.0.0",
   "type": "commonjs",
   "description": "A Node.js scraper that automatically collects and aggregates the latest cybersecurity news from multiple open sources",
@@ -15,23 +15,7 @@
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Oscar-SR/cybersecurity-news-scraper.git",
-    "directory": "backend"
-  },
-  "keywords": [
-    "scraping",
-    "osint",
-    "playwright",
-    "node.js"
-  ],
-  "author": "Óscar Sánchez Rubio",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Oscar-SR/cybersecurity-news-scraper/issues"
-  },
-  "homepage": "https://github.com/Oscar-SR/cybersecurity-news-scraper#readme",
+  "private": true,
   "dependencies": {
     "cors": "2.8.5",
     "date-fns": "4.1.0",

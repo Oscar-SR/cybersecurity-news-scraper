@@ -1,7 +1,7 @@
 services:
   backend:
     build:
-      context: ./backend
+      context: ./packages/backend
       dockerfile: Dockerfile
       args:
         - PORT=${BACKEND_PORT:-3000}
@@ -18,7 +18,7 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: ./packages/frontend
       dockerfile: Dockerfile
       args:
         - PORT=${FRONTEND_PORT:-3001}

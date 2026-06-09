@@ -4,12 +4,12 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'backend/**'
+      - 'packages/backend/**'
       - '.github/workflows/tests.yml'
   pull_request:
     branches: [ main ]
     paths:
-      - 'backend/**'
+      - 'packages/backend/**'
       - '.github/workflows/tests.yml'
 
 jobs:
@@ -27,8 +27,8 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: backend
+        working-directory: packages/backend
 
       - name: Run tests
         run: npm test
-        working-directory: backend
+        working-directory: packages/backend
