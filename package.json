@@ -7,18 +7,22 @@
   "scripts": {
     "dev:backend": "npm run dev -w packages/backend",
     "dev:frontend": "npm run dev -w packages/frontend",
-    "dev": "npm run dev:backend & npm run dev:frontend",
+    "dev": "concurrently npm:dev:backend npm:dev:frontend",
     "build:backend": "npm run build -w packages/backend",
     "build:frontend": "npm run build -w packages/frontend",
-    "build": "npm run build:backend && npm run build:frontend",
+    "build": "concurrently npm:build:backend npm:build:frontend",
     "test:backend": "npm test -w packages/backend",
     "test": "npm run test:backend",
     "lint": "npm run lint -w packages/backend && npm run lint -w packages/frontend",
+    "start:backend": "npm run start -w packages/backend",
+    "start:frontend": "npm run start -w packages/frontend",
+    "start": "concurrently npm:start:backend npm:start:frontend",
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
     "i18n:extract": "npm run i18n:extract -w packages/frontend"
   },
   "devDependencies": {
+    "concurrently": "10.0.3",
     "prettier": "3.7.4"
   }
 }

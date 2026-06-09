@@ -6,5 +6,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: Number(process.env.PORT) || 3001
+  },
+  preview: {
+    port: Number(process.env.PORT) || 3001
   }
 })
