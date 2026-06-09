@@ -34,34 +34,27 @@ docker compose down
 
 ### Manual setup
 
-#### Instalation
+#### 1. Installation
 
-To prepare the project for running, you must use the following commands in the backend:
+To prepare the project for running, you must use the following commands in the root directory of the project:
 ```bash
 npm install
 npx playwright install
 ```
 
-And for the frontend:
-```bash
-npm install
-```
+#### 2. Execution
 
-#### Development
-
-For running in development phase, use the following command in the backend and in the frontend:
+For running in **development** phase, use the following command:
 ```bash
 npm run dev
 ```
 
-#### Production
-
-For production, you must first build the backend and the frontend with this command:
+For **production**, you must first build the packages with this command:
 ```bash
 npm run build
 ```
 
-After that, you can run both the frontend and the backend, with the following command:
+After that, you can run the application with the following command:
 ```bash
 npm start
 ```
