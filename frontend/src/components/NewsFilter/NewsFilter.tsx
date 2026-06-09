@@ -13,7 +13,7 @@ export default function NewsFilter({ onFilter }: NewsFilterProps) {
       <input
         type="search"
         className="form-control"
-        placeholder={t("home:placeholder.search_news")}
+        placeholder={t("home:placeholder.search_news", "Search news...")}
         onChange={e => onFilter(e.target.value)}
       />
     </div>

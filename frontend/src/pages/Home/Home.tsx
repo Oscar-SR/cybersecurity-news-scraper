@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { fetchNews } from "../../api/api-news";
 import NewsList from "../../components/NewsList/NewsList";
 import KeywordsCloud from "../../components/KeywordsCloud/KeywordsCloud";
@@ -8,6 +9,7 @@ import Header from "../../components/Header/Header";
 import { Theme } from "../../hooks/useTheme";
 
 function Home() {
+  const { t } = useTranslation();
   const { theme, setTheme } = useTheme();
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -43,7 +45,7 @@ function Home() {
         {!loading && (
           <div className="mb-3">
             <button className="btn btn-primary" onClick={handleFetchNews}>
-              Scrap News
+              {t("button.scrape_news", "Scrap news")}
             </button>
           </div>
         )}
@@ -61,7 +63,7 @@ function Home() {
             <div className="spinner-border" role="status">
               <span className="visually-hidden">Loading...</span>
             </div>
-            <p className="mt-2">Scraping news...</p>
+            <p className="mt-2">{t("button.scraping_news", "Scraping news...")}</p>
           </div>
         )}
 

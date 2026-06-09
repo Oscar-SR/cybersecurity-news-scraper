@@ -46,7 +46,7 @@ function NewsList({ news }: NewsListProps) {
     return 0;
   });
 
-  if (news.length === 0) return <p>{t("home:message.there_are_no_news")}</p>;
+  if (news.length === 0) return <p>{t("home:message.there_are_no_news", "There are no news :(")}</p>;
 
   return (
     <div>
@@ -65,7 +65,7 @@ function NewsList({ news }: NewsListProps) {
         <NewsCards news={sortedNews} />
       ) : (
         <div className="text-center mt-4">
-          <p>{t("home:message.there_are_no_news")}</p>
+          <p>{t("home:message.there_are_no_news", "There are no news :(")}</p>
         </div>
       )}
     </div>
