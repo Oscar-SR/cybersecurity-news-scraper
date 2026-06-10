@@ -1,9 +1,8 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
+  "name": "cybersecurity-news-scraper-backend",
+  "private": true,
   "type": "commonjs",
-  "description": "A Node.js scraper that automatically collects and aggregates the latest cybersecurity news from multiple open sources",
-  "main": "scr/index.js",
+  "main": "scr/index.ts",
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsc --pretty",
@@ -15,7 +14,6 @@
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check ."
   },
-  "private": true,
   "dependencies": {
     "cors": "2.8.5",
     "date-fns": "4.1.0",
