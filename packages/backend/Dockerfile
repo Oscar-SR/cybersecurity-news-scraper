@@ -10,7 +10,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
 #RUN npx -y playwright@1.57.0 install --with-deps
 RUN npx playwright install chromium

@@ -43,7 +43,7 @@ docker compose down
 To prepare the project for running, you must use the following commands in the root directory of the project:
 
 ```bash
-npm install
+npm ci
 npx playwright install
 ```
 
