@@ -1,14 +1,15 @@
 import express from "express";
 import cors from "cors";
+import { env } from "./config/env";
 import scrapeTheHackerNews from "./scrapers/the-hacker-news";
 import scrapeBleepingComputer from "./scrapers/bleeping-computer";
 import scrapeCSO from "./scrapers/cso-online";
 
 const app = express();
 
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3001";
-
 const DEFAULT_NUM_NOTICIAS = 10;
+
+const FRONTEND_URL = env.FRONTEND_URL;
 
 app.use(
     cors({

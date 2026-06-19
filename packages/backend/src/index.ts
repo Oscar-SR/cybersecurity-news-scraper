@@ -1,8 +1,6 @@
 import app from "./app";
+import { env } from "./config/env";
 
-const PORT = Number.parseInt(process.env.BACKEND_PORT || "3000", 10);
-
-app.listen(PORT, () => {
-    // Usamos i18next para traducir el mensaje
-    console.log("Server listening at http://localhost:" + PORT);
+app.listen(env.BACKEND_PORT, () => {
+    console.log("Server listening at http://localhost:" + env.BACKEND_PORT);
 });
