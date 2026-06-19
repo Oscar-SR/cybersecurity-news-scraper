@@ -12,23 +12,11 @@ The easiest way to run the application is using Docker. First, copy environment 
 cp .env.example .env
 ```
 
-Optionally, customize ports in `.env` file:
-
-```
-BACKEND_PORT=3000
-FRONTEND_PORT=3001
-```
-
 Build and start containers:
 
 ```bash
 docker compose up --build
 ```
-
-The application will be available at:
-
-- Backend: `http://localhost:3000` (or your configured `BACKEND_PORT`)
-- Frontend: `http://localhost:3001` (or your configured `FRONTEND_PORT`)
 
 To stop the containers:
 
@@ -38,21 +26,28 @@ docker compose down
 
 ### Manual setup
 
-#### 1. Installation
+#### Development
 
 To prepare the project for running, you must use the following commands in the root directory of the project:
 
 ```bash
-npm ci
+npm install
 npx playwright install
 ```
-
-#### 2. Execution
 
 For running in **development** phase, use the following command:
 
 ```bash
 npm run dev
+```
+
+#### Production
+
+Install the dependencies with the following commands:
+
+```bash
+npm ci
+npx playwright install
 ```
 
 For **production**, you must first build the packages with this command:
@@ -67,7 +62,14 @@ After that, you can run the application with the following command:
 npm start
 ```
 
-The _port 3001_ is configured as the default port for the frontend, which fetchs the data from the _port 3000_ of the backend.
+## Configuration
+
+The application can be configured using environment variables defined in the `.env` file. It will be avaible in `localhost` at the configured ports:
+
+```
+BACKEND_PORT=3000
+FRONTEND_PORT=3001
+```
 
 ## Gallery
 
