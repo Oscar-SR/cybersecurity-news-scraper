@@ -17,8 +17,7 @@ const envSchema = z.object({
         .split(",")
         .map(origin => origin.trim())
         .filter(Boolean),
-    ),
-  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+    )
 });
 
 export const env = envSchema.parse(process.env);
