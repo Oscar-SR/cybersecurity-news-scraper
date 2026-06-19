@@ -1,29 +1,33 @@
-# backend/Dockerfile
-
-#FROM node:20-bookworm
+# FROM node:20-bookworm 
 FROM mcr.microsoft.com/playwright:v1.57.0-noble
 
-# Work directory inside the container
+# Work directory inside the container 
 WORKDIR /app
 
-# First, we copy al the package.json
+# 1. Copiamos los archivos de bloqueo de la raíz del monorepo
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci
+# 2. Copiamos el package.json del backend
+COPY packages/backend/package*.json ./packages/backend/
 
-#RUN npx -y playwright@1.57.0 install --with-deps
+# 3. Instalamos SOLO las dependencias del workspace de backend usando el lockfile global
+RUN npm ci --workspace=packages/backend
+
+# Instalamos los navegadores de Playwright 
 RUN npx playwright install chromium
 
-# Copy the rest of the code
-COPY . .
+# 4. Copiamos el resto del código del backend
+COPY packages/backend ./packages/backend
 
-# Compile the typescript code
+# 5. Entramos en la carpeta del backend para el resto de operaciones
+WORKDIR /app/packages/backend
+
+# Compile the typescript code 
 RUN npm run build
 
-# Expose the port
+# Expose the port 
 ARG PORT
 EXPOSE ${PORT}
 
-# Start command
+# Start command 
 CMD ["npm", "start"]

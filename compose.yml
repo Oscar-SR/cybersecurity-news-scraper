@@ -1,8 +1,8 @@
 services:
   backend:
     build:
-      context: ./packages/backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./packages/backend/Dockerfile
       args:
         - PORT=${BACKEND_PORT}
     container_name: backend
@@ -16,8 +16,8 @@ services:
 
   frontend:
     build:
-      context: ./packages/frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./packages/frontend/Dockerfile
       args:
         - VITE_API_URL=${VITE_API_URL:-http://localhost:3000}
     container_name: frontend
