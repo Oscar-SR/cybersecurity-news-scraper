@@ -1,6 +1,5 @@
 import express from "express";
-import cors from "cors";
-import { env } from "./config/env";
+import { corsMiddleware } from "./middlewares/cors";
 import scrapeTheHackerNews from "./scrapers/the-hacker-news";
 import scrapeBleepingComputer from "./scrapers/bleeping-computer";
 import scrapeCSO from "./scrapers/cso-online";
@@ -9,13 +8,7 @@ const app = express();
 
 const DEFAULT_NUM_NOTICIAS = 10;
 
-const FRONTEND_URL = env.FRONTEND_URL;
-
-app.use(
-    cors({
-        origin: FRONTEND_URL, // Dirección del frontend
-    }),
-);
+app.use(corsMiddleware);
 
 app.get("/health", (req, res) => {
     res.json({ message: "Cybersecurity News Scraper backend working" });

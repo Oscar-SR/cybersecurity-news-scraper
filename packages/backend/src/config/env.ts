@@ -9,7 +9,15 @@ dotenv.config({
 const envSchema = z.object({
   BACKEND_PORT: z.coerce.number().default(3000),
   FRONTEND_PORT: z.coerce.number().default(3001),
-  FRONTEND_URL: z.string().default("http://localhost:3001"),
+  ALLOWED_ORIGINS: z
+    .string()
+    .default("")
+    .transform(value =>
+      value
+        .split(",")
+        .map(origin => origin.trim())
+        .filter(Boolean),
+    ),
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
 });
 
