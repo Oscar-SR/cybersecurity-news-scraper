@@ -18,17 +18,12 @@ COPY packages/frontend ./packages/frontend
 # 5. Nos movemos a la carpeta del proyecto
 WORKDIR /app/packages/frontend
 
-# Variables de entorno para Vite [cite: 20]
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
-
-# Create the folder with compiled files [cite: 20]
-RUN npm run build 
+RUN npm run build
 
 # --- STAGE 2 --- [cite: 20]
 FROM nginx:alpine AS production-stage
 
-# IMPORTANTE: Ahora la ruta de origen incluye packages/frontend/
+COPY packages/frontend/nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build-stage /app/packages/frontend/dist /usr/share/nginx/html
 
 EXPOSE 80

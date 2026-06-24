@@ -11,6 +11,13 @@ export default defineConfig({
     plugins: [react()],
     server: {
         port: Number(process.env.FRONTEND_PORT) || 3001,
+        proxy: {
+            "/api": {
+                target: process.env.API_PROXY_TARGET || "http://localhost:3000",
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/api/, ""),
+            },
+        },
     },
     preview: {
         port: Number(process.env.FRONTEND_PORT) || 3001,
