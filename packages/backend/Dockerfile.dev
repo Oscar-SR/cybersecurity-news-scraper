@@ -1,0 +1,14 @@
+FROM mcr.microsoft.com/playwright:v1.57.0-noble
+
+WORKDIR /app
+
+COPY package*.json ./
+COPY packages/backend/package*.json ./packages/backend/
+
+RUN npm install --workspace=packages/backend
+
+RUN npx playwright install chromium
+
+WORKDIR /app/packages/backend
+
+CMD ["npm", "run", "dev"]
