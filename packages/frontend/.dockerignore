@@ -1,9 +1,0 @@
-node_modules
-.git
-.env
-.env.local
-dist
-build
-*.log
-Dockerfile
-README.md

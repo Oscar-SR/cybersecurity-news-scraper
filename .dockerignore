@@ -1,28 +1,32 @@
-# Dependencias
+# Dependencias (Se deben instalar dentro del contenedor)
 node_modules
 
-# Build de producción local (Vite genera 'dist' por defecto)
-dist
-build
-
-# Logs
+# Archivos de logs y depuración
 npm-debug.log
 yarn-error.log
 pnpm-debug.log
+logs
 *.log
 
-# Configuración de entorno local
-# Vite permite .env en el build, pero .env.local suele ser solo para tu máquina
+# Entornos y Secretos (¡Muy Importante!)
+# Evita meter tus claves en la imagen por error.
+.env
 .env.local
+.env.development
+.env.test
+.env.production
 
-# Git
+# Git y configuración del repositorio
 .git
 .gitignore
 
-# Archivos temporales del sistema
-.DS_Store
-Thumbs.db
+# Archivos de Build locales (si usas TypeScript o Babel)
+dist
+build
 
-# Documentación y Docker
+# Archivos temporales
+.DS_Store
+
+# Documentación y archivos de Docker locales
 Dockerfile
 README.md
