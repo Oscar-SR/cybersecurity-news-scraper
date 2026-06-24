@@ -11,8 +11,8 @@
     "test:watch": "vitest --watch",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "prettier": "prettier --write .",
-    "prettier:check": "prettier --check ."
+    "prettier": "prettier . --write --ignore-path ../../.prettierignore",
+    "prettier:check": "prettier . --check --ignore-path ../../.prettierignore"
   },
   "dependencies": {
     "cors": "2.8.5",

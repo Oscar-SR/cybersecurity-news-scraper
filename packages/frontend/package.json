@@ -8,8 +8,8 @@
     "start": "vite preview",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "prettier": "prettier --write .",
-    "prettier:check": "prettier --check .",
+    "prettier": "prettier . --write --ignore-path ../../.prettierignore",
+    "prettier:check": "prettier . --check --ignore-path ../../.prettierignore",
     "preview": "vite preview",
     "i18n:extract": "i18next-cli extract --sync-primary"
   },
