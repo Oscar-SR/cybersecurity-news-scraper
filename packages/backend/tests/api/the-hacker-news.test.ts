@@ -23,8 +23,8 @@ vi.mock("../../src/scrapers/the-hacker-news.js", () => ({
 // Ahora sí importamos app
 import app from "../../src/app";
 
-test("GET /scrape/hn devuelve status 200", async () => {
-    const res = await request(app).get("/scrape/hn?n=1");
+test("GET /api/scrape/hn devuelve status 200", async () => {
+    const res = await request(app).get("/api/scrape/hn?n=1");
     expect(res.status).toBe(200);
     expect(res.body).toEqual(mockHNResponse);
 });

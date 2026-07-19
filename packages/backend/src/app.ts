@@ -5,20 +5,20 @@ import scrapeBleepingComputer from "./scrapers/bleeping-computer";
 import scrapeCSO from "./scrapers/cso-online";
 
 const app = express();
+const apiRouter = express.Router();
 
 const DEFAULT_NUM_NOTICIAS = 10;
 
 app.use(corsMiddleware);
 
-app.get("/health", (req, res) => {
+apiRouter.get("/health", (req, res) => {
     res.json({ message: "Cybersecurity News Scraper backend working" });
 });
 
-app.get("/scrape/hn", async (req, res) => {
+apiRouter.get("/scrape/hn", async (req, res) => {
     try {
         const queryN = req.query.n;
 
-        // Si es un string, lo parseamos. Si no, usamos 1 por defecto.
         const n = typeof queryN === "string" ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
         const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
@@ -32,11 +32,10 @@ app.get("/scrape/hn", async (req, res) => {
     }
 });
 
-app.get("/scrape/bc", async (req, res) => {
+apiRouter.get("/scrape/bc", async (req, res) => {
     try {
         const queryN = req.query.n;
 
-        // Si es un string, lo parseamos. Si no, usamos 1 por defecto.
         const n = typeof queryN === "string" ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
         const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
@@ -50,11 +49,10 @@ app.get("/scrape/bc", async (req, res) => {
     }
 });
 
-app.get("/scrape/cso", async (req, res) => {
+apiRouter.get("/scrape/cso", async (req, res) => {
     try {
         const queryN = req.query.n;
 
-        // Si es un string, lo parseamos. Si no, usamos 1 por defecto.
         const n = typeof queryN === "string" ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
         const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
@@ -68,11 +66,10 @@ app.get("/scrape/cso", async (req, res) => {
     }
 });
 
-app.get("/scrape/all", async (req, res) => {
+apiRouter.get("/scrape/all", async (req, res) => {
     try {
         const queryN = req.query.n;
 
-        // Si es un string, lo parseamos. Si no, usamos 1 por defecto.
         const n = typeof queryN === "string" ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
         const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
@@ -89,5 +86,7 @@ app.get("/scrape/all", async (req, res) => {
         res.status(500).json({ error: "Error scraping sources" });
     }
 });
+
+app.use("/api", apiRouter);
 
 export default app;
