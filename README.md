@@ -68,7 +68,7 @@ The application can be configured using environment variables defined in the `.e
 
 ```
 BACKEND_PORT=3000
-FRONTEND_PORT=3001
+GATEWAY_PORT=3001
 ```
 
 ## Gallery

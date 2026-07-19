@@ -5,6 +5,7 @@ export default defineConfig({
     plugins: [react()],
     server: {
         host: true,
+        // Debe coincidir con upstream "frontend" en infra/nginx-gateway/nginx.dev.conf
         port: 5173,
         hmr: {
             host: "localhost",
