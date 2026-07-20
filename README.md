@@ -64,10 +64,9 @@ npm start
 
 ## Configuration
 
-The application can be configured using environment variables defined in the `.env` file. It will be avaible in `localhost` at the configured ports:
+The application can be configured using environment variables defined in the `.env` file. It will be available at `http://localhost:3001`:
 
 ```
-BACKEND_PORT=3000
 GATEWAY_PORT=3001
 ```
 

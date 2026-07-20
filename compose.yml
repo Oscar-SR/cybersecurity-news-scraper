@@ -19,8 +19,6 @@ services:
     build:
       context: .
       dockerfile: ./packages/backend/Dockerfile
-      args:
-        - PORT=${BACKEND_PORT}
     container_name: backend
     env_file:
       - .env

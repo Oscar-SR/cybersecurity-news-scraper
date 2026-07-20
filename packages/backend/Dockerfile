@@ -29,9 +29,7 @@ WORKDIR /app/packages/backend
 # Compile the typescript code 
 RUN npm run build
 
-# Expose the port 
-ARG PORT
-EXPOSE ${PORT}
+EXPOSE 3000
 
 # Start command 
 CMD ["npm", "start"]

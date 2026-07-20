@@ -7,7 +7,6 @@ dotenv.config({
 });
 
 const envSchema = z.object({
-    BACKEND_PORT: z.coerce.number().default(3000),
     ALLOWED_ORIGINS: z
         .string()
         .default("")
