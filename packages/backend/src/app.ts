@@ -1,5 +1,4 @@
 import express from "express";
-import { corsMiddleware } from "./middlewares/cors";
 import scrapeTheHackerNews from "./scrapers/the-hacker-news";
 import scrapeBleepingComputer from "./scrapers/bleeping-computer";
 import scrapeCSO from "./scrapers/cso-online";
@@ -8,8 +7,6 @@ const app = express();
 const apiRouter = express.Router();
 
 const DEFAULT_NUM_NOTICIAS = 10;
-
-app.use(corsMiddleware);
 
 apiRouter.get("/health", (req, res) => {
     res.json({ message: "Cybersecurity News Scraper backend working" });
