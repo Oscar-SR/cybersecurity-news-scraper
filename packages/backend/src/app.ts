@@ -4,11 +4,13 @@ import scrapeBleepingComputer from "./scrapers/bleeping-computer";
 import scrapeCSO from "./scrapers/cso-online";
 
 const app = express();
+app.disable("x-powered-by");
+
 const apiRouter = express.Router();
 
 const DEFAULT_NUM_NOTICIAS = 10;
 
-apiRouter.get("/health", (req, res) => {
+apiRouter.get("/health", (_req, res) => {
     res.json({ message: "Cybersecurity News Scraper backend working" });
 });
 
