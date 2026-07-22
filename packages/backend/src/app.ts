@@ -18,8 +18,8 @@ apiRouter.get("/scrape/hn", async (req, res) => {
     try {
         const queryN = req.query.n;
 
-        const n = typeof queryN === "string" ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
-        const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
+        const n = typeof queryN === "string" ? Number.parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
+        const numNoticias = !Number.isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
         const noticia = await scrapeTheHackerNews(numNoticias);
         res.json(noticia);
@@ -35,8 +35,8 @@ apiRouter.get("/scrape/bc", async (req, res) => {
     try {
         const queryN = req.query.n;
 
-        const n = typeof queryN === "string" ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
-        const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
+        const n = typeof queryN === "string" ? Number.parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
+        const numNoticias = !Number.isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
         const noticia = await scrapeBleepingComputer(numNoticias);
         res.json(noticia);
@@ -52,8 +52,8 @@ apiRouter.get("/scrape/cso", async (req, res) => {
     try {
         const queryN = req.query.n;
 
-        const n = typeof queryN === "string" ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
-        const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
+        const n = typeof queryN === "string" ? Number.parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
+        const numNoticias = !Number.isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
         const noticia = await scrapeCSO(numNoticias);
         res.json(noticia);
@@ -69,8 +69,8 @@ apiRouter.get("/scrape/all", async (req, res) => {
     try {
         const queryN = req.query.n;
 
-        const n = typeof queryN === "string" ? parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
-        const numNoticias = !isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
+        const n = typeof queryN === "string" ? Number.parseInt(queryN, 10) : DEFAULT_NUM_NOTICIAS;
+        const numNoticias = !Number.isNaN(n) && n >= 0 ? n : DEFAULT_NUM_NOTICIAS;
 
         const [hn, bc, cso] = await Promise.all([
             scrapeTheHackerNews(numNoticias),
