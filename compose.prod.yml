@@ -1,0 +1,45 @@
+services:
+  gateway:
+    image: ghcr.io/oscar-sr/cybersecurity-news-scraper/gateway:${IMAGE_TAG:-latest}
+    container_name: gateway
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "64M"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  backend:
+    image: ghcr.io/oscar-sr/cybersecurity-news-scraper/backend:${IMAGE_TAG:-latest}
+    container_name: backend
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "512M"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  frontend:
+    image: ghcr.io/oscar-sr/cybersecurity-news-scraper/frontend:${IMAGE_TAG:-latest}
+    container_name: frontend
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "128M"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

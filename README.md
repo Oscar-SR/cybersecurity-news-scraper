@@ -6,22 +6,34 @@ This project consists of an application that scrapes cybersecurity news from dif
 
 ### Docker
 
-The easiest way to run the application is using Docker. First, copy environment template:
+Copy environment template:
 
 ```bash
 cp .env.example .env
 ```
 
-Build and start containers:
+| Escenario                  | Comando                                                                   |
+| -------------------------- | ------------------------------------------------------------------------- |
+| Desarrollo                 | `docker compose -f compose.yml -f compose.dev.yml up --build`             |
+| Producción (build local)   | `docker compose -f compose.yml up --build -d`                             |
+| Producción (imágenes GHCR) | `IMAGE_TAG=<sha> docker compose -f compose.yml -f compose.prod.yml up -d` |
 
-```bash
-docker compose up --build
-```
-
-To stop the containers:
+Para detener:
 
 ```bash
 docker compose down
+```
+
+### CI/CD
+
+El pipeline de GitHub Actions construye y sube imágenes a GitHub Container Registry al pushear a `main`. Las imágenes se etiquetan con `latest` + el SHA del commit.
+
+Para desplegar manualmente en producción:
+
+```bash
+# SSH al VPS, pull y deploy
+docker compose -f compose.yml -f compose.prod.yml pull
+docker compose -f compose.yml -f compose.prod.yml up -d
 ```
 
 ### Manual setup

@@ -15,7 +15,9 @@ services:
   backend:
     build:
       context: .
-      dockerfile: ./packages/backend/Dockerfile.dev
+      dockerfile: ./packages/backend/Dockerfile
+      target: development
+    image: backend-dev
     container_name: backend-dev
     env_file:
       - ./.env
@@ -29,7 +31,9 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: ./packages/frontend/Dockerfile.dev
+      dockerfile: ./packages/frontend/Dockerfile
+      target: development
+    image: frontend-dev
     container_name: frontend-dev
     env_file:
       - ./.env

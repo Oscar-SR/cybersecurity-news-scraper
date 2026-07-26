@@ -1,9 +1,5 @@
 services:
   gateway:
-    build:
-      context: .
-      dockerfile: infra/nginx-gateway/Dockerfile
-    container_name: gateway
     ports:
       - "${GATEWAY_PORT:-3001}:80"
     depends_on:
@@ -13,32 +9,22 @@ services:
         condition: service_started
     networks:
       - app-network
-    restart: unless-stopped
 
   backend:
-    build:
-      context: .
-      dockerfile: ./packages/backend/Dockerfile
-    container_name: backend
     env_file:
       - .env
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     networks:
       - app-network
-    restart: unless-stopped
 
   frontend:
-    build:
-      context: .
-      dockerfile: ./packages/frontend/Dockerfile
-    container_name: frontend
     networks:
       - app-network
-    restart: unless-stopped
 
 networks:
   app-network:

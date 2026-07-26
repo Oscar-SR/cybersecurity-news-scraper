@@ -1,35 +1,29 @@
-# FROM node:20-bookworm 
-FROM mcr.microsoft.com/playwright:v1.57.0-noble
+FROM mcr.microsoft.com/playwright:v1.56.1-noble AS runtime-base
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update \
-    && apt-get install -y curl \
-    && rm -rf /var/lib/apt/lists/*
-
-# Work directory inside the container 
+FROM runtime-base AS development
 WORKDIR /app
-
-# 1. Copiamos los archivos de bloqueo de la raíz del monorepo
 COPY package*.json ./
-
-# 2. Copiamos el package.json del backend
 COPY packages/backend/package*.json ./packages/backend/
-
-# 3. Instalamos SOLO las dependencias del workspace de backend usando el lockfile global
-RUN npm ci --workspace=packages/backend
-
-# Instalamos los navegadores de Playwright 
-RUN npx playwright install chromium
-
-# 4. Copiamos el resto del código del backend
-COPY packages/backend ./packages/backend
-
-# 5. Entramos en la carpeta del backend para el resto de operaciones
+RUN npm install --workspace=packages/backend
 WORKDIR /app/packages/backend
+CMD ["npm", "run", "dev"]
 
-# Compile the typescript code 
+FROM runtime-base AS build
+WORKDIR /app
+COPY package*.json ./
+COPY packages/backend/package*.json ./packages/backend/
+RUN npm ci --workspace=packages/backend
+COPY packages/backend ./packages/backend
+WORKDIR /app/packages/backend
 RUN npm run build
 
+FROM runtime-base AS production
+WORKDIR /app
+COPY --from=build /app/package*.json ./
+COPY --from=build /app/packages/backend/package*.json ./packages/backend/
+RUN npm ci --workspace=packages/backend --omit=dev
+COPY --from=build /app/packages/backend/dist ./packages/backend/dist
+WORKDIR /app/packages/backend
 EXPOSE 3000
-
-# Start command 
 CMD ["npm", "start"]
