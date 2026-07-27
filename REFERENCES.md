@@ -26,3 +26,6 @@
 
 - Best practices for REST API design - Stack Overflow
   https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/
+
+- API Gateway vs Service Mesh: Beyond the North-South / East-West Myth - Medium
+  https://medium.com/@rajkundalia/api-gateway-vs-service-mesh-beyond-the-north-south-east-west-myth-c67406984a46
