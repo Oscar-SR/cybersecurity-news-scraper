@@ -26,9 +26,9 @@ jobs:
             context: .
             dockerfile: ./packages/frontend/Dockerfile
             target: production
-          - name: gateway
+          - name: reverse-proxy
             context: .
-            dockerfile: infra/nginx-gateway/Dockerfile
+            dockerfile: infra/reverse-proxy/Dockerfile
 
     steps:
       - uses: actions/checkout@v4

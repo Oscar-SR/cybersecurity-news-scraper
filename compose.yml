@@ -1,5 +1,5 @@
 services:
-  gateway:
+  reverse-proxy:
     ports:
       - "${GATEWAY_PORT:-3001}:80"
     depends_on:

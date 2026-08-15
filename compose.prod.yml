@@ -1,7 +1,7 @@
 services:
-  gateway:
-    image: ghcr.io/oscar-sr/cybersecurity-news-scraper/gateway:${IMAGE_TAG:-latest}
-    container_name: gateway
+reverse-proxy:
+    image: ghcr.io/oscar-sr/cybersecurity-news-scraper/reverse-proxy:${IMAGE_TAG:-latest}
+    container_name: reverse-proxy
     restart: unless-stopped
     deploy:
       resources:
