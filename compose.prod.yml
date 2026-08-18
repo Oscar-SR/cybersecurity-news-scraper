@@ -1,7 +1,17 @@
 services:
-reverse-proxy:
-    image: ghcr.io/oscar-sr/cybersecurity-news-scraper/reverse-proxy:${IMAGE_TAG:-latest}
+  reverse-proxy:
+    image: caddy:2.9-alpine
     container_name: reverse-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN=${DOMAIN}
+      - EMAIL=${EMAIL}
+    volumes:
+      - ./infra/reverse-proxy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
     restart: unless-stopped
     deploy:
       resources:
@@ -43,3 +53,7 @@ reverse-proxy:
       options:
         max-size: "10m"
         max-file: "3"
+
+volumes:
+  caddy_data:
+  caddy_config:

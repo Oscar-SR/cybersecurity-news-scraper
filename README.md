@@ -15,7 +15,6 @@ cp .env.example .env
 | Escenario                  | Comando                                                                   |
 | -------------------------- | ------------------------------------------------------------------------- |
 | Desarrollo                 | `docker compose -f compose.yml -f compose.dev.yml up --build`             |
-| Producción (build local)   | `docker compose -f compose.yml up --build -d`                             |
 | Producción (imágenes GHCR) | `IMAGE_TAG=<sha> docker compose -f compose.yml -f compose.prod.yml up -d` |
 
 Para detener:
@@ -35,6 +34,8 @@ Para desplegar manualmente en producción:
 docker compose -f compose.yml -f compose.prod.yml pull
 docker compose -f compose.yml -f compose.prod.yml up -d
 ```
+
+> Producción requiere `DOMAIN` y `EMAIL` en `.env` (Caddy los usa para obtener y renovar certificados de Let's Encrypt automáticamente).
 
 ### Manual setup
 

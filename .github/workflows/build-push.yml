@@ -29,11 +29,6 @@ jobs:
             dockerfile: ./packages/frontend/Dockerfile
             target: production
 
-          - name: reverse-proxy
-            context: .
-            dockerfile: infra/reverse-proxy/Dockerfile
-            target: ""
-
     steps:
       - uses: actions/checkout@v4
 

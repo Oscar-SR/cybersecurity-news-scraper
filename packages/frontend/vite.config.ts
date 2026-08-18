@@ -5,7 +5,7 @@ export default defineConfig({
     plugins: [react()],
     server: {
         host: true,
-        // Debe coincidir con upstream "frontend" en infra/reverse-proxy/nginx.dev.conf
+        // Debe coincidir con reverse_proxy "frontend" en infra/reverse-proxy/Caddyfile.dev
         port: 5173,
         hmr: {
             host: "localhost",
