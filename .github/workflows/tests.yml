@@ -2,12 +2,12 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
     paths:
       - 'packages/backend/**'
       - '.github/workflows/tests.yml'
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
     paths:
       - 'packages/backend/**'
       - '.github/workflows/tests.yml'
