@@ -9,7 +9,7 @@ export default defineConfig({
         port: 5173,
         hmr: {
             host: "localhost",
-            clientPort: 3001,
+            clientPort: Number(process.env.PROXY_PORT) || 3001,
             protocol: "ws",
         },
     },

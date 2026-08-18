@@ -80,7 +80,7 @@ npm start
 The application can be configured using environment variables defined in the `.env` file. It will be available at `http://localhost:3001`:
 
 ```
-GATEWAY_PORT=3001
+PROXY_PORT=3001
 ```
 
 ## Gallery
