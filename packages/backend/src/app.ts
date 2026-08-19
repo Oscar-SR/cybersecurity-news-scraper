@@ -4,6 +4,7 @@ import scrapeBleepingComputer from "./scrapers/bleeping-computer";
 import scrapeCSO from "./scrapers/cso-online";
 
 const app = express();
+// Disable the "X-Powered-By" header to avoid revealing that the server is running on Express
 app.disable("x-powered-by");
 
 const apiRouter = express.Router();
