@@ -6,6 +6,7 @@ WORKDIR /app
 COPY package*.json ./
 COPY packages/backend/package*.json ./packages/backend/
 RUN npm install --workspace=packages/backend
+COPY packages/backend ./packages/backend
 WORKDIR /app/packages/backend
 CMD ["npm", "run", "dev"]
 

@@ -12,15 +12,40 @@ Copy environment template:
 cp .env.example .env
 ```
 
-| Escenario                  | Comando                                                                   |
-| -------------------------- | ------------------------------------------------------------------------- |
-| Desarrollo                 | `docker compose -f compose.yml -f compose.dev.yml up --build`             |
-| Producción (imágenes GHCR) | `IMAGE_TAG=<sha> docker compose -f compose.yml -f compose.prod.yml up -d` |
+#### Flujo de trabajo en desarrollo (con hot-reload)
+
+El desarrollo con Docker se divide en **dos pasos**:
+
+**Paso 1 — construir e iniciar los contenedores** (solo la primera vez, o cuando cambies el `Dockerfile` o las dependencias de `package.json`):
+
+```bash
+npm run docker:dev
+```
+
+**Paso 2 — activar el watch** (en una terminal separada, o después de que los contenedores estén corriendo):
+
+```bash
+npm run docker:watch
+```
+
+A partir de aquí, cualquier cambio que guardes en el código fuente se refleja automáticamente en la aplicación:
+
+- **Backend** (`packages/backend/src/`): `nodemon` detecta el cambio y reinicia el proceso Node.js.
+- **Frontend** (`packages/frontend/src/`, `index.html`): Vite aplica Hot Module Replacement (HMR) en el navegador sin recargar la página.
+- **`package.json`** (backend o frontend): el contenedor se reinicia automáticamente para instalar las nuevas dependencias.
+
+> **Cómo funciona:** `docker compose watch` observa los archivos en el host y los sincroniza directamente al interior del contenedor en ejecución. Al llegar al sistema de archivos Linux del contenedor, se generan eventos `inotify` nativos, que son los que nodemon y Vite usan para detectar cambios. No se requiere reconstruir la imagen ni reiniciar los contenedores manualmente.
+
+| Escenario                  | Comando                |
+| -------------------------- | ---------------------- |
+| Primer arranque / rebuild  | `npm run docker:dev`   |
+| Hot-reload en desarrollo   | `npm run docker:watch` |
+| Producción (imágenes GHCR) | `npm run docker:deploy` |
 
 Para detener:
 
 ```bash
-docker compose down
+npm run docker:down
 ```
 
 ### CI/CD

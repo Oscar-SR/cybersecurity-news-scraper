@@ -21,6 +21,7 @@
     "start:frontend": "npm run start -w packages/frontend",
     "start": "concurrently npm:start:backend npm:start:frontend",
     "docker:dev": "docker compose -f compose.yml -f compose.dev.yml up --build",
+    "docker:watch": "docker compose -f compose.yml -f compose.dev.yml watch",
     "docker:deploy": "docker compose -f compose.yml -f compose.prod.yml pull && docker compose -f compose.yml -f compose.prod.yml up -d",
     "docker:down": "docker compose down",
     "prettier": "prettier --write .",
