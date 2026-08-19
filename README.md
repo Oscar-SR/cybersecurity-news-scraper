@@ -12,7 +12,7 @@ Copy the environment template:
 cp .env.example .env
 ```
 
-#### Development workflow (with hot-reload)
+#### Development workflow
 
 Development with Docker is split into **two steps**:
 

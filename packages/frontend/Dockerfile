@@ -5,7 +5,6 @@ COPY packages/frontend/package*.json ./packages/frontend/
 
 FROM base AS development
 RUN npm install --workspace=packages/frontend
-COPY packages/frontend ./packages/frontend
 WORKDIR /app/packages/frontend
 CMD ["npm", "run", "dev", "--", "--host"]
 
