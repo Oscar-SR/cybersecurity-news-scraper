@@ -21,6 +21,8 @@ services:
     container_name: reverse-proxy-dev
     ports:
       - "${PROXY_PORT:-3001}:80"
+    env_file:
+      - ../.env
     volumes:
       - ../infra/reverse-proxy/Caddyfile.dev:/etc/caddy/Caddyfile:ro
     networks:
