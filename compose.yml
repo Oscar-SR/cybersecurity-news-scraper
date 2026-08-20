@@ -1,14 +1,39 @@
 services:
   reverse-proxy:
+    image: caddy:2.9-alpine
+    container_name: reverse-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN=${DOMAIN:-localhost}
+      - EMAIL=${EMAIL:-admin@localhost}
+    volumes:
+      - ./infra/reverse-proxy/Caddyfile.prod:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
     depends_on:
       backend:
         condition: service_healthy
       frontend:
         condition: service_started
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "64M"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       - app-network
 
   backend:
+    image: ghcr.io/oscar-sr/cybersecurity-news-scraper/backend:${IMAGE_TAG:-latest}
+    container_name: backend
     env_file:
       - .env
     healthcheck:
@@ -17,12 +42,40 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "512M"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       - app-network
 
   frontend:
+    image: ghcr.io/oscar-sr/cybersecurity-news-scraper/frontend:${IMAGE_TAG:-latest}
+    container_name: frontend
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "128M"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       - app-network
+
+volumes:
+  caddy_data:
+  caddy_config:
 
 networks:
   app-network:

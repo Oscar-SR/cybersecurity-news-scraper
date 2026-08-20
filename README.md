@@ -4,43 +4,69 @@ This project consists of an application that scrapes cybersecurity news from dif
 
 ## Usage
 
-### Docker
+### Development (Dev Container)
 
-Copy the environment template:
+The recommended way to develop is using **VS Code Dev Containers**. The Dev Container provides a fully configured environment with Node.js, Playwright browsers, and all project dependencies — no local setup required.
+
+#### Prerequisites
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- [VS Code](https://code.visualstudio.com/) with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
+
+> **Windows users:** For the best experience (instant hot-reload, native `inotify`), clone the repository inside the **WSL2 filesystem** rather than the Windows host filesystem:
+>
+> ```bash
+> # From a WSL2 terminal (e.g. Ubuntu)
+> cd ~
+> git clone https://github.com/Oscar-SR/cybersecurity-news-scraper.git
+> code cybersecurity-news-scraper
+> ```
+>
+> When the project lives in `/home/<user>/...` inside WSL2, Docker, the filesystem, and VS Code all share the same Linux kernel. Bind-mounts and `inotify` work natively, giving you instant hot-reload without polling or workarounds.
+
+#### Getting started
+
+1. Copy the environment template:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Open the project in VS Code and run **Dev Containers: Reopen in Container** from the command palette (`Ctrl+Shift+P` / `F1`).
+
+3. Once inside the container, start both dev servers:
+
+   ```bash
+   npm run dev
+   ```
+
+4. The application is available at `http://localhost:3001` through the Caddy reverse proxy.
+
+Any file changes you make in VS Code are immediately detected:
+- **Backend** (`packages/backend/src/`): `nodemon` restarts the Node.js process.
+- **Frontend** (`packages/frontend/src/`): Vite applies Hot Module Replacement (HMR) in the browser.
+
+#### SonarQube (optional)
+
+A SonarQube service is available behind a Docker Compose profile. To start it alongside the Dev Container:
 
 ```bash
-cp .env.example .env
+docker compose -f .devcontainer/docker-compose.yml --profile sonarqube up -d sonarqube
 ```
 
-#### Development workflow
+SonarQube will be available at `http://localhost:9000`.
 
-Development with Docker is split into **two steps**:
+### Production
 
-**Step 1 — build and start the containers** (only the first time, or when you change a `Dockerfile` or `package.json` dependencies):
+#### Docker deployment
+
+The CI/CD pipeline (GitHub Actions) builds and pushes production images to GitHub Container Registry on every push to `main`. Images are tagged with `latest` and the commit SHA.
+
+To deploy:
 
 ```bash
-npm run docker:dev
+npm run docker:deploy
 ```
-
-**Step 2 — enable watch** (in a separate terminal, once the containers are running):
-
-```bash
-npm run docker:watch
-```
-
-From this point on, any change you save to the source code is automatically reflected in the application:
-
-- **Backend** (`packages/backend/src/`): `nodemon` detects the change and restarts the Node.js process.
-- **Frontend** (`packages/frontend/src/`, `index.html`): Vite applies Hot Module Replacement (HMR) in the browser without a full page reload.
-- **`package.json`** (backend or frontend): the container is automatically rebuilt to install the new dependencies.
-
-> **How it works:** `docker compose watch` monitors files on the host and syncs them directly into the running container. Once a file lands on the container's Linux filesystem, native `inotify` events are fired — the same events that nodemon and Vite rely on to detect changes. No image rebuilds or manual container restarts are needed.
-
-| Scenario                     | Command                 |
-| ---------------------------- | ----------------------- |
-| First start / rebuild        | `npm run docker:dev`    |
-| Hot-reload during development | `npm run docker:watch` |
-| Production (GHCR images)     | `npm run docker:deploy` |
 
 To stop:
 
@@ -48,76 +74,46 @@ To stop:
 npm run docker:down
 ```
 
-> **💡 Tip — best development experience on Windows:** The `docker compose watch` workflow above works when editing files directly on the Windows host. If you develop through **VS Code Dev Containers**, file edits happen inside the container and `docker compose watch` is not triggered (this is a [known limitation](https://github.com/microsoft/vscode-remote-release/issues/9282) of the Dev Containers extension). The definitive solution — no polling, no workarounds — is to **move the project into the WSL2 filesystem**:
->
-> ```bash
-> # From a WSL2 terminal (e.g. Ubuntu)
-> cd ~
-> git clone https://github.com/Oscar-SR/cybersecurity-news-scraper.git
-> code cybersecurity-news-scraper   # opens VS Code connected to WSL2
-> ```
->
-> When the project lives in `/home/<user>/...` inside WSL2 (not under `/mnt/c/...`), Docker, the filesystem and VS Code all run on the same Linux kernel. Bind-mounts and `inotify` work natively, giving you instant hot-reload in both Dev Containers and standard Docker workflows without any extra configuration.
+> Production requires `DOMAIN` and `EMAIL` in `.env` (Caddy uses them to obtain and auto-renew Let's Encrypt certificates).
 
-### CI/CD
-
-The GitHub Actions pipeline builds and pushes images to GitHub Container Registry on every push to `main`. Images are tagged with `latest` and the commit SHA.
-
-To deploy manually to production:
+To deploy manually on a VPS:
 
 ```bash
 # SSH into the VPS, pull and deploy
-docker compose -f compose.yml -f compose.prod.yml pull
-docker compose -f compose.yml -f compose.prod.yml up -d
+docker compose pull
+docker compose up -d
 ```
 
-> Production requires `DOMAIN` and `EMAIL` in `.env` (Caddy uses them to obtain and auto-renew Let's Encrypt certificates).
-
-### Manual setup
+### Manual setup (without Docker)
 
 #### Development
-
-To prepare the project for running, use the following commands in the root directory of the project:
 
 ```bash
 npm install
 npx playwright install
-```
-
-For running in **development** mode:
-
-```bash
 npm run dev
 ```
 
 #### Production
 
-Install the dependencies:
-
 ```bash
 npm ci
 npx playwright install
-```
-
-Build the packages:
-
-```bash
 npm run build
-```
-
-Then start the application:
-
-```bash
 npm start
 ```
 
 ## Configuration
 
-The application can be configured using environment variables defined in the `.env` file. It will be available at `http://localhost:3001`:
+The application can be configured using environment variables defined in the `.env` file:
 
-```
-PROXY_PORT=3001
-```
+| Variable     | Description                          | Used in     |
+| ------------ | ------------------------------------ | ----------- |
+| `PROXY_PORT` | Port exposed by the reverse proxy    | Development |
+| `DOMAIN`     | Domain for HTTPS (Caddy)             | Production  |
+| `EMAIL`      | Email for Let's Encrypt certificates | Production  |
+
+In development, the application is available at `http://localhost:3001`.
 
 ## Gallery
 

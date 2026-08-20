@@ -1,10 +1,11 @@
 {
   "name": "Cybersecurity News Scraper",
-  "dockerComposeFile": ["../compose.yml", "../compose.dev.yml"],
-  "service": "backend",
-  "workspaceFolder": "/app",
-  "runServices": ["frontend", "reverse-proxy"],
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "workspace",
+  "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
+  "postCreateCommand": "npm install",
+  "forwardPorts": [3000, 5173],
   "customizations": {
     "vscode": {
       "extensions": [
@@ -17,7 +18,8 @@
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
           "source.fixAll.eslint": "explicit"
-        }
+        },
+        "eslint.workingDirectories": [{ "mode": "auto" }]
       }
     }
   }

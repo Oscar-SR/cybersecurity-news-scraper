@@ -1,14 +1,6 @@
 FROM mcr.microsoft.com/playwright:v1.56.1-noble AS base
 RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 
-FROM base AS development
-WORKDIR /app
-COPY package*.json ./
-COPY packages/backend/package*.json ./packages/backend/
-RUN npm install --workspace=packages/backend
-WORKDIR /app/packages/backend
-CMD ["npm", "run", "dev"]
-
 FROM base AS build
 WORKDIR /app
 COPY package*.json ./
