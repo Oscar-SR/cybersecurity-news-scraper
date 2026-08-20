@@ -13,23 +13,37 @@ The recommended way to develop is using **VS Code Dev Containers**. The Dev Cont
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [VS Code](https://code.visualstudio.com/) with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
 
-> **Windows users:** For the best experience (instant hot-reload, native `inotify`), clone the repository inside the **WSL2 filesystem** rather than the Windows host filesystem:
->
-> ```bash
-> # From a WSL2 terminal (e.g. Ubuntu)
-> cd ~
-> git clone https://github.com/Oscar-SR/cybersecurity-news-scraper.git
-> code cybersecurity-news-scraper
-> ```
->
-> When the project lives in `/home/<user>/...` inside WSL2, Docker, the filesystem, and VS Code all share the same Linux kernel. Bind-mounts and `inotify` work natively, giving you instant hot-reload without polling or workarounds.
+#### Windows Users & Hot-Reload
+
+When running Docker on Windows, file system events (`inotify`) across Windows host mounts (`C:\...`) are not natively propagated to Linux containers. Choose one of the following options:
+
+- **Option A — WSL2 Linux Filesystem (Recommended):**
+  Clone the repository inside the WSL2 home directory (`/home/<user>/...`):
+  ```bash
+  # From a WSL2 terminal (e.g. Ubuntu)
+  cd ~
+  git clone https://github.com/Oscar-SR/cybersecurity-news-scraper.git
+  code cybersecurity-news-scraper
+  ```
+  Docker, the filesystem, and VS Code share the same Linux kernel, enabling native `inotify` and instant hot-reload with zero polling.
+
+- **Option B — VS Code Container Volume (Fastest setup without WSL CLI):**
+  Open VS Code on Windows, press `F1` / `Ctrl+Shift+P`, and select:
+  > **Dev Containers: Clone Repository in Container Volume...**
+  
+  Paste the repository URL (`https://github.com/Oscar-SR/cybersecurity-news-scraper.git`). VS Code will clone the repo into an isolated Docker volume with native Linux performance and instant hot-reload.
 
 #### Getting started
 
-1. Copy the environment template:
+1. Copy the environment template (production):
 
    ```bash
    cp .env.example .env
+   ```
+
+   *(Optional)* If you need custom development settings (e.g. `PROXY_PORT` or `WATCH_POLLING`):
+   ```bash
+   cp .devcontainer/.env.example .devcontainer/.env
    ```
 
 2. Open the project in VS Code and run **Dev Containers: Reopen in Container** from the command palette (`Ctrl+Shift+P` / `F1`).
@@ -40,7 +54,7 @@ The recommended way to develop is using **VS Code Dev Containers**. The Dev Cont
    npm run dev
    ```
 
-4. The application is available at `http://localhost:3001` through the Caddy reverse proxy.
+4. The application is available at `http://localhost:3001` (or your custom `PROXY_PORT`) through the Caddy reverse proxy.
 
 Any file changes you make in VS Code are immediately detected:
 - **Backend** (`packages/backend/src/`): `nodemon` restarts the Node.js process.
@@ -105,15 +119,18 @@ npm start
 
 ## Configuration
 
-The application can be configured using environment variables defined in the `.env` file:
+### Production (`.env` in root)
 
-| Variable     | Description                          | Used in     |
-| ------------ | ------------------------------------ | ----------- |
-| `PROXY_PORT` | Port exposed by the reverse proxy    | Development |
-| `DOMAIN`     | Domain for HTTPS (Caddy)             | Production  |
-| `EMAIL`      | Email for Let's Encrypt certificates | Production  |
+| Variable | Description | Default |
+| --- | --- | --- |
+| `DOMAIN` | Domain name for Caddy HTTPS | `example.com` |
+| `EMAIL` | Email for Let's Encrypt SSL certificate | `admin@example.com` |
 
-In development, the application is available at `http://localhost:3001`.
+### Development (`.devcontainer/.env`)
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `PROXY_PORT` | Port exposed by Caddy reverse proxy on host | `3001` |
 
 ## Gallery
 
