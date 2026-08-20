@@ -9,10 +9,9 @@ services:
       - workspace_node_modules:/workspace/node_modules
     working_dir: /workspace
     command: sleep infinity
-    env_file:
-      - ../.env
     environment:
       - NODE_ENV=development
+      - PROXY_PORT=${PROXY_PORT:-3001}
     networks:
       - dev-network
 
@@ -21,8 +20,6 @@ services:
     container_name: reverse-proxy-dev
     ports:
       - "${PROXY_PORT:-3001}:80"
-    env_file:
-      - ../.env
     volumes:
       - ../infra/reverse-proxy/Caddyfile.dev:/etc/caddy/Caddyfile:ro
     networks:
