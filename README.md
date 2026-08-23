@@ -70,7 +70,7 @@ Any file changes you make in VS Code are immediately detected:
 A SonarQube service is available behind a Docker Compose profile. To start it alongside the Dev Container:
 
 ```bash
-docker compose -f .devcontainer/docker-compose.yml --profile sonarqube up -d sonarqube
+docker compose -f .devcontainer/compose.yml --profile sonarqube up -d sonarqube
 ```
 
 SonarQube will be available at `http://localhost:9000`.
