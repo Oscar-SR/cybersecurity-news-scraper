@@ -32,7 +32,10 @@ services:
       - app-network
 
   backend:
-    image: ghcr.io/oscar-sr/cybersecurity-news-scraper/backend:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: ./packages/backend/Dockerfile
+      target: production
     container_name: backend
     env_file:
       - .env
@@ -57,7 +60,10 @@ services:
       - app-network
 
   frontend:
-    image: ghcr.io/oscar-sr/cybersecurity-news-scraper/frontend:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: ./packages/frontend/Dockerfile
+      target: production
     container_name: frontend
     restart: unless-stopped
     deploy:

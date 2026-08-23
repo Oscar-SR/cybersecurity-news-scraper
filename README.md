@@ -19,44 +19,49 @@ When running Docker on Windows, file system events (`inotify`) across Windows ho
 
 - **Option A — WSL2 Linux Filesystem (Recommended):**
   Clone the repository inside the WSL2 home directory (`/home/<user>/...`):
-  ```bash
-  # From a WSL2 terminal (e.g. Ubuntu)
-  cd ~
-  git clone https://github.com/Oscar-SR/cybersecurity-news-scraper.git
-  code cybersecurity-news-scraper
-  ```
-  Docker, the filesystem, and VS Code share the same Linux kernel, enabling native `inotify` and instant hot-reload with zero polling.
+
+    ```bash
+    # From a WSL2 terminal (e.g. Ubuntu)
+    cd ~
+    git clone https://github.com/Oscar-SR/cybersecurity-news-scraper.git
+    code cybersecurity-news-scraper
+    ```
+
+    Docker, the filesystem, and VS Code share the same Linux kernel, enabling native `inotify` and instant hot-reload with zero polling.
 
 - **Option B — VS Code Container Volume (Fastest setup without WSL CLI):**
   Open VS Code on Windows, press `F1` / `Ctrl+Shift+P`, and select:
-  > **Dev Containers: Clone Repository in Container Volume...**
-  
-  Paste the repository URL (`https://github.com/Oscar-SR/cybersecurity-news-scraper.git`). VS Code will clone the repo into an isolated Docker volume with native Linux performance and instant hot-reload.
+
+    > **Dev Containers: Clone Repository in Container Volume...**
+
+    Paste the repository URL (`https://github.com/Oscar-SR/cybersecurity-news-scraper.git`). VS Code will clone the repo into an isolated Docker volume with native Linux performance and instant hot-reload.
 
 #### Getting started
 
 1. Copy the environment template (production):
 
-   ```bash
-   cp .env.example .env
-   ```
+    ```bash
+    cp .env.example .env
+    ```
 
-   *(Optional)* If you need custom development settings (e.g. `PROXY_PORT` or `WATCH_POLLING`):
-   ```bash
-   cp .devcontainer/.env.example .devcontainer/.env
-   ```
+    _(Optional)_ If you need custom development settings (e.g. `PROXY_PORT` or `WATCH_POLLING`):
+
+    ```bash
+    cp .devcontainer/.env.example .devcontainer/.env
+    ```
 
 2. Open the project in VS Code and run **Dev Containers: Reopen in Container** from the command palette (`Ctrl+Shift+P` / `F1`).
 
 3. Once inside the container, start both dev servers:
 
-   ```bash
-   npm run dev
-   ```
+    ```bash
+    npm run dev
+    ```
 
 4. The application is available at `http://localhost:3001` (or your custom `PROXY_PORT`) through the Caddy reverse proxy.
 
 Any file changes you make in VS Code are immediately detected:
+
 - **Backend** (`packages/backend/src/`): `nodemon` restarts the Node.js process.
 - **Frontend** (`packages/frontend/src/`): Vite applies Hot Module Replacement (HMR) in the browser.
 
@@ -74,7 +79,7 @@ SonarQube will be available at `http://localhost:9000`.
 
 #### Docker deployment
 
-The CI/CD pipeline (GitHub Actions) builds and pushes production images to GitHub Container Registry on every push to `main`. Images are tagged with `latest` and the commit SHA.
+Production images are built locally from Dockerfiles (`packages/backend/Dockerfile`, `packages/frontend/Dockerfile`).
 
 To deploy:
 
@@ -93,9 +98,9 @@ npm run docker:down
 To deploy manually on a VPS:
 
 ```bash
-# SSH into the VPS, pull and deploy
-docker compose pull
-docker compose up -d
+# SSH into the VPS, pull latest code and build+deploy
+git pull
+docker compose up -d --build
 ```
 
 ### Manual setup (without Docker)
@@ -121,16 +126,16 @@ npm start
 
 ### Production (`.env` in root)
 
-| Variable | Description | Default |
-| --- | --- | --- |
-| `DOMAIN` | Domain name for Caddy HTTPS | `example.com` |
-| `EMAIL` | Email for Let's Encrypt SSL certificate | `admin@example.com` |
+| Variable | Description                             | Default             |
+| -------- | --------------------------------------- | ------------------- |
+| `DOMAIN` | Domain name for Caddy HTTPS             | `example.com`       |
+| `EMAIL`  | Email for Let's Encrypt SSL certificate | `admin@example.com` |
 
 ### Development (`.devcontainer/.env`)
 
-| Variable | Description | Default |
-| --- | --- | --- |
-| `PROXY_PORT` | Port exposed by Caddy reverse proxy on host | `3001` |
+| Variable     | Description                                 | Default |
+| ------------ | ------------------------------------------- | ------- |
+| `PROXY_PORT` | Port exposed by Caddy reverse proxy on host | `3001`  |
 
 ## Gallery
 
