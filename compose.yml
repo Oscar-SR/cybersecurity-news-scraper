@@ -9,7 +9,7 @@ services:
       - DOMAIN=${DOMAIN:-localhost}
       - EMAIL=${EMAIL:-admin@localhost}
     volumes:
-      - ./infra/reverse-proxy/Caddyfile.prod:/etc/caddy/Caddyfile:ro
+      - ./infra/reverse-proxy/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
     depends_on:

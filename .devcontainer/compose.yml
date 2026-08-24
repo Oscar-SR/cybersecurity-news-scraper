@@ -21,7 +21,7 @@ services:
     ports:
       - "${PROXY_PORT:-3001}:80"
     volumes:
-      - ../infra/reverse-proxy/Caddyfile.dev:/etc/caddy/Caddyfile:ro
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
     networks:
       - dev-network
 
