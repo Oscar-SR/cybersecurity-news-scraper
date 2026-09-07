@@ -93,7 +93,12 @@ To stop:
 npm run docker:down
 ```
 
-> Production requires `DOMAIN` and `EMAIL` in `.env` (Caddy uses them to obtain and auto-renew Let's Encrypt certificates).
+> `DOMAIN` and `EMAIL` in `.env` control how Caddy serves HTTPS:
+>
+> - **Real domain** (e.g. `DOMAIN=yourdomain.com` + a valid `EMAIL`): Caddy obtains and auto-renews a public Let's Encrypt certificate. Requires the DNS pointing at the server and ports 80/443 reachable from the internet.
+> - **No domain** (`DOMAIN=localhost`, or leave `DOMAIN`/`EMAIL` unset to fall back to the compose defaults): Caddy serves HTTPS with its own internal CA — no domain needed. Browsers will show a certificate warning (`NET::ERR_CERT_AUTHORITY_INVALID`) that you can bypass via _Advanced → Proceed_.
+>
+> ⚠️ Do not use the `example.com` / `admin@example.com` placeholders verbatim: Caddy will try (and fail) to obtain a public certificate for `example.com`, leaving HTTPS broken (`ERR_SSL_PROTOCOL_ERROR`).
 
 To deploy manually on a VPS:
 
@@ -126,10 +131,10 @@ npm start
 
 ### Production (`.env` in root)
 
-| Variable | Description                             | Default             |
-| -------- | --------------------------------------- | ------------------- |
-| `DOMAIN` | Domain name for Caddy HTTPS             | `example.com`       |
-| `EMAIL`  | Email for Let's Encrypt SSL certificate | `admin@example.com` |
+| Variable | Description                                                               | Default           |
+| -------- | ------------------------------------------------------------------------- | ----------------- |
+| `DOMAIN` | Domain name for Caddy HTTPS (`localhost` = internal CA, no domain needed) | `localhost`       |
+| `EMAIL`  | Email for Let's Encrypt certificate (only used with a real domain)        | `admin@localhost` |
 
 ### Development (`.devcontainer/.env`)
 
