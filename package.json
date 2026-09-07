@@ -20,6 +20,8 @@
     "start:backend": "npm run start -w packages/backend",
     "start:frontend": "npm run start -w packages/frontend",
     "start": "concurrently npm:start:backend npm:start:frontend",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down",
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
     "i18n:extract": "npm run i18n:extract -w packages/frontend"

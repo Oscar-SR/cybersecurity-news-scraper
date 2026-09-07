@@ -23,8 +23,8 @@ vi.mock("../../src/scrapers/cso-online.js", () => ({
 // Ahora sí importamos app
 import app from "../../src/app";
 
-test("GET /scrape/cso devuelve status 200", async () => {
-    const res = await request(app).get("/scrape/cso?n=1");
+test("GET /api/scrape/cso devuelve status 200", async () => {
+    const res = await request(app).get("/api/scrape/cso?n=1");
     expect(res.status).toBe(200);
     expect(res.body).toEqual(mockCSOResponse);
 });

@@ -3,10 +3,9 @@ import { useTranslation } from "react-i18next";
 import { fetchNews } from "../../api/api-news";
 import NewsList from "../../components/NewsList/NewsList";
 import KeywordsCloud from "../../components/KeywordsCloud/KeywordsCloud";
-import "./Home.css";
-import { useTheme } from "../../hooks/useTheme";
+import { useTheme, Theme } from "../../hooks/useTheme";
 import Header from "../../components/Header/Header";
-import { Theme } from "../../hooks/useTheme";
+import "./Home.css";
 
 function Home() {
     const { t } = useTranslation();

@@ -4,72 +4,143 @@ This project consists of an application that scrapes cybersecurity news from dif
 
 ## Usage
 
-### Docker
+### Development (Dev Container)
 
-The easiest way to run the application is using Docker. First, copy environment template:
+The recommended way to develop is using **VS Code Dev Containers**. The Dev Container provides a fully configured environment with Node.js, Playwright browsers, and all project dependencies — no local setup required.
+
+#### Prerequisites
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- [VS Code](https://code.visualstudio.com/) with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
+
+#### Windows Users & Hot-Reload
+
+When running Docker on Windows, file system events (`inotify`) across Windows host mounts (`C:\...`) are not natively propagated to Linux containers. Choose one of the following options:
+
+- **Option A — WSL2 Linux Filesystem (Recommended):**
+  Clone the repository inside the WSL2 home directory (`/home/<user>/...`):
+
+    ```bash
+    # From a WSL2 terminal (e.g. Ubuntu)
+    cd ~
+    git clone https://github.com/Oscar-SR/cybersecurity-news-scraper.git
+    code cybersecurity-news-scraper
+    ```
+
+    Docker, the filesystem, and VS Code share the same Linux kernel, enabling native `inotify` and instant hot-reload with zero polling.
+
+- **Option B — VS Code Container Volume (Fastest setup without WSL CLI):**
+  Open VS Code on Windows, press `F1` / `Ctrl+Shift+P`, and select:
+
+    > **Dev Containers: Clone Repository in Container Volume...**
+
+    Paste the repository URL (`https://github.com/Oscar-SR/cybersecurity-news-scraper.git`). VS Code will clone the repo into an isolated Docker volume with native Linux performance and instant hot-reload.
+
+#### Getting started
+
+1. Copy the environment template (production):
+
+    ```bash
+    cp .env.example .env
+    ```
+
+    _(Optional)_ If you need custom development settings (e.g. `PROXY_PORT` or `WATCH_POLLING`):
+
+    ```bash
+    cp .devcontainer/.env.example .devcontainer/.env
+    ```
+
+2. Open the project in VS Code and run **Dev Containers: Reopen in Container** from the command palette (`Ctrl+Shift+P` / `F1`).
+
+3. Once inside the container, start both dev servers:
+
+    ```bash
+    npm run dev
+    ```
+
+4. The application is available at `http://localhost:3001` (or your custom `PROXY_PORT`) through the Caddy reverse proxy.
+
+Any file changes you make in VS Code are immediately detected:
+
+- **Backend** (`packages/backend/src/`): `nodemon` restarts the Node.js process.
+- **Frontend** (`packages/frontend/src/`): Vite applies Hot Module Replacement (HMR) in the browser.
+
+#### SonarQube (optional)
+
+A SonarQube service is available behind a Docker Compose profile. To start it alongside the Dev Container:
 
 ```bash
-cp .env.example .env
+docker compose -f .devcontainer/compose.yml --profile sonarqube up -d sonarqube
 ```
 
-Build and start containers:
+SonarQube will be available at `http://localhost:9000`.
+
+### Production
+
+#### Docker deployment
+
+Production images are built locally from Dockerfiles (`packages/backend/Dockerfile`, `packages/frontend/Dockerfile`).
+
+To deploy:
 
 ```bash
-docker compose up --build
+npm run docker:deploy
 ```
 
-To stop the containers:
+To stop:
 
 ```bash
-docker compose down
+npm run docker:down
 ```
 
-### Manual setup
+> `DOMAIN` and `EMAIL` in `.env` control how Caddy serves HTTPS:
+>
+> - **Real domain** (e.g. `DOMAIN=yourdomain.com` + a valid `EMAIL`): Caddy obtains and auto-renews a public Let's Encrypt certificate. Requires the DNS pointing at the server and ports 80/443 reachable from the internet.
+> - **No domain** (`DOMAIN=localhost`, or leave `DOMAIN`/`EMAIL` unset to fall back to the compose defaults): Caddy serves HTTPS with its own internal CA — no domain needed. Browsers will show a certificate warning (`NET::ERR_CERT_AUTHORITY_INVALID`) that you can bypass via _Advanced → Proceed_.
+>
+> ⚠️ Do not use the `example.com` / `admin@example.com` placeholders verbatim: Caddy will try (and fail) to obtain a public certificate for `example.com`, leaving HTTPS broken (`ERR_SSL_PROTOCOL_ERROR`).
+
+To deploy manually on a VPS:
+
+```bash
+# SSH into the VPS, pull latest code and build+deploy
+git pull
+docker compose up -d --build
+```
+
+### Manual setup (without Docker)
 
 #### Development
-
-To prepare the project for running, you must use the following commands in the root directory of the project:
 
 ```bash
 npm install
 npx playwright install
-```
-
-For running in **development** phase, use the following command:
-
-```bash
 npm run dev
 ```
 
 #### Production
 
-Install the dependencies with the following commands:
-
 ```bash
 npm ci
 npx playwright install
-```
-
-For **production**, you must first build the packages with this command:
-
-```bash
 npm run build
-```
-
-After that, you can run the application with the following command:
-
-```bash
 npm start
 ```
 
 ## Configuration
 
-The application can be configured using environment variables defined in the `.env` file. It will be avaible in `localhost` at the configured ports:
+### Production (`.env` in root)
 
-```
-BACKEND_PORT=3000
-FRONTEND_PORT=3001
-```
+| Variable | Description                                                               | Default           |
+| -------- | ------------------------------------------------------------------------- | ----------------- |
+| `DOMAIN` | Domain name for Caddy HTTPS (`localhost` = internal CA, no domain needed) | `localhost`       |
+| `EMAIL`  | Email for Let's Encrypt certificate (only used with a real domain)        | `admin@localhost` |
+
+### Development (`.devcontainer/.env`)
+
+| Variable     | Description                                 | Default |
+| ------------ | ------------------------------------------- | ------- |
+| `PROXY_PORT` | Port exposed by Caddy reverse proxy on host | `3001`  |
 
 ## Gallery
 

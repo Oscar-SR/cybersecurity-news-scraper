@@ -1,0 +1,50 @@
+services:
+  workspace:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    container_name: workspace
+    volumes:
+      - ..:/workspace:cached
+      - workspace_node_modules:/workspace/node_modules
+    working_dir: /workspace
+    command: sleep infinity
+    environment:
+      - NODE_ENV=development
+      - PROXY_PORT=${PROXY_PORT:-3001}
+    networks:
+      - dev-network
+
+  reverse-proxy:
+    image: caddy:2.9-alpine
+    container_name: reverse-proxy-dev
+    ports:
+      - "${PROXY_PORT:-3001}:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    networks:
+      - dev-network
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    networks:
+      - dev-network
+    profiles:
+      - sonarqube
+
+volumes:
+  workspace_node_modules:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+
+networks:
+  dev-network:
+    driver: bridge

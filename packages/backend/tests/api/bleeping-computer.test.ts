@@ -23,8 +23,8 @@ vi.mock("../../src/scrapers/bleeping-computer.js", () => ({
 // Ahora sí importamos app
 import app from "../../src/app";
 
-test("GET /scrape/bc devuelve status 200", async () => {
-    const res = await request(app).get("/scrape/bc?n=1");
+test("GET /api/scrape/bc devuelve status 200", async () => {
+    const res = await request(app).get("/api/scrape/bc?n=1");
     expect(res.status).toBe(200);
     expect(res.body).toEqual(mockBleepingComputerResponse);
 });
